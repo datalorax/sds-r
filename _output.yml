@@ -1,0 +1,9 @@
+bookdown::gitbook:
+  includes: 
+    in_header: header.html
+  css: custom.css
+  lib_dir: assets
+  split_by: section
+  config:
+    toolbar:
+      position: static
