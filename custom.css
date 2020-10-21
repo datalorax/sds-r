@@ -103,8 +103,8 @@
 
 /*Code blocks*/
 .book .book-body .page-wrapper .page-inner section.normal pre {
-	border-top:4px solid var(--highlight-darker-blue);
-	border-bottom:4px solid var(--highlight-darker-blue);
+	border-top:4px solid var(--highlight-seafoam);
+	border-bottom:4px solid var(--highlight-seafoam);
 	background-color: #FDFDFD;
 	color: #415A6E;
 }
