@@ -1,7 +1,8 @@
 # Welcome
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(message = FALSE,
+                      dev.args = list(bg="transparent"))
 ```
 
 It's a vast world out there. We're going to cover a lot of ground. Don't be scared. It's going to be **so. much. FUN!**
@@ -9,14 +10,16 @@ It's a vast world out there. We're going to cover a lot of ground. Don't be scar
 I'm just playing right now and specifically thinking about code styling. So here's a code chunk for producing a very basic plot.
 
 ```{r}
-# load the library
-library(tidyverse)
+# load the libraries
+library(ggplot2)
+library(dplyr)
 
 # create a plot
 ggplot(mpg, aes(displ, cty)) +
-  geom_point() +
-  geom_smooth() +
-  theme_minimal()
+  geom_point(color = "#B3E5D9") +
+  geom_smooth(color = "#7EC1E7",
+              fill = "#C7E4F5") +
+  theme_minimal(15)
 ```
 
 We could of course create some summary data too.

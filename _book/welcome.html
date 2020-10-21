@@ -156,14 +156,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">2</span> Welcome</h1>
 <p>It’s a vast world out there. We’re going to cover a lot of ground. Don’t be scared. It’s going to be <strong>so. much. FUN!</strong></p>
 <p>I’m just playing right now and specifically thinking about code styling. So here’s a code chunk for producing a very basic plot.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="welcome.html#cb1-1"></a><span class="co"># load the library</span></span>
-<span id="cb1-2"><a href="welcome.html#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="welcome.html#cb1-3"></a></span>
-<span id="cb1-4"><a href="welcome.html#cb1-4"></a><span class="co"># create a plot</span></span>
-<span id="cb1-5"><a href="welcome.html#cb1-5"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb1-6"><a href="welcome.html#cb1-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb1-7"><a href="welcome.html#cb1-7"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></span>
-<span id="cb1-8"><a href="welcome.html#cb1-8"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="welcome.html#cb1-1"></a><span class="co"># load the libraries</span></span>
+<span id="cb1-2"><a href="welcome.html#cb1-2"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="welcome.html#cb1-3"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="welcome.html#cb1-4"></a></span>
+<span id="cb1-5"><a href="welcome.html#cb1-5"></a><span class="co"># create a plot</span></span>
+<span id="cb1-6"><a href="welcome.html#cb1-6"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb1-7"><a href="welcome.html#cb1-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;#B3E5D9&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-8"><a href="welcome.html#cb1-8"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">color =</span> <span class="st">&quot;#7EC1E7&quot;</span>,</span>
+<span id="cb1-9"><a href="welcome.html#cb1-9"></a>              <span class="dt">fill =</span> <span class="st">&quot;#C7E4F5&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-10"><a href="welcome.html#cb1-10"></a><span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">15</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>We could of course create some summary data too.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="welcome.html#cb2-1"></a><span class="co"># create some summary data</span></span>
