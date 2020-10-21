@@ -1,6 +1,5 @@
 /*fonts*/
-@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Forum&family=Nunito&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Forum&family=Nunito&family=Roboto+Mono:wght@500&display=swap');
 
 /*Declare variables*/
 :root {
@@ -97,6 +96,63 @@
 .book .book-body .page-wrapper .page-inner section.normal p {
 	font-family: var(--font-body);
 	color: var(--txt-color);
-	font-size:1.2em;
+	font-size:1.1em;
+	font-family: 'Roboto Mono', monospace;
 }
 
+
+/*Code blocks*/
+.book .book-body .page-wrapper .page-inner section.normal pre {
+	border-top:4px solid var(--highlight-darker-blue);
+	border-bottom:4px solid var(--highlight-darker-blue);
+	background-color: #FDFDFD;
+	color: #415A6E;
+}
+
+code span.kw {
+	color: #389DCD;
+	font-weight: normal;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.co {
+	color: #9CA7A9;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.op {
+	color: #D85F00;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.dt {
+	color: #F8B411;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.st {
+	color: #04B6A1;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.va {
+	color: #AB69C3;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.cf {
+	color: #D85F00;
+	font-family: 'Roboto Mono', monospace;
+}
+
+code span.ot {
+	color: #AB69C3;
+	font-family: 'Roboto Mono', monospace;
+}
+
+/*Make code output look different from code*/
+.section.level1 > pre {
+	border: 3px dotted #000 !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
