@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Welcome | Social Data Science with R</title>
   <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Welcome | Social Data Science with R" />
   <meta property="og:type" content="book" />
@@ -184,29 +184,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="welcome.html#cb4-1"></a>mpg <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-2"><a href="welcome.html#cb4-2"></a><span class="st">  </span><span class="kw">filter</span>(manufacturer <span class="op">==</span><span class="st"> &quot;audi&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 18 x 11
-##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  
-##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
-##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact
-##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact
-##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact
-##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact
-##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact
-##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact
-##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compact
-##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact
-##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact
-## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact
-## 11 audi         a4 quattro   2    2008     4 auto(s6)   4        19    27 p     compact
-## 12 audi         a4 quattro   2.8  1999     6 auto(l5)   4        15    25 p     compact
-## 13 audi         a4 quattro   2.8  1999     6 manual(m5) 4        17    25 p     compact
-## 14 audi         a4 quattro   3.1  2008     6 auto(s6)   4        17    25 p     compact
-## 15 audi         a4 quattro   3.1  2008     6 manual(m6) 4        15    25 p     compact
-## 16 audi         a6 quattro   2.8  1999     6 auto(l5)   4        15    24 p     midsize
-## 17 audi         a6 quattro   3.1  2008     6 auto(s6)   4        17    25 p     midsize
-## 18 audi         a6 quattro   4.2  2008     8 auto(s6)   4        16    23 p     midsize</code></pre>
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl   
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p    
+##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p    
+##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p    
+##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p    
+##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p    
+##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p    
+##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p    
+##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p    
+##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p    
+## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p    
+## 11 audi         a4 quattro   2    2008     4 auto(s6)   4        19    27 p    
+## 12 audi         a4 quattro   2.8  1999     6 auto(l5)   4        15    25 p    
+## 13 audi         a4 quattro   2.8  1999     6 manual(m5) 4        17    25 p    
+## 14 audi         a4 quattro   3.1  2008     6 auto(s6)   4        17    25 p    
+## 15 audi         a4 quattro   3.1  2008     6 manual(m6) 4        15    25 p    
+## 16 audi         a6 quattro   2.8  1999     6 auto(l5)   4        15    24 p    
+## 17 audi         a6 quattro   3.1  2008     6 auto(s6)   4        17    25 p    
+## 18 audi         a6 quattro   4.2  2008     8 auto(s6)   4        16    23 p    
+## # … with 1 more variable: class &lt;chr&gt;</code></pre>
 <p>Finally, let’s write a quick function that has a logical in it (since we haven’t tested those yet).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="welcome.html#cb6-1"></a>mn &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
-<span id="cb6-2"><a href="welcome.html#cb6-2"></a>	<span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb6-2"><a href="welcome.html#cb6-2"></a>  <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb6-3"><a href="welcome.html#cb6-3"></a>}</span>
 <span id="cb6-4"><a href="welcome.html#cb6-4"></a><span class="kw">mn</span>(mpg<span class="op">$</span>hwy)</span></code></pre></div>
 <pre><code>## [1] 23.44017</code></pre>

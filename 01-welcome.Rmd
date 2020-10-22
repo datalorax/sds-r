@@ -43,7 +43,7 @@ Finally, let's write a quick function that has a logical in it (since we haven't
 
 ```{r}
 mn <- function(x) {
-	mean(x, na.rm = TRUE)
+  mean(x, na.rm = TRUE)
 }
 mn(mpg$hwy)
 ```
