@@ -25,7 +25,7 @@
 <meta name="author" content="Brendan Cullen" />
 
 
-<meta name="date" content="2020-10-21" />
+<meta name="date" content="2020-10-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,37 +174,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-4"><a href="welcome.html#cb2-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_cty =</span> <span class="kw">mean</span>(cty),</span>
 <span id="cb2-5"><a href="welcome.html#cb2-5"></a>            <span class="dt">sd_cty =</span> <span class="kw">sd</span>(cty))</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
-##     cyl mean_cty    sd_cty
-##   &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1     4 21.01235 3.498192 
-## 2     5 20.5     0.5773503
-## 3     6 16.21519 1.773530 
-## 4     8 12.57143 1.806361</code></pre>
+##     cyl mean_cty sd_cty
+##   &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1     4     21.0  3.50 
+## 2     5     20.5  0.577
+## 3     6     16.2  1.77 
+## 4     8     12.6  1.81</code></pre>
 <p>But the above doesn’t give us an example of a string, which we’ll also use a lot, so let’s try an example with that.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="welcome.html#cb4-1"></a>mpg <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-2"><a href="welcome.html#cb4-2"></a><span class="st">  </span><span class="kw">filter</span>(manufacturer <span class="op">==</span><span class="st"> &quot;audi&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 18 x 11
-##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl   
-##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;
-##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p    
-##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p    
-##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p    
-##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p    
-##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p    
-##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p    
-##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p    
-##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p    
-##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p    
-## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p    
-## 11 audi         a4 quattro   2    2008     4 auto(s6)   4        19    27 p    
-## 12 audi         a4 quattro   2.8  1999     6 auto(l5)   4        15    25 p    
-## 13 audi         a4 quattro   2.8  1999     6 manual(m5) 4        17    25 p    
-## 14 audi         a4 quattro   3.1  2008     6 auto(s6)   4        17    25 p    
-## 15 audi         a4 quattro   3.1  2008     6 manual(m6) 4        15    25 p    
-## 16 audi         a6 quattro   2.8  1999     6 auto(l5)   4        15    24 p    
-## 17 audi         a6 quattro   3.1  2008     6 auto(s6)   4        17    25 p    
-## 18 audi         a6 quattro   4.2  2008     8 auto(s6)   4        16    23 p    
-## # … with 1 more variable: class &lt;chr&gt;</code></pre>
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
+##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact
+##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact
+##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact
+##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact
+##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact
+##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact
+##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compact
+##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact
+##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact
+## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact
+## 11 audi         a4 quattro   2    2008     4 auto(s6)   4        19    27 p     compact
+## 12 audi         a4 quattro   2.8  1999     6 auto(l5)   4        15    25 p     compact
+## 13 audi         a4 quattro   2.8  1999     6 manual(m5) 4        17    25 p     compact
+## 14 audi         a4 quattro   3.1  2008     6 auto(s6)   4        17    25 p     compact
+## 15 audi         a4 quattro   3.1  2008     6 manual(m6) 4        15    25 p     compact
+## 16 audi         a6 quattro   2.8  1999     6 auto(l5)   4        15    24 p     midsize
+## 17 audi         a6 quattro   3.1  2008     6 auto(s6)   4        17    25 p     midsize
+## 18 audi         a6 quattro   4.2  2008     8 auto(s6)   4        16    23 p     midsize</code></pre>
 <p>Finally, let’s write a quick function that has a logical in it (since we haven’t tested those yet).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="welcome.html#cb6-1"></a>mn &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
 <span id="cb6-2"><a href="welcome.html#cb6-2"></a>  <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
