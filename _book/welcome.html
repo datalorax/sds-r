@@ -25,7 +25,7 @@
 <meta name="author" content="Brendan Cullen" />
 
 
-<meta name="date" content="2020-10-21" />
+<meta name="date" content="2020-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="index.html"/>
-
+<link rel="next" href="feature-engineering.html"/>
 <script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -53,6 +53,12 @@
 
 
 <script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="assets/core-js-2.5.3/shim.min.js"></script>
+<script src="assets/react-16.12.0/react.min.js"></script>
+<script src="assets/react-16.12.0/react-dom.min.js"></script>
+<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
+<script src="assets/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="assets/reactable-binding-0.2.0/reactable.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
 
 
@@ -135,6 +141,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
+<li class="chapter" data-level="3.2" data-path="creating-a-basic-recipe.html"><a href="creating-a-basic-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a basic recipe</a></li>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data-near-zero-variance-predictors.html"><a href="encoding-categorical-data-near-zero-variance-predictors.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data &amp; near-zero variance predictors</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -157,15 +169,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>It’s a vast world out there. We’re going to cover a lot of ground. Don’t be scared. It’s going to be <strong>so. much. FUN!</strong></p>
 <p>I’m just playing right now and specifically thinking about code styling. So here’s a code chunk for producing a very basic plot.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="welcome.html#cb1-1"></a><span class="co"># load the libraries</span></span>
-<span id="cb1-2"><a href="welcome.html#cb1-2"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="welcome.html#cb1-3"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb1-4"><a href="welcome.html#cb1-4"></a></span>
-<span id="cb1-5"><a href="welcome.html#cb1-5"></a><span class="co"># create a plot</span></span>
-<span id="cb1-6"><a href="welcome.html#cb1-6"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb1-7"><a href="welcome.html#cb1-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;#B3E5D9&quot;</span>) <span class="op">+</span></span>
-<span id="cb1-8"><a href="welcome.html#cb1-8"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">color =</span> <span class="st">&quot;#7EC1E7&quot;</span>,</span>
-<span id="cb1-9"><a href="welcome.html#cb1-9"></a>              <span class="dt">fill =</span> <span class="st">&quot;#C7E4F5&quot;</span>) <span class="op">+</span></span>
-<span id="cb1-10"><a href="welcome.html#cb1-10"></a><span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">15</span>)</span></code></pre></div>
+<span id="cb1-2"><a href="welcome.html#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="welcome.html#cb1-3"></a></span>
+<span id="cb1-4"><a href="welcome.html#cb1-4"></a><span class="co"># create a plot</span></span>
+<span id="cb1-5"><a href="welcome.html#cb1-5"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb1-6"><a href="welcome.html#cb1-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;#B3E5D9&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-7"><a href="welcome.html#cb1-7"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">color =</span> <span class="st">&quot;#7EC1E7&quot;</span>,</span>
+<span id="cb1-8"><a href="welcome.html#cb1-8"></a>              <span class="dt">fill =</span> <span class="st">&quot;#C7E4F5&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-9"><a href="welcome.html#cb1-9"></a><span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">15</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>We could of course create some summary data too.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="welcome.html#cb2-1"></a><span class="co"># create some summary data</span></span>
@@ -219,8 +230,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="feature-engineering.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -273,6 +284,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -1,8 +1,7 @@
 # Welcome
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(message = FALSE,
-                      dev.args = list(bg="transparent"))
+source("_common.R")
 ```
 
 It's a vast world out there. We're going to cover a lot of ground. Don't be scared. It's going to be **so. much. FUN!**
@@ -11,8 +10,7 @@ I'm just playing right now and specifically thinking about code styling. So here
 
 ```{r}
 # load the libraries
-library(ggplot2)
-library(dplyr)
+library(tidyverse)
 
 # create a plot
 ggplot(mpg, aes(displ, cty)) +

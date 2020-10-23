@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3.4 Dealing with low variance predictors | Social Data Science with R</title>
+  <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3.4 Dealing with low variance predictors | Social Data Science with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3.4 Dealing with low variance predictors | Social Data Science with R" />
+  
+  <meta name="twitter:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
+  
+
+<meta name="author" content="Daniel Anderson" />
+<meta name="author" content="Brendan Cullen" />
+
+
+<meta name="date" content="2020-10-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="encoding-categorical-data.html"/>
+<link rel="next" href="missing-data.html"/>
+<script src="assets/header-attrs-2.4/header-attrs.js"></script>
+<script src="assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="assets/core-js-2.5.3/shim.min.js"></script>
+<script src="assets/react-16.12.0/react.min.js"></script>
+<script src="assets/react-16.12.0/react-dom.min.js"></script>
+<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
+<script src="assets/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="assets/reactable-binding-0.2.0/reactable.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
+<li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
+<li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a></li>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a></li>
+<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.8</b> PCA</a></li>
+<li class="chapter" data-level="3.9" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.9</b> Wrapping up</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Social Data Science with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="dealing-with-low-variance-predictors" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Dealing with low variance predictors</h2>
+<p>Occasionally you have (or can create) variables that are highly imbalanced. A common example might include a gender variable that takes on the values “male”, “female”, “non-binary”, “other”, and “refused to answer”. Once you dummy-code a variable like this, it is possible that one or more of the categories may be so infrequent that it makes modeling that category difficult. This is not to say that these categories are not important, particularly when considering the representation of your training dataset to real-world applications (and any demographic variable is going to be associated with issues of ethics). Ignoring this variation may lead to systematic biases in model predictions. However, you also regularly have to make compromises to get models to work and be useful. One of those compromises often includes (with many types of variables, not just demographics) dropping highly imbalanced predictors.</p>
+<p>Let’s look back at our statewide testing data. Let’s <code>bake</code> the final recipe from our <a href="creating-a-recipe.html#creating-a-recipe">Creating a recipe</a> section on the training data (that we fed to the recipe) and look at the dummy variables that are created.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="dealing-with-low-variance-predictors.html#cb46-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-2"><a href="dealing-with-low-variance-predictors.html#cb46-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-3"><a href="dealing-with-low-variance-predictors.html#cb46-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
+<span id="cb46-4"><a href="dealing-with-low-variance-predictors.html#cb46-4"></a>              <span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-5"><a href="dealing-with-low-variance-predictors.html#cb46-5"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-6"><a href="dealing-with-low-variance-predictors.html#cb46-6"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>())</span>
+<span id="cb46-7"><a href="dealing-with-low-variance-predictors.html#cb46-7"></a></span>
+<span id="cb46-8"><a href="dealing-with-low-variance-predictors.html#cb46-8"></a>baked &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-9"><a href="dealing-with-low-variance-predictors.html#cb46-9"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-10"><a href="dealing-with-low-variance-predictors.html#cb46-10"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<p>Below is a table of just the categorical variables and the frequency of each value.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="dealing-with-low-variance-predictors.html#cb47-1"></a>tbls &lt;-<span class="st"> </span><span class="kw">map</span>(baked, table)</span>
+<span id="cb47-2"><a href="dealing-with-low-variance-predictors.html#cb47-2"></a>level_freq &lt;-<span class="st"> </span><span class="kw">map_df</span>(tbls, <span class="op">~</span><span class="kw">data.frame</span>(<span class="dt">value =</span> <span class="kw">names</span>(.x),</span>
+<span id="cb47-3"><a href="dealing-with-low-variance-predictors.html#cb47-3"></a>                      <span class="dt">frequency =</span> <span class="kw">as.numeric</span>(.x)),</span>
+<span id="cb47-4"><a href="dealing-with-low-variance-predictors.html#cb47-4"></a>       <span class="dt">.id =</span> <span class="st">&quot;variable&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb47-5"><a href="dealing-with-low-variance-predictors.html#cb47-5"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;id|ncessch|lat|lon|score|tst_dt&quot;</span>, variable))</span>
+<span id="cb47-6"><a href="dealing-with-low-variance-predictors.html#cb47-6"></a></span>
+<span id="cb47-7"><a href="dealing-with-low-variance-predictors.html#cb47-7"></a><span class="kw">reactable</span>(level_freq, <span class="dt">filterable =</span> <span class="ot">TRUE</span>, <span class="dt">highlight =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-1e0c3da0aa7bd600fec4" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1e0c3da0aa7bd600fec4">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"variable":["enrl_grd","enrl_grd","enrl_grd","enrl_grd","enrl_grd","enrl_grd","gndr_M","gndr_M","ethnic_cd_B","ethnic_cd_B","ethnic_cd_H","ethnic_cd_H","ethnic_cd_I","ethnic_cd_I","ethnic_cd_M","ethnic_cd_M","ethnic_cd_P","ethnic_cd_P","ethnic_cd_W","ethnic_cd_W","tst_bnch_X2B","tst_bnch_X2B","tst_bnch_X3B","tst_bnch_X3B","tst_bnch_G4","tst_bnch_G4","tst_bnch_G6","tst_bnch_G6","tst_bnch_G7","tst_bnch_G7","migrant_ed_fg_Y","migrant_ed_fg_Y","ind_ed_fg_Y","ind_ed_fg_Y","sp_ed_fg_Y","sp_ed_fg_Y","tag_ed_fg_Y","tag_ed_fg_Y","econ_dsvntg_Y","econ_dsvntg_Y","ayp_lep_B","ayp_lep_B","ayp_lep_E","ayp_lep_E","ayp_lep_F","ayp_lep_F","ayp_lep_M","ayp_lep_M","ayp_lep_N","ayp_lep_N","ayp_lep_S","ayp_lep_S","ayp_lep_W","ayp_lep_W","ayp_lep_X","ayp_lep_X","ayp_lep_Y","ayp_lep_Y","stay_in_dist_Y","stay_in_dist_Y","stay_in_schl_Y","stay_in_schl_Y","dist_sped_Y","dist_sped_Y","trgt_assist_fg_Y","trgt_assist_fg_Y","ayp_dist_partic_Y","ayp_dist_partic_Y","ayp_schl_partic_Y","ayp_schl_partic_Y","ayp_dist_prfrm_Y","ayp_dist_prfrm_Y","ayp_schl_prfrm_Y","ayp_schl_prfrm_Y","rc_dist_partic_Y","rc_dist_partic_Y","rc_schl_partic_Y","rc_schl_partic_Y","rc_dist_prfrm_Y","rc_dist_prfrm_Y","rc_schl_prfrm_Y","rc_schl_prfrm_Y","lang_cd_E","lang_cd_E","tst_atmpt_fg_Y","tst_atmpt_fg_Y","grp_rpt_dist_partic_Y","grp_rpt_dist_partic_Y","grp_rpt_schl_partic_Y","grp_rpt_schl_partic_Y","grp_rpt_dist_prfrm_Y","grp_rpt_dist_prfrm_Y","grp_rpt_schl_prfrm_Y","grp_rpt_schl_prfrm_Y"],"value":["3","4","5","6","7","8","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1"],"frequency":[464,512,453,506,464,442,1398,1443,2786,55,2134,707,2800,41,2657,184,2823,18,1110,1731,2388,453,2399,442,2329,512,2335,506,2377,464,2761,80,2801,39,2457,383,2670,165,1222,1612,571,7,494,84,330,248,576,2,513,65,576,2,574,4,535,43,457,121,75,2760,97,2738,2819,16,2733,102,7,2834,23,2818,86,2755,118,2723,7,2834,23,2818,86,2755,118,2723,80,2761,13,2828,7,2834,23,2818,16,2825,32,2809]},"columns":[{"accessor":"variable","name":"variable","type":"character"},{"accessor":"value","name":"value","type":"character"},{"accessor":"frequency","name":"frequency","type":"numeric"}],"filterable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"theme":{"backgroundColor":"transparent","borderColor":"#C7E4F5","highlightColor":"#7EC1E7","inputStyle":{"backgroundColor":"transparent"},"selectStyle":{"backgroundColor":"transparent"},"pageButtonHoverStyle":{"backgroundColor":"#B3E5D9"},"pageButtonActiveStyle":{"backgroundColor":"#B3E5D9"}},"dataKey":"25287541d065b0ed9549524c4d504990"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>The relative frequency of many of these looks fine, but for some one category has very low frequency. For example, <code>ayp_lep_M</code> has 576 observations (from our random 2% sample) that were <span class="math inline">\(0\)</span>, and only 2 that were <span class="math inline">\(1\)</span>. This is the same for <code>ayp_lep_S</code>. We may therefore consider applying a <em>near-zero variance filter</em> to drop these columns. Let’s try this, and then we’ll talk a bit more about what the filter is actually doing.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="dealing-with-low-variance-predictors.html#cb48-1"></a>rec_nzv &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb48-2"><a href="dealing-with-low-variance-predictors.html#cb48-2"></a><span class="st">  </span><span class="kw">step_nzv</span>(<span class="kw">all_predictors</span>())</span>
+<span id="cb48-3"><a href="dealing-with-low-variance-predictors.html#cb48-3"></a></span>
+<span id="cb48-4"><a href="dealing-with-low-variance-predictors.html#cb48-4"></a>baked_rm_nzv &lt;-<span class="st"> </span>rec_nzv <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb48-5"><a href="dealing-with-low-variance-predictors.html#cb48-5"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb48-6"><a href="dealing-with-low-variance-predictors.html#cb48-6"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<p>Let’s look at what columns are in <code>baked</code> that were removed from <code>baked_rm_nzv</code>.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="dealing-with-low-variance-predictors.html#cb49-1"></a>removed_columns &lt;-<span class="st"> </span><span class="kw">names</span>(baked)[<span class="op">!</span>(<span class="kw">names</span>(baked) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(baked_rm_nzv))]</span>
+<span id="cb49-2"><a href="dealing-with-low-variance-predictors.html#cb49-2"></a>removed_columns</span></code></pre></div>
+<pre><code>##  [1] &quot;ethnic_cd_B&quot;           &quot;ethnic_cd_I&quot;           &quot;ethnic_cd_P&quot;          
+##  [4] &quot;migrant_ed_fg_Y&quot;       &quot;ind_ed_fg_Y&quot;           &quot;ayp_lep_B&quot;            
+##  [7] &quot;ayp_lep_M&quot;             &quot;ayp_lep_S&quot;             &quot;ayp_lep_W&quot;            
+## [10] &quot;stay_in_dist_Y&quot;        &quot;stay_in_schl_Y&quot;        &quot;dist_sped_Y&quot;          
+## [13] &quot;trgt_assist_fg_Y&quot;      &quot;ayp_dist_partic_Y&quot;     &quot;ayp_schl_partic_Y&quot;    
+## [16] &quot;ayp_dist_prfrm_Y&quot;      &quot;ayp_schl_prfrm_Y&quot;      &quot;rc_dist_partic_Y&quot;     
+## [19] &quot;rc_schl_partic_Y&quot;      &quot;rc_dist_prfrm_Y&quot;       &quot;rc_schl_prfrm_Y&quot;      
+## [22] &quot;lang_cd_E&quot;             &quot;tst_atmpt_fg_Y&quot;        &quot;grp_rpt_dist_partic_Y&quot;
+## [25] &quot;grp_rpt_schl_partic_Y&quot; &quot;grp_rpt_dist_prfrm_Y&quot;  &quot;grp_rpt_schl_prfrm_Y&quot;</code></pre>
+<p>As you can see, the near-zero variance filter has been quite aggressive here, removing 27 columns. Looking back at our table of variables, we can see that, for example, there are 55 students coded Black out of 2841, and it could be reasonably argued that this column is worth keeping in the model.</p>
+<p>So how is <code>step_nzv</code> working and how can we adjust it to be not quite so aggressive? Variables are flagged for being near-zero variance if they</p>
+<ul>
+<li>Have very few unique values, and</li>
+<li>The frequency ratio for the most common value to the second most common value is large</li>
+</ul>
+<p>These criteria are implemented in <code>step_nzv</code> through the <code>unique_cut</code> and <code>freq_cut</code> arguments, respectively. The former is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent), while the latter is estimated by the most common level frequency divided by the second most common level frequency. The default for <code>unique_cut</code> is 10, while the default for <code>freq_cut</code> is <span class="math inline">\(95/5 = 19\)</span>. For a column to be “caught” by a near-zero variance filter, and removed from the training set, it must be <em>below</em> the specified <code>unique_cut</code> and <em>above</em> the specified <code>freq_cut</code>.</p>
+<p>In the case of <code>ethnic_cd_B</code>, we see that there are two unique values, <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> (because it’s a dummy-coded variable). There are 2841 rows, so the <code>unique_cut</code> value is <span class="math inline">\((2 / 2841) \times 100 = 0.07\)</span>. The frequency ratio is <span class="math inline">\(2786/55 = 50.65\)</span>. It therefore meets both of the default criteria (below <code>unique_cut</code> and above <code>freq_cut</code>) and is removed.</p>
+<p>If you’re applying a near-zero variance filter on dummy variables, there will always be only 2 values, leading to a small <code>unique_cut</code>. This might encourage you to up the <code>freq_cut</code> to a higher value. Let’s try this approach</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="dealing-with-low-variance-predictors.html#cb51-1"></a>rec_nzv2 &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-2"><a href="dealing-with-low-variance-predictors.html#cb51-2"></a><span class="st">  </span><span class="kw">step_nzv</span>(<span class="kw">all_predictors</span>(), </span>
+<span id="cb51-3"><a href="dealing-with-low-variance-predictors.html#cb51-3"></a>           <span class="dt">freq_cut =</span> <span class="dv">99</span><span class="op">/</span><span class="dv">1</span>)</span>
+<span id="cb51-4"><a href="dealing-with-low-variance-predictors.html#cb51-4"></a></span>
+<span id="cb51-5"><a href="dealing-with-low-variance-predictors.html#cb51-5"></a>baked_rm_nzv2 &lt;-<span class="st"> </span>rec_nzv2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-6"><a href="dealing-with-low-variance-predictors.html#cb51-6"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-7"><a href="dealing-with-low-variance-predictors.html#cb51-7"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
+<span id="cb51-8"><a href="dealing-with-low-variance-predictors.html#cb51-8"></a></span>
+<span id="cb51-9"><a href="dealing-with-low-variance-predictors.html#cb51-9"></a>removed_columns2 &lt;-<span class="st"> </span><span class="kw">names</span>(baked)[<span class="op">!</span>(<span class="kw">names</span>(baked) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(baked_rm_nzv2))]</span>
+<span id="cb51-10"><a href="dealing-with-low-variance-predictors.html#cb51-10"></a>removed_columns2</span></code></pre></div>
+<pre><code>##  [1] &quot;ethnic_cd_P&quot;           &quot;ayp_lep_M&quot;             &quot;ayp_lep_S&quot;            
+##  [4] &quot;ayp_lep_W&quot;             &quot;dist_sped_Y&quot;           &quot;ayp_dist_partic_Y&quot;    
+##  [7] &quot;ayp_schl_partic_Y&quot;     &quot;rc_dist_partic_Y&quot;      &quot;rc_schl_partic_Y&quot;     
+## [10] &quot;tst_atmpt_fg_Y&quot;        &quot;grp_rpt_dist_partic_Y&quot; &quot;grp_rpt_schl_partic_Y&quot;
+## [13] &quot;grp_rpt_dist_prfrm_Y&quot;</code></pre>
+<p>Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the <code>unique_cut</code> criteria. But it can be achieved by fiddling with the <code>freq_cut</code> variable and, actually, could be considered part of your model tuning process. In this case, we’ve set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you’ll end up with variables that have such low frequency that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.</p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="encoding-categorical-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="missing-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "static"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

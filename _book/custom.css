@@ -152,7 +152,19 @@ code span.ot {
 
 /*Make code output look different from code*/
 .section.level1 > pre {
-	border: 3px dotted #000 !important;
+	border: 3px dotted var(--main-bg-color) !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
+
+.section.level2 > pre {
+	border: 3px dotted var(--main-bg-color) !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
+
+.section.level3 > pre {
+	border: 3px dotted var(--main-bg-color) !important;
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Social Data Science with R</title>
+  <title>3.1 {recipes} | Social Data Science with R</title>
   <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Social Data Science with R" />
+  <meta property="og:title" content="3.1 {recipes} | Social Data Science with R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Social Data Science with R" />
+  <meta name="twitter:title" content="3.1 {recipes} | Social Data Science with R" />
   
   <meta name="twitter:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   
@@ -25,15 +25,15 @@
 <meta name="author" content="Brendan Cullen" />
 
 
-<meta name="date" content="2020-10-23" />
+<meta name="date" content="2020-10-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="feature-engineering.html"/>
 
-<link rel="next" href="welcome.html"/>
 <script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -53,12 +53,6 @@
 
 
 <script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<script src="assets/core-js-2.5.3/shim.min.js"></script>
-<script src="assets/react-16.12.0/react.min.js"></script>
-<script src="assets/react-16.12.0/react-dom.min.js"></script>
-<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
-<script src="assets/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<script src="assets/reactable-binding-0.2.0/reactable.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
 
 
@@ -143,9 +137,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
 <li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-basic-recipe.html"><a href="creating-a-basic-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a basic recipe</a></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data-near-zero-variance-predictors.html"><a href="encoding-categorical-data-near-zero-variance-predictors.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data &amp; near-zero variance predictors</a></li>
+<li class="chapter" data-level="3.1" data-path="recipes.html"><a href="recipes.html"><i class="fa fa-check"></i><b>3.1</b> {recipes}</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="recipes.html"><a href="recipes.html#recipe-basics"><i class="fa fa-check"></i><b>3.1.1</b> Recipe basics</a></li>
+</ul></li>
 </ul></li>
 </ul>
 
@@ -164,24 +159,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Social Data Science with R</h1>
-<p class="author"><em>Daniel Anderson</em></p>
-<p class="author"><em>Brendan Cullen</em></p>
-<p class="date"><em>2020-10-23</em></p>
-</div>
-<div id="preface" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Preface</h1>
-<p>Here’s an intro about why R is great and the cool things you can do with it and new problems you can address.</p>
+<div id="recipes" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> {recipes}</h2>
+<p><img src="https://github.com/tidymodels/recipes/raw/master/man/figures/logo.png" /></p>
+<p>The recipes package is designed to replace the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html">stats::model.matrix</a> function that you’re probably familiar with. For example, if you fit a model like the below</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="recipes.html#cb1-1"></a><span class="kw">library</span>(palmerpenguins)</span>
+<span id="cb1-2"><a href="recipes.html#cb1-2"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(bill_length_mm <span class="op">~</span><span class="st"> </span>species, <span class="dt">data =</span> penguins)</span>
+<span id="cb1-3"><a href="recipes.html#cb1-3"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = bill_length_mm ~ species, data = penguins)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9338 -2.2049  0.0086  2.0662 12.0951 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       38.7914     0.2409  161.05   &lt;2e-16 ***
+## speciesChinstrap  10.0424     0.4323   23.23   &lt;2e-16 ***
+## speciesGentoo      8.7135     0.3595   24.24   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.96 on 339 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.7078, Adjusted R-squared:  0.7061 
+## F-statistic: 410.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>You can see that our <code>species</code> column, which has the values Adelie, Gentoo, Chinstrap, is automatically dummy-coded for us, with the first level in the factor variable set as the reference group.</p>
+<p>The {recipes} package forces you to be a bit more explicit in these decisions. But it also has a much wider range of modifications it can make to the data. Another piece that is slightly different is that, in the above, you may not have even realized <code>stats::model.matrix</code> was doing anything for you because it’s wrapped within the <code>stats::lm</code> modeling code. But with {recipes}, you make the modifications to your data first, then conduct your analysis.</p>
+<div id="recipe-basics" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Recipe basics</h3>
 
 </div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
+<a href="feature-engineering.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="welcome.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="assets/gitbook-2.6.7/js/app.min.js"></script>

@@ -21,3 +21,6 @@ Imports:
     learnr,
     ggplot2,
     dplyr
+Depends: 
+    tidyverse,
+    tidymodels
