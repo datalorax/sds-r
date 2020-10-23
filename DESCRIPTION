@@ -20,7 +20,8 @@ Imports:
     bookdown,
     learnr,
     ggplot2,
-    dplyr
+    dplyr,
+    reactable
 Depends: 
     tidyverse,
     tidymodels
