@@ -254,7 +254,7 @@ rec <- recipe(score ~ f, data = df) %>%
   step_dummy(f)
 ```
 
-we will have no problem creating dummy variables as long as the levels of $f$ are within those contained in `df$f` (or, more mathematically, where $f \in E$). But what if, in a new sample, $e =$ "purple" or $e =$ "gray"? Let's try and see what happens
+we will have no problem creating dummy variables as long as the levels of $f$ are within those contained in `df$f` (or, more mathematically, where $f \in F$). But what if, in a new sample, $f =$ "purple" or $f =$ "gray"? Let's try and see what happens
 
 ```{r }
 df2 <- data.frame(f = factor(c("blue", "green", "purple", "gray")),
@@ -305,7 +305,7 @@ baked <- rec %>%
 
 Below is a table of just the categorical variables and the frequency of each value.
 
-```{r }
+```{r echo = FALSE}
 tbls <- map(baked, table)
 level_freq <- map_df(tbls, ~data.frame(value = names(.x),
                       frequency = as.numeric(.x)),
@@ -412,7 +412,7 @@ nrow(na_encode_data)
 
 Notice in the above that when I call `step_naomit` I state that it should be applied to `all_predictors` because I've already encoded the nominal predictors in the previous step. This approach allows us to capture `r round((nrow(na_encode_data)/nrow(train))*100)`% of the original data. And as a bonus, we've removed ourselves of the warnings (note - we might also want to apply `step_novel` for any future data that had levels outside of our training data - see [Handling new levels]).
 
-Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. 
+Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I've found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let's switch datasets 
 
 
 ## Transformations

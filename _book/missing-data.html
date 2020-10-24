@@ -196,19 +196,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="omission" class="section level4" number="3.5.1.1">
 <h4><span class="header-section-number">3.5.1.1</span> Omission</h4>
 <p>We can <strong>omit</strong> missing data with <code>step_naomit</code>. This will remove any row that has any missing data. Let’s see how this impacts our data, working with our same recipe we finished up with in the <a href="creating-a-recipe.html#creating-a-recipe">Creating a recipe</a> section. I’ve placed the recipe here again so we don’t have to go back to remind ourselves what we did previously.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="missing-data.html#cb53-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-2"><a href="missing-data.html#cb53-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-3"><a href="missing-data.html#cb53-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
-<span id="cb53-4"><a href="missing-data.html#cb53-4"></a>              <span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-5"><a href="missing-data.html#cb53-5"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>())</span>
-<span id="cb53-6"><a href="missing-data.html#cb53-6"></a></span>
-<span id="cb53-7"><a href="missing-data.html#cb53-7"></a>na_omit_data &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-8"><a href="missing-data.html#cb53-8"></a><span class="st">  </span><span class="kw">step_naomit</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-9"><a href="missing-data.html#cb53-9"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-10"><a href="missing-data.html#cb53-10"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb53-11"><a href="missing-data.html#cb53-11"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
-<span id="cb53-12"><a href="missing-data.html#cb53-12"></a></span>
-<span id="cb53-13"><a href="missing-data.html#cb53-13"></a><span class="kw">nrow</span>(na_omit_data)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="missing-data.html#cb52-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-2"><a href="missing-data.html#cb52-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-3"><a href="missing-data.html#cb52-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
+<span id="cb52-4"><a href="missing-data.html#cb52-4"></a>              <span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-5"><a href="missing-data.html#cb52-5"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>())</span>
+<span id="cb52-6"><a href="missing-data.html#cb52-6"></a></span>
+<span id="cb52-7"><a href="missing-data.html#cb52-7"></a>na_omit_data &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-8"><a href="missing-data.html#cb52-8"></a><span class="st">  </span><span class="kw">step_naomit</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-9"><a href="missing-data.html#cb52-9"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-10"><a href="missing-data.html#cb52-10"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-11"><a href="missing-data.html#cb52-11"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
+<span id="cb52-12"><a href="missing-data.html#cb52-12"></a></span>
+<span id="cb52-13"><a href="missing-data.html#cb52-13"></a><span class="kw">nrow</span>(na_omit_data)</span></code></pre></div>
 <pre><code>## [1] 573</code></pre>
 <p>As can be seen above, when we omit any row with missing data we end up with only 573 rows out of the original 2841 rows in the training data (or approximately 20% of the original data). This level of data omission is highly likely to introduce systematic biases into your model prediction. Generally, <code>step_naomit</code> should only be used when developing preliminary models, where you’re just trying to get code to run. When you get to the point where you’re actually trying to improve performance, you should consider alternative means</p>
 </div>
@@ -216,17 +216,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4><span class="header-section-number">3.5.1.2</span> Encoding and imputing missing data</h4>
 <p>Encoding missing data is similar to imputation. In imputation, we replace the missing value with something we thing could have reasonably been the real value, if it were observed. When we encode missing data we are creating values that will be included in the modeling process. For example, with categorical variables, we could replace the missingess with a “missing” level, which would then get its own dummy code (if we were using dummy coding to encode the categorical variables).</p>
 <p>I mentioned in the <a href="creating-a-recipe.html#creating-a-recipe">Creating a recipe</a> section that we were getting warnings but I was omitting them in the text. The reason is because some of these columns have missing data. If we want to avoid this warning, we have to add an additional step to our recipe to encode the missing data in the categorical variables. This step is called <code>step_unknown</code> and it replaces missing values with <code>"unknown"</code>. Let’s do this for all categorical variables, and omit any rows that are missing on numeric columns.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="missing-data.html#cb55-1"></a>na_encode_data &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb55-2"><a href="missing-data.html#cb55-2"></a><span class="st">  </span><span class="kw">step_unknown</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb55-3"><a href="missing-data.html#cb55-3"></a><span class="st">  </span><span class="kw">step_naomit</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb55-4"><a href="missing-data.html#cb55-4"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb55-5"><a href="missing-data.html#cb55-5"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb55-6"><a href="missing-data.html#cb55-6"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
-<span id="cb55-7"><a href="missing-data.html#cb55-7"></a></span>
-<span id="cb55-8"><a href="missing-data.html#cb55-8"></a><span class="kw">nrow</span>(na_encode_data)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="missing-data.html#cb54-1"></a>na_encode_data &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb54-2"><a href="missing-data.html#cb54-2"></a><span class="st">  </span><span class="kw">step_unknown</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb54-3"><a href="missing-data.html#cb54-3"></a><span class="st">  </span><span class="kw">step_naomit</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb54-4"><a href="missing-data.html#cb54-4"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb54-5"><a href="missing-data.html#cb54-5"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb54-6"><a href="missing-data.html#cb54-6"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
+<span id="cb54-7"><a href="missing-data.html#cb54-7"></a></span>
+<span id="cb54-8"><a href="missing-data.html#cb54-8"></a><span class="kw">nrow</span>(na_encode_data)</span></code></pre></div>
 <pre><code>## [1] 2788</code></pre>
 <p>Notice in the above that when I call <code>step_naomit</code> I state that it should be applied to <code>all_predictors</code> because I’ve already encoded the nominal predictors in the previous step. This approach allows us to capture 98% of the original data. And as a bonus, we’ve removed ourselves of the warnings (note - we might also want to apply <code>step_novel</code> for any future data that had levels outside of our training data - see <a href="encoding-categorical-data.html#handling-new-levels">Handling new levels</a>).</p>
-<p>Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median.</p>
+<p>Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I’ve found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let’s switch datasets</p>
 </div>
 </div>
 </div>

@@ -168,3 +168,9 @@ code span.ot {
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }
+
+.section.level4 > pre {
+	border: 3px dotted var(--main-bg-color) !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
