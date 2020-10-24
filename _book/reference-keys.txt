@@ -17,3 +17,6 @@ wrapping-up
 missing-data-via-recipes
 omission
 encoding-and-imputing-missing-data
+encoding-and-simple-imputation
+modeling-the-missingness
+a-few-words-of-caution

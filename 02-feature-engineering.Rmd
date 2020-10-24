@@ -394,7 +394,7 @@ nrow(na_omit_data)
 
 As can be seen above, when we omit any row with missing data we end up with only `r nrow(na_omit_data)` rows out of the original `r nrow(train)` rows in the training data (or approximately `r round((nrow(na_omit_data)/nrow(train))*100)`% of the original data). This level of data omission is highly likely to introduce systematic biases into your model prediction. Generally, `step_naomit` should only be used when developing preliminary models, where you're just trying to get code to run. When you get to the point where you're actually trying to improve performance, you should consider alternative means
 
-#### Encoding and imputing missing data
+#### Encoding and simple imputation
 Encoding missing data is similar to imputation. In imputation, we replace the missing value with something we thing could have reasonably been the real value, if it were observed. When we encode missing data we are creating values that will be included in the modeling process. For example, with categorical variables, we could replace the missingess with a "missing" level, which would then get its own dummy code (if we were using dummy coding to encode the categorical variables).
 
 I mentioned in the [Creating a recipe] section that we were getting warnings but I was omitting them in the text. The reason is because some of these columns have missing data. If we want to avoid this warning, we have to add an additional step to our recipe to encode the missing data in the categorical variables. This step is called `step_unknown` and it replaces missing values with `"unknown"`. Let's do this for all categorical variables, and omit any rows that are missing on numeric columns. 
@@ -412,8 +412,103 @@ nrow(na_encode_data)
 
 Notice in the above that when I call `step_naomit` I state that it should be applied to `all_predictors` because I've already encoded the nominal predictors in the previous step. This approach allows us to capture `r round((nrow(na_encode_data)/nrow(train))*100)`% of the original data. And as a bonus, we've removed ourselves of the warnings (note - we might also want to apply `step_novel` for any future data that had levels outside of our training data - see [Handling new levels]).
 
-Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I've found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let's switch datasets 
+Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I've found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let's switch datasets so we can see what's happening more directly. 
 
+Let's look at the [airquality](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/airquality.html) dataset, which ships with R. 
+
+```{r }
+head(airquality)
+```
+
+As we can see, `Solar.R` is missing for observations 5 and 6. Let's compute the sample mean and median for this column.
+
+```{r }
+mean(airquality$Solar.R, na.rm = TRUE)
+median(airquality$Solar.R, na.rm = TRUE)
+```
+
+If we use mean or median imputation, we just replace the missing values with these sample statistics. Let's do this with {recipes}, assuming we'll be fitting a model where `Ozone` is the outcome, predicted by all other variables in the dataset.
+
+```{r }
+recipe(Ozone ~ ., data = airquality) %>% 
+  step_meanimpute(all_predictors()) %>% 
+  prep() %>% 
+  bake(new_data = NULL)
+```
+
+As we can see, the value $186$ has been imputed for rows 5 and 6, which is the integer version of the sample mean (an integer was imputed because the column was already an integer, and not a double).
+
+Let's try the same thing with median imputation
+
+```{r }
+recipe(Ozone ~ ., data = airquality) %>% 
+  step_medianimpute(all_predictors()) %>% 
+  prep() %>% 
+  bake(new_data = NULL)
+```
+
+And as we would expect, the missingness has now been replaced with values of $205$.
+
+Sometimes you have time series data, or there is a date variable in the dataset that accounts for a meaningful proportion of the variance. In these cases, you might consider `step_rollimpute`, which provides a conditional median imputation based on time, and you can set the size of the window from which to calculate the median. In still other cases it may make sense to just impute with the lowest observed value (i.e., assume a very small amount of the predictor), which can be accomplished with `step_lowerimpute`.
+
+These simple imputation techniques are fine to use when developing models. However, it's an area that may be worth returning to as you start to refine your model to see if you can improve performance.
+
+#### Modeling the missingness
+Another alternative for imputation is to fit a statistical model with the column you want to impute modeled as the outcome, with all other columns (minus the actual outcome) predicting it. We then use that model for the imputation. Let's first consider a linear regression model. We'll fit the same model we specified in our recipe, using the airquality data.
+
+```{r }
+m <- lm(Solar.R ~ ., data = airquality[ ,-1])
+summary(m)
+```
+
+Notice that I've dropped the first column here, which is `Ozone`, our actual outcome. The model above has been fit using the equivalent of `step_naomit`, otherwise known as *listwise deletion*, where any row with any missing data is removed. 
+
+We can now use the coefficients from this model to impute the missing values in `Solar.R`. For example, row 6 in the dataset had a missing value on `Solar.R` and following values for all other variables
+
+```{r }
+row6 <- data.frame(Wind = 14.9, 
+                   Temp = 66, 
+                   Month = 5, 
+                   Day = 6)
+```
+
+Using our model, we would predict the following score for this missing value
+
+```{r }
+predict(m, newdata = row6)
+```
+
+Let's try this using {recipes}.
+
+```{r }
+recipe(Ozone ~ ., data = airquality) %>% 
+  step_impute_linear(all_predictors()) %>% 
+  prep() %>% 
+  bake(new_data = NULL)
+```
+
+And we see two important things here. First, row 6 for `Solar.R` is indeed as we expected it to be (albeit, in integer form). Second, the imputed values for rows 5 and 6 are now *different*, which is the first time we've seen this via imputation.
+
+The same basic approach can be used for essentially any statistical model. The {recipes} package has currently implemented linear imputation (as above), $k$-nearest neighbor imputation, and bagged imputation (via bagged trees). Let's see how rows 5 and 6 differ with these approaches.
+
+```{r }
+recipe(Ozone ~ ., data = airquality) %>% 
+  step_knnimpute(all_predictors()) %>% 
+  prep() %>% 
+  bake(new_data = NULL)
+
+recipe(Ozone ~ ., data = airquality) %>% 
+  step_bagimpute(all_predictors()) %>% 
+  prep() %>% 
+  bake(new_data = NULL)
+```
+
+These models are quite a bit more flexible than linear regression, and can potentially overfit. You can, however, control some of the parameters to the models through additional arguments (e.g., $k$ for $knn$, which defaults to 5). The benefit of these models is that they may provide better estimates of what the imputed value *would* have been, were it not missing, which may then improve model performance. The downside is that they are quite a bit more computationally intensive. Generally, you use recipes within processes like $k$-fold cross-validation, with the recipe being applied to each fold. In this case, a computationally expensive approach may significantly bog down hyperparameter tuning.
+
+### A few words of caution
+Missing data is a highly complex topic. This section was meant to provide a basic overview of some of the options you can choose from when building a predictive model. **None** of these approaches, however, will "fix" data that are missing not at random (MNAR). Unfortunately, it is usually impossible to know if your data are MNAR, and we therefore assume that that are MAR, or missing at random conditional on the observed data. For example, if boys were more likely to have missing data on the outcome than girls, we could account for this by including a gender variable in the model, and the resulting data would be MAR.
+
+If you have significant missing data, this section is surely incomplete. We recommended [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563) previously, and there are a number of other good resources, including [a chapter](http://www.feat.engineering/handling-missing-data.html) in Kuhn and Johnson (2019).
 
 ## Transformations
 

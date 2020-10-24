@@ -11,7 +11,7 @@
   --highlight-dark-gray: #3a4f5a;
   --highlight-seafoam: #B3E5D9;
 
-  --txt-color: #1c262c;
+  --txt-color: #26333b;
 
   --link-color:#4183c4;
 
@@ -97,6 +97,24 @@
 	font-family: var(--font-h1);
 	color: var(--highlight-darker-blue);
 	font-weight: bolder;
+}
+
+/*h2*/
+.book .book-body .page-wrapper .page-inner section.normal h2 {
+	font-family: var(--font-h1);
+	color: var(--highlight-darker-blue);
+}
+
+/*h3*/
+.book .book-body .page-wrapper .page-inner section.normal h3 {
+	font-family: var(--font-h1);
+	color: var(--highlight-blue-gray);
+}
+
+/*h3*/
+.book .book-body .page-wrapper .page-inner section.normal h4 {
+	font-family: var(--font-h1);
+	color: var(--highlight-blue-gray);
 }
 
 /*body font*/

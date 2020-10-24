@@ -158,6 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
 <ul>
 <li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a></li>
 <li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a></li>
@@ -212,8 +213,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] 573</code></pre>
 <p>As can be seen above, when we omit any row with missing data we end up with only 573 rows out of the original 2841 rows in the training data (or approximately 20% of the original data). This level of data omission is highly likely to introduce systematic biases into your model prediction. Generally, <code>step_naomit</code> should only be used when developing preliminary models, where you’re just trying to get code to run. When you get to the point where you’re actually trying to improve performance, you should consider alternative means</p>
 </div>
-<div id="encoding-and-imputing-missing-data" class="section level4" number="3.5.1.2">
-<h4><span class="header-section-number">3.5.1.2</span> Encoding and imputing missing data</h4>
+<div id="encoding-and-simple-imputation" class="section level4" number="3.5.1.2">
+<h4><span class="header-section-number">3.5.1.2</span> Encoding and simple imputation</h4>
 <p>Encoding missing data is similar to imputation. In imputation, we replace the missing value with something we thing could have reasonably been the real value, if it were observed. When we encode missing data we are creating values that will be included in the modeling process. For example, with categorical variables, we could replace the missingess with a “missing” level, which would then get its own dummy code (if we were using dummy coding to encode the categorical variables).</p>
 <p>I mentioned in the <a href="creating-a-recipe.html#creating-a-recipe">Creating a recipe</a> section that we were getting warnings but I was omitting them in the text. The reason is because some of these columns have missing data. If we want to avoid this warning, we have to add an additional step to our recipe to encode the missing data in the categorical variables. This step is called <code>step_unknown</code> and it replaces missing values with <code>"unknown"</code>. Let’s do this for all categorical variables, and omit any rows that are missing on numeric columns.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="missing-data.html#cb54-1"></a>na_encode_data &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -226,8 +227,165 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb54-8"><a href="missing-data.html#cb54-8"></a><span class="kw">nrow</span>(na_encode_data)</span></code></pre></div>
 <pre><code>## [1] 2788</code></pre>
 <p>Notice in the above that when I call <code>step_naomit</code> I state that it should be applied to <code>all_predictors</code> because I’ve already encoded the nominal predictors in the previous step. This approach allows us to capture 98% of the original data. And as a bonus, we’ve removed ourselves of the warnings (note - we might also want to apply <code>step_novel</code> for any future data that had levels outside of our training data - see <a href="encoding-categorical-data.html#handling-new-levels">Handling new levels</a>).</p>
-<p>Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I’ve found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let’s switch datasets</p>
+<p>Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I’ve found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let’s switch datasets so we can see what’s happening more directly.</p>
+<p>Let’s look at the <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/airquality.html">airquality</a> dataset, which ships with R.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="missing-data.html#cb56-1"></a><span class="kw">head</span>(airquality)</span></code></pre></div>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6</code></pre>
+<p>As we can see, <code>Solar.R</code> is missing for observations 5 and 6. Let’s compute the sample mean and median for this column.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="missing-data.html#cb58-1"></a><span class="kw">mean</span>(airquality<span class="op">$</span>Solar.R, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 185.9315</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="missing-data.html#cb60-1"></a><span class="kw">median</span>(airquality<span class="op">$</span>Solar.R, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 205</code></pre>
+<p>If we use mean or median imputation, we just replace the missing values with these sample statistics. Let’s do this with {recipes}, assuming we’ll be fitting a model where <code>Ozone</code> is the outcome, predicted by all other variables in the dataset.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="missing-data.html#cb62-1"></a><span class="kw">recipe</span>(Ozone <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> airquality) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb62-2"><a href="missing-data.html#cb62-2"></a><span class="st">  </span><span class="kw">step_meanimpute</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb62-3"><a href="missing-data.html#cb62-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb62-4"><a href="missing-data.html#cb62-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 153 x 6
+##    Solar.R  Wind  Temp Month   Day Ozone
+##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     190   7.4    67     5     1    41
+##  2     118   8      72     5     2    36
+##  3     149  12.6    74     5     3    12
+##  4     313  11.5    62     5     4    18
+##  5     186  14.3    56     5     5    NA
+##  6     186  14.9    66     5     6    28
+##  7     299   8.6    65     5     7    23
+##  8      99  13.8    59     5     8    19
+##  9      19  20.1    61     5     9     8
+## 10     194   8.6    69     5    10    NA
+## # … with 143 more rows</code></pre>
+<p>As we can see, the value <span class="math inline">\(186\)</span> has been imputed for rows 5 and 6, which is the integer version of the sample mean (an integer was imputed because the column was already an integer, and not a double).</p>
+<p>Let’s try the same thing with median imputation</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="missing-data.html#cb64-1"></a><span class="kw">recipe</span>(Ozone <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> airquality) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-2"><a href="missing-data.html#cb64-2"></a><span class="st">  </span><span class="kw">step_medianimpute</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-3"><a href="missing-data.html#cb64-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-4"><a href="missing-data.html#cb64-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 153 x 6
+##    Solar.R  Wind  Temp Month   Day Ozone
+##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     190   7.4    67     5     1    41
+##  2     118   8      72     5     2    36
+##  3     149  12.6    74     5     3    12
+##  4     313  11.5    62     5     4    18
+##  5     205  14.3    56     5     5    NA
+##  6     205  14.9    66     5     6    28
+##  7     299   8.6    65     5     7    23
+##  8      99  13.8    59     5     8    19
+##  9      19  20.1    61     5     9     8
+## 10     194   8.6    69     5    10    NA
+## # … with 143 more rows</code></pre>
+<p>And as we would expect, the missingness has now been replaced with values of <span class="math inline">\(205\)</span>.</p>
+<p>Sometimes you have time series data, or there is a date variable in the dataset that accounts for a meaningful proportion of the variance. In these cases, you might consider <code>step_rollimpute</code>, which provides a conditional median imputation based on time, and you can set the size of the window from which to calculate the median. In still other cases it may make sense to just impute with the lowest observed value (i.e., assume a very small amount of the predictor), which can be accomplished with <code>step_lowerimpute</code>.</p>
+<p>These simple imputation techniques are fine to use when developing models. However, it’s an area that may be worth returning to as you start to refine your model to see if you can improve performance.</p>
 </div>
+<div id="modeling-the-missingness" class="section level4" number="3.5.1.3">
+<h4><span class="header-section-number">3.5.1.3</span> Modeling the missingness</h4>
+<p>Another alternative for imputation is to fit a statistical model with the column you want to impute modeled as the outcome, with all other columns (minus the actual outcome) predicting it. We then use that model for the imputation. Let’s first consider a linear regression model. We’ll fit the same model we specified in our recipe, using the airquality data.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="missing-data.html#cb66-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(Solar.R <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> airquality[ ,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb66-2"><a href="missing-data.html#cb66-2"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Solar.R ~ ., data = airquality[, -1])
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -182.945  -67.348    5.295   73.781  170.068 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -14.5960    84.4424  -0.173 0.863016    
+## Wind          2.1661     2.2633   0.957 0.340171    
+## Temp          3.7023     0.9276   3.991 0.000105 ***
+## Month       -13.2640     5.4525  -2.433 0.016242 *  
+## Day          -1.0631     0.8125  -1.308 0.192875    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 85.14 on 141 degrees of freedom
+##   (7 observations deleted due to missingness)
+## Multiple R-squared:  0.131,  Adjusted R-squared:  0.1063 
+## F-statistic: 5.313 on 4 and 141 DF,  p-value: 0.0005145</code></pre>
+<p>Notice that I’ve dropped the first column here, which is <code>Ozone</code>, our actual outcome. The model above has been fit using the equivalent of <code>step_naomit</code>, otherwise known as <em>listwise deletion</em>, where any row with any missing data is removed.</p>
+<p>We can now use the coefficients from this model to impute the missing values in <code>Solar.R</code>. For example, row 6 in the dataset had a missing value on <code>Solar.R</code> and following values for all other variables</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="missing-data.html#cb68-1"></a>row6 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Wind =</span> <span class="fl">14.9</span>, </span>
+<span id="cb68-2"><a href="missing-data.html#cb68-2"></a>                   <span class="dt">Temp =</span> <span class="dv">66</span>, </span>
+<span id="cb68-3"><a href="missing-data.html#cb68-3"></a>                   <span class="dt">Month =</span> <span class="dv">5</span>, </span>
+<span id="cb68-4"><a href="missing-data.html#cb68-4"></a>                   <span class="dt">Day =</span> <span class="dv">6</span>)</span></code></pre></div>
+<p>Using our model, we would predict the following score for this missing value</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="missing-data.html#cb69-1"></a><span class="kw">predict</span>(m, <span class="dt">newdata =</span> row6)</span></code></pre></div>
+<pre><code>##        1 
+## 189.3325</code></pre>
+<p>Let’s try this using {recipes}.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="missing-data.html#cb71-1"></a><span class="kw">recipe</span>(Ozone <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> airquality) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-2"><a href="missing-data.html#cb71-2"></a><span class="st">  </span><span class="kw">step_impute_linear</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-3"><a href="missing-data.html#cb71-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-4"><a href="missing-data.html#cb71-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 153 x 6
+##    Solar.R  Wind  Temp Month   Day Ozone
+##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     190   7.4    67     5     1    41
+##  2     118   8      72     5     2    36
+##  3     149  12.6    74     5     3    12
+##  4     313  11.5    62     5     4    18
+##  5     152  14.3    56     5     5    NA
+##  6     189  14.9    66     5     6    28
+##  7     299   8.6    65     5     7    23
+##  8      99  13.8    59     5     8    19
+##  9      19  20.1    61     5     9     8
+## 10     194   8.6    69     5    10    NA
+## # … with 143 more rows</code></pre>
+<p>And we see two important things here. First, row 6 for <code>Solar.R</code> is indeed as we expected it to be (albeit, in integer form). Second, the imputed values for rows 5 and 6 are now <em>different</em>, which is the first time we’ve seen this via imputation.</p>
+<p>The same basic approach can be used for essentially any statistical model. The {recipes} package has currently implemented linear imputation (as above), <span class="math inline">\(k\)</span>-nearest neighbor imputation, and bagged imputation (via bagged trees). Let’s see how rows 5 and 6 differ with these approaches.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="missing-data.html#cb73-1"></a><span class="kw">recipe</span>(Ozone <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> airquality) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb73-2"><a href="missing-data.html#cb73-2"></a><span class="st">  </span><span class="kw">step_knnimpute</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb73-3"><a href="missing-data.html#cb73-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb73-4"><a href="missing-data.html#cb73-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 153 x 6
+##    Solar.R  Wind  Temp Month   Day Ozone
+##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     190   7.4    67     5     1    41
+##  2     118   8      72     5     2    36
+##  3     149  12.6    74     5     3    12
+##  4     313  11.5    62     5     4    18
+##  5     159  14.3    56     5     5    NA
+##  6     220  14.9    66     5     6    28
+##  7     299   8.6    65     5     7    23
+##  8      99  13.8    59     5     8    19
+##  9      19  20.1    61     5     9     8
+## 10     194   8.6    69     5    10    NA
+## # … with 143 more rows</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="missing-data.html#cb75-1"></a><span class="kw">recipe</span>(Ozone <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> airquality) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb75-2"><a href="missing-data.html#cb75-2"></a><span class="st">  </span><span class="kw">step_bagimpute</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb75-3"><a href="missing-data.html#cb75-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb75-4"><a href="missing-data.html#cb75-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 153 x 6
+##    Solar.R  Wind  Temp Month   Day Ozone
+##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     190   7.4    67     5     1    41
+##  2     118   8      72     5     2    36
+##  3     149  12.6    74     5     3    12
+##  4     313  11.5    62     5     4    18
+##  5      99  14.3    56     5     5    NA
+##  6     252  14.9    66     5     6    28
+##  7     299   8.6    65     5     7    23
+##  8      99  13.8    59     5     8    19
+##  9      19  20.1    61     5     9     8
+## 10     194   8.6    69     5    10    NA
+## # … with 143 more rows</code></pre>
+<p>These models are quite a bit more flexible than linear regression, and can potentially overfit. You can, however, control some of the parameters to the models through additional arguments (e.g., <span class="math inline">\(k\)</span> for <span class="math inline">\(knn\)</span>, which defaults to 5). The benefit of these models is that they may provide better estimates of what the imputed value <em>would</em> have been, were it not missing, which may then improve model performance. The downside is that they are quite a bit more computationally intensive. Generally, you use recipes within processes like <span class="math inline">\(k\)</span>-fold cross-validation, with the recipe being applied to each fold. In this case, a computationally expensive approach may significantly bog down hyperparameter tuning.</p>
+</div>
+</div>
+<div id="a-few-words-of-caution" class="section level3" number="3.5.2">
+<h3><span class="header-section-number">3.5.2</span> A few words of caution</h3>
+<p>Missing data is a highly complex topic. This section was meant to provide a basic overview of some of the options you can choose from when building a predictive model. <strong>None</strong> of these approaches, however, will “fix” data that are missing not at random (MNAR). Unfortunately, it is usually impossible to know if your data are MNAR, and we therefore assume that that are MAR, or missing at random conditional on the observed data. For example, if boys were more likely to have missing data on the outcome than girls, we could account for this by including a gender variable in the model, and the resulting data would be MAR.</p>
+<p>If you have significant missing data, this section is surely incomplete. We recommended <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563">Little and Rubin (2002)</a> previously, and there are a number of other good resources, including <a href="http://www.feat.engineering/handling-missing-data.html">a chapter</a> in Kuhn and Johnson (2019).</p>
 </div>
 </div>
             </section>
