@@ -13,12 +13,19 @@
 
   --txt-color: #1c262c;
 
+  --link-color:#4183c4;
+
   /*fonts*/
   --font-title: 'Forum', cursive;
   --font-body: 'Nunito', sans-serif;
   --font-h1: 'Cardo', serif;
 }
 
+/*Change link styling*/
+.book .book-body .page-wrapper .page-inner section.normal a:hover {
+	text-decoration: none;
+	color: var(--highlight-blue-gray);
+}
 
 /*sidebar*/
 .summary {
@@ -97,7 +104,6 @@
 	font-family: var(--font-body);
 	color: var(--txt-color);
 	font-size:1.1em;
-	font-family: 'Roboto Mono', monospace;
 }
 
 
