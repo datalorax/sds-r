@@ -23,9 +23,10 @@
 
 <meta name="author" content="Daniel Anderson" />
 <meta name="author" content="Brendan Cullen" />
+<meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-10-23" />
+<meta name="date" content="2020-10-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -144,8 +145,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-basic-recipe.html"><a href="creating-a-basic-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a basic recipe</a></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data-near-zero-variance-predictors.html"><a href="encoding-categorical-data-near-zero-variance-predictors.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data &amp; near-zero variance predictors</a></li>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
+<li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
+<li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
+<li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a></li>
+<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.8</b> PCA</a></li>
+<li class="chapter" data-level="3.9" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.9</b> Wrapping up</a></li>
 </ul></li>
 </ul>
 
@@ -168,7 +191,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">Social Data Science with R</h1>
 <p class="author"><em>Daniel Anderson</em></p>
 <p class="author"><em>Brendan Cullen</em></p>
-<p class="date"><em>2020-10-23</em></p>
+<p class="author"><em>Ouafaa Hmaddi</em></p>
+<p class="date"><em>2020-10-26</em></p>
 </div>
 <div id="preface" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Preface</h1>
