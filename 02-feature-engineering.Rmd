@@ -511,6 +511,256 @@ Missing data is a highly complex topic. This section was meant to provide a basi
 If you have significant missing data, this section is surely incomplete. We recommended [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563) previously, and there are a number of other good resources, including [a chapter](http://www.feat.engineering/handling-missing-data.html) in Kuhn and Johnson (2019).
 
 ## Transformations
+In standard inferential statistics, we are often concerned with the distribution of the outcome. Linear regression, for example, assumes the outcome is at least reasonably normally distributed. If this is not the case, the standard errors (in particular) can be misrepresented. We therefore generally inspect the outcome before modeling it and, if it is not approximately normally distributed, we  either transform it to make it more closely approximate a normal distribution, or we use an analysis technique that does not assume normality in the outcome.
+
+In predictive modeling, transformations of the predictors or the outcome(s) (or both) can sometimes help improve model performance. For example, let's quickly simulate some data.
+
+```{r }
+set.seed(3)
+
+# parameters
+alpha <- 10
+b1 <- 5
+
+# simulate predictor variable
+x <- 1:100
+log_x <- log(x)
+
+# residual SD
+e <- rnorm(length(x), sd = 0.8)
+
+y <- alpha + b1*log_x + e
+
+sim <- data.frame(x, y)
+```
+
+```{r echo = FALSE}
+sim %>% 
+  mutate_all(round, 2) %>% 
+  reactable()
+```
+
+As you can see from the above, we have simulated the data according to $\log x$, but in our  data frame  only has $x$. This is a common situation where we don't *know* the true functional form. But of course, if we fit a linear regression model to these data, we'll end up with high bias, particularly in the lower tail (and issues with heteroscedasticity).
+
+```{r }
+ggplot(sim, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se = FALSE)
+```
+
+But all we have to do, in this case, is use a log transformation to the $x$ variable and our linear model fits great.
+
+```{r }
+sim %>% 
+  mutate(log_x = log(x)) %>% 
+  head()
+
+sim %>% 
+  mutate(log_x = log(x)) %>% 
+  ggplot(aes(log_x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se = FALSE)
+```
+
+Note that the model is linear in the transformed units, but curvilinear on the raw scale.
+
+```{r }
+sim %>% 
+  mutate(log_x = log(x)) %>% 
+  ggplot(aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se = FALSE,
+              formula = y ~ log(x))
+```
+
+So in this case, a log transformation to the x variable works perfect (as we would expect, given that we simulated the data to be this way). But how do we know *how* to transform variables?
+
+### Box-Cox and similar transformations
+A more general formula for transforming variables is given by the [Box-Cox transformation](https://en.wikipedia.org/wiki/Power_transform#Box–Cox_transformation), defined by
+
+$$
+\begin{equation}
+ x^* =
+    \begin{cases}
+      \frac{x^\lambda-1}{\lambda}, & \text{if}\ \lambda \neq 0 \\
+       \log\left(x\right), & \text{if}\ \lambda = 0
+    \end{cases}
+\end{equation}
+$$
+where $x$ represents the variable in its raw units, and $x^*$ represents the transformed variable. The Box-Cox transformation is a *power* transformation, where the intent is to estimate $\lambda$. Note that if $\lambda$ is estimated as zero, the power transformation is the same as a log transformation, otherwise the top portion of the equation is used. Helpfully, specific values of $\lambda$ map to common transformations.
+
+* $\lambda = 1$: No transformation
+* $\lambda = 0.5$: square root transformation
+* $\lambda = 0$: log transformation
+* $\lambda = -1$: inverse
+
+Given the above, we would expect that $\lambda$ would be estimated close to zero with our simulated data. Let's try using {recipes}. To access the actual $\lambda$ value, we'll need to take a brief foray into tidying recipes.
+
+#### Tidying recipes
+Let's first specify the recipe with a Box-Cox transformation to our x variable
+
+```{r }
+rec <- recipe(y ~ x, data = sim) %>% 
+  step_BoxCox(all_predictors())
+```
+
+Now we can tidy the recipe
+
+```{r }
+tidy(rec)
+```
+
+In this case, our recipe is incredibly simple. We have one step, which is a Box-Cox transformation. Let's make the recipe a bit more complicated just for completeness.
+
+```{r }
+rec <- recipe(y ~ x, data = sim) %>% 
+  step_impute_linear(all_predictors()) %>% 
+  step_nzv(all_predictors()) %>% 
+  step_BoxCox(all_numeric(), -all_outcomes()) %>% 
+  step_dummy(all_nominal(), -all_outcomes())
+```
+
+Most of these steps won't do anything in this case, but let's look at the tidied recipe now.
+
+```{r }
+tidy(rec)
+```
+
+Now we have four steps. We can look at any one step by declaring the step number. Let's look at the linear imputation
+
+```{r }
+tidy(rec, n = 1)
+```
+
+Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to `prep` the recipe if we want it to actually do any work. Let's prep the recipe and try again.
+
+```{r }
+lm_imputation <- rec %>% 
+  prep() %>% 
+  tidy(n = 1)
+
+lm_imputation
+```
+
+And now we can see a linear model has been fit. We can even access the model itself.
+
+```{r }
+lm_imputation$model
+```
+
+What we get is actually a list of models, one for each predictor. But in this case there's only one predictor, so the list is only of length 1. 
+
+#### Estimating $\lambda$
+We can do the same thing to find $\lambda$ by tidying the Box-Cox step
+
+```{r }
+rec %>% 
+  prep() %>% 
+  tidy(n = 3)
+```
+
+And without any further work we can see that we estimated $\lambda = 0.72$, which is pretty much directly between a square-root transformation and no transformation. Why did it not estimate a $log$ transformation as most appropriate? Because the log transformation is only ideal when view *relative* to $y$. Put differently, the Box-Cox transformation is an *unsupervised* approach that attempts to make each variable approximate a univariate normal distribution. As we'll see in the next section, there are other methods that can be used to help with issues of non-linearity. 
+
+For completeness, let's see if the transformation helped us. We'll use $\lambda = 0.72$ to manually transform $x$, then plot the result. 
+
+```{r }
+# transform x
+sim <- sim %>% 
+  mutate(x_bc = ((x^0.72) - 1) / 0.72)
+
+# fit the model using the transformed data
+m <- lm(y ~ x_bc, sim)
+
+# add the model predictions to the data frame
+sim <- sim %>% 
+  mutate(pred = predict(m))
+
+# plot the model fit using raw data on the x-axis
+ggplot(sim, aes(x, y)) +
+  geom_point() +
+  geom_line(aes(y = pred))
+```
+
+As we can see, it's better than the raw data, but still insufficient.
+
+### An applied example
+Let's look at an applied example. We'll use the `violence` data (see the full data dictionary [here](http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized#)), and see if we can predict the neighborhoods where the number of murders are greater than zero, using the percentage of people living in poverty and the percentage of people living in dense housing units (more than one person per room) as predictors. Let's start with a basic plot.
+
+```{r }
+violence <- read_csv(here::here("data", "violence.csv"))
+
+violence <- violence %>% 
+  mutate(murder = ifelse(murders > 0, "Yes", "No"))
+
+ggplot(violence, aes(pctPoverty, houseVacant)) +
+  geom_point(aes(color = murder),
+             alpha = 0.5,
+             stroke = 0)
+```
+
+As you can see, it's pretty difficult to see much separation here. Let's look at the univariate views of each predictor.
+
+```{r message = FALSE}
+ggplot(violence, aes(pctPoverty)) +
+  geom_histogram()
+
+ggplot(violence, aes(pctPopDenseHous)) +
+  geom_histogram()
+```
+
+Both predictors are quite skewed. What do they look like after transformation? 
+
+```{r, warning = FALSE}
+murder_rec <- recipe(murder ~ ., violence) %>% 
+  step_BoxCox(all_numeric(), -all_outcomes()) 
+
+transformed_murder <- murder_rec %>% 
+  prep() %>% 
+  bake(new_data = NULL) 
+
+ggplot(transformed_murder, aes(pctPoverty)) +
+  geom_histogram()
+
+ggplot(transformed_murder, aes(pctPopDenseHous)) +
+  geom_histogram()
+```
+
+Each of these look considerably better. What about the bivariate view?
+
+```{r }
+ggplot(transformed_murder, aes(pctPoverty, pctPopDenseHous)) +
+  geom_point(aes(color = murder),
+             alpha = 0.5,
+             stroke = 0)
+```
+
+We can much more clearly see the separation here. We could almost draw a diagonal line in the data separating the classes, as below
+
+```{r echo = FALSE}
+ggplot(transformed_murder, aes(pctPoverty, pctPopDenseHous)) +
+  geom_point(aes(color = murder),
+             alpha = 0.5,
+             stroke = 0) +
+  geom_abline(intercept = 4, slope = -1.1, 
+              color = "#5E8192",
+              size = 1.4)
+```
+
+There's of course still some misclassification going on here, and that line was drawn by just eye-balling it, but even by hand we can do this much easier after the transformation.
+
+What were the lambda values estimated at for these variables? Let's check.
+
+```{r warning = FALSE}
+murder_rec %>% 
+  prep() %>% 
+  tidy(1) %>% 
+  filter(terms %in% c("pctPoverty", "pctPopDenseHous"))
+```
+
+Both are fairly close to zero, implying they are similar to log transformations.
 
 ## Nonlinearity
 

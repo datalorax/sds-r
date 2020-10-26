@@ -20,3 +20,7 @@ encoding-and-imputing-missing-data
 encoding-and-simple-imputation
 modeling-the-missingness
 a-few-words-of-caution
+box-cox-and-similar-transformations
+tidying-recipes
+estimating-lambda
+an-applied-example

@@ -14,10 +14,8 @@ library(tidyverse)
 
 # create a plot
 ggplot(mpg, aes(displ, cty)) +
-  geom_point(color = "#B3E5D9") +
-  geom_smooth(color = "#7EC1E7",
-              fill = "#C7E4F5") +
-  theme_minimal(15)
+  geom_point() +
+  geom_smooth() 
 ```
 
 We could of course create some summary data too.

@@ -111,11 +111,12 @@
 	color: var(--highlight-blue-gray);
 }
 
-/*h3*/
+/*h4*/
 .book .book-body .page-wrapper .page-inner section.normal h4 {
 	font-family: var(--font-h1);
 	color: var(--highlight-blue-gray);
 }
+
 
 /*body font*/
 .book .book-body .page-wrapper .page-inner section.normal p {

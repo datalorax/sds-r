@@ -25,7 +25,7 @@
 <meta name="author" content="Brendan Cullen" />
 
 
-<meta name="date" content="2020-10-23" />
+<meta name="date" content="2020-10-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,12 +53,6 @@
 
 
 <script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<script src="assets/core-js-2.5.3/shim.min.js"></script>
-<script src="assets/react-16.12.0/react.min.js"></script>
-<script src="assets/react-16.12.0/react-dom.min.js"></script>
-<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
-<script src="assets/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<script src="assets/reactable-binding-0.2.0/reactable.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
 
 
@@ -144,8 +138,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-basic-recipe.html"><a href="creating-a-basic-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a basic recipe</a></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data-near-zero-variance-predictors.html"><a href="encoding-categorical-data-near-zero-variance-predictors.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data &amp; near-zero variance predictors</a></li>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
+<li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
+<li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a></li>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a></li>
+<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.8</b> PCA</a></li>
+<li class="chapter" data-level="3.9" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.9</b> Wrapping up</a></li>
 </ul></li>
 </ul>
 
@@ -173,10 +185,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-3"><a href="welcome.html#cb1-3"></a></span>
 <span id="cb1-4"><a href="welcome.html#cb1-4"></a><span class="co"># create a plot</span></span>
 <span id="cb1-5"><a href="welcome.html#cb1-5"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb1-6"><a href="welcome.html#cb1-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;#B3E5D9&quot;</span>) <span class="op">+</span></span>
-<span id="cb1-7"><a href="welcome.html#cb1-7"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">color =</span> <span class="st">&quot;#7EC1E7&quot;</span>,</span>
-<span id="cb1-8"><a href="welcome.html#cb1-8"></a>              <span class="dt">fill =</span> <span class="st">&quot;#C7E4F5&quot;</span>) <span class="op">+</span></span>
-<span id="cb1-9"><a href="welcome.html#cb1-9"></a><span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">15</span>)</span></code></pre></div>
+<span id="cb1-6"><a href="welcome.html#cb1-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb1-7"><a href="welcome.html#cb1-7"></a><span class="st">  </span><span class="kw">geom_smooth</span>() </span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>We could of course create some summary data too.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="welcome.html#cb2-1"></a><span class="co"># create some summary data</span></span>
@@ -284,20 +294,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
