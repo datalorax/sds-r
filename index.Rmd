@@ -3,6 +3,7 @@ title: "Social Data Science with R"
 author: 
   - "Daniel Anderson"
   - "Brendan Cullen"
+  - "Ouafaa Hmaddi"
 date: "`r format(Sys.Date(), '%Y-%m-%d')`"
 site: bookdown::bookdown_site
 documentclass: book
