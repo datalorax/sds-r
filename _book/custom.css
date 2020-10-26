@@ -11,7 +11,9 @@
   --highlight-dark-gray: #3a4f5a;
   --highlight-seafoam: #B3E5D9;
 
-  --txt-color: #1c262c;
+  --txt-color: #26333b;
+
+  --link-color:#4183c4;
 
   /*fonts*/
   --font-title: 'Forum', cursive;
@@ -19,6 +21,11 @@
   --font-h1: 'Cardo', serif;
 }
 
+/*Change link styling*/
+.book .book-body .page-wrapper .page-inner section.normal a:hover {
+	text-decoration: none;
+	color: var(--highlight-blue-gray);
+}
 
 /*sidebar*/
 .summary {
@@ -92,12 +99,30 @@
 	font-weight: bolder;
 }
 
+/*h2*/
+.book .book-body .page-wrapper .page-inner section.normal h2 {
+	font-family: var(--font-h1);
+	color: var(--highlight-darker-blue);
+}
+
+/*h3*/
+.book .book-body .page-wrapper .page-inner section.normal h3 {
+	font-family: var(--font-h1);
+	color: var(--highlight-blue-gray);
+}
+
+/*h4*/
+.book .book-body .page-wrapper .page-inner section.normal h4 {
+	font-family: var(--font-h1);
+	color: var(--highlight-blue-gray);
+}
+
+
 /*body font*/
 .book .book-body .page-wrapper .page-inner section.normal p {
 	font-family: var(--font-body);
 	color: var(--txt-color);
 	font-size:1.1em;
-	font-family: 'Roboto Mono', monospace;
 }
 
 
@@ -152,7 +177,25 @@ code span.ot {
 
 /*Make code output look different from code*/
 .section.level1 > pre {
-	border: 3px dotted #000 !important;
+	border: 3px dotted var(--main-bg-color) !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
+
+.section.level2 > pre {
+	border: 3px dotted var(--main-bg-color) !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
+
+.section.level3 > pre {
+	border: 3px dotted var(--main-bg-color) !important;
+	color: var(--main-bg-color) !important;
+	background-color: var(--highlight-dark-gray) !important;
+}
+
+.section.level4 > pre {
+	border: 3px dotted var(--main-bg-color) !important;
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }
