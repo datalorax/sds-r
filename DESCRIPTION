@@ -21,7 +21,8 @@ Imports:
     learnr,
     ggplot2,
     dplyr,
-    reactable
+    reactable,
+    here
 Depends: 
     tidyverse,
     tidymodels
