@@ -21,5 +21,12 @@ tidying-recipes
 estimating-lambda
 an-applied-example
 nonlinearity
+polynomial-transformations
+splines
+basis-expansion-with-recipes
+interactions
+creating-interactions-by-hand
+creating-interactions-with-recipes
 pca
+pca-with-recipes
 wrapping-up

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.9 Wrapping up | Social Data Science with R</title>
+  <title>3.10 Wrapping up | Social Data Science with R</title>
   <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.9 Wrapping up | Social Data Science with R" />
+  <meta property="og:title" content="3.10 Wrapping up | Social Data Science with R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.9 Wrapping up | Social Data Science with R" />
+  <meta name="twitter:title" content="3.10 Wrapping up | Social Data Science with R" />
   
   <meta name="twitter:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   
@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-10-26" />
+<meta name="date" content="2020-11-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -127,7 +127,7 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="custom.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -166,9 +166,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a></li>
-<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.8</b> PCA</a></li>
-<li class="chapter" data-level="3.9" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.9</b> Wrapping up</a></li>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
+<li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
+<li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
+<li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
 </ul>
 
@@ -187,8 +199,93 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="wrapping-up" class="section level2" number="3.9">
-<h2><span class="header-section-number">3.9</span> Wrapping up</h2>
+<div id="wrapping-up" class="section level2" number="3.10">
+<h2><span class="header-section-number">3.10</span> Wrapping up</h2>
+<p>Feature engineering is a <em>gigantic</em> topic. The purpose of this chapter was to provide a basic introduction. We illustrated creating a <em>recipe</em> or <em>blueprint</em> for your feature engineering, which can be applied iteratively to slices of the data (as in a <em>k</em>-fold cross-validation approach) or to new data with the same structure. This process helps guard against <strong>data leakage</strong>, where information from the test set leaks into the training set. Let’s look at a quick example of this by using PCA to retain 95% of the total variation in the data. We’ll use <span class="math inline">\(k\)</span>-fold cross-validation and see how many components we retain in each fold. First, we’ll create the recipe, which is essentially equivalent to what we saw in the previous chapter</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="wrapping-up.html#cb173-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb173-2"><a href="wrapping-up.html#cb173-2"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb173-3"><a href="wrapping-up.html#cb173-3"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb173-4"><a href="wrapping-up.html#cb173-4"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb173-5"><a href="wrapping-up.html#cb173-5"></a><span class="st">  </span><span class="kw">step_unknown</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb173-6"><a href="wrapping-up.html#cb173-6"></a><span class="st">  </span><span class="kw">step_medianimpute</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb173-7"><a href="wrapping-up.html#cb173-7"></a><span class="st">  </span><span class="kw">step_normalize</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb173-8"><a href="wrapping-up.html#cb173-8"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb173-9"><a href="wrapping-up.html#cb173-9"></a><span class="st">  </span><span class="kw">step_pca</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>), </span>
+<span id="cb173-10"><a href="wrapping-up.html#cb173-10"></a>           <span class="dt">threshold =</span> <span class="fl">.95</span>)</span></code></pre></div>
+<p>Now let’s create our <span class="math inline">\(k\)</span>-fold cross-validation object.</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="wrapping-up.html#cb174-1"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb174-2"><a href="wrapping-up.html#cb174-2"></a>cv &lt;-<span class="st"> </span><span class="kw">vfold_cv</span>(train)</span>
+<span id="cb174-3"><a href="wrapping-up.html#cb174-3"></a>cv</span></code></pre></div>
+<pre><code>## #  10-fold cross-validation 
+## # A tibble: 10 x 2
+##    splits             id    
+##    &lt;list&gt;             &lt;chr&gt; 
+##  1 &lt;split [2.6K/285]&gt; Fold01
+##  2 &lt;split [2.6K/284]&gt; Fold02
+##  3 &lt;split [2.6K/284]&gt; Fold03
+##  4 &lt;split [2.6K/284]&gt; Fold04
+##  5 &lt;split [2.6K/284]&gt; Fold05
+##  6 &lt;split [2.6K/284]&gt; Fold06
+##  7 &lt;split [2.6K/284]&gt; Fold07
+##  8 &lt;split [2.6K/284]&gt; Fold08
+##  9 &lt;split [2.6K/284]&gt; Fold09
+## 10 &lt;split [2.6K/284]&gt; Fold10</code></pre>
+<p>Now we’ll loop through each split and pull out the data we will build our model on, for that fold</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="wrapping-up.html#cb176-1"></a>cv <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb176-2"><a href="wrapping-up.html#cb176-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">assessment_data =</span> <span class="kw">map</span>(splits, assessment))</span></code></pre></div>
+<pre><code>## #  10-fold cross-validation 
+## # A tibble: 10 x 3
+##    splits             id     assessment_data    
+##    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             
+##  1 &lt;split [2.6K/285]&gt; Fold01 &lt;tibble [285 × 39]&gt;
+##  2 &lt;split [2.6K/284]&gt; Fold02 &lt;tibble [284 × 39]&gt;
+##  3 &lt;split [2.6K/284]&gt; Fold03 &lt;tibble [284 × 39]&gt;
+##  4 &lt;split [2.6K/284]&gt; Fold04 &lt;tibble [284 × 39]&gt;
+##  5 &lt;split [2.6K/284]&gt; Fold05 &lt;tibble [284 × 39]&gt;
+##  6 &lt;split [2.6K/284]&gt; Fold06 &lt;tibble [284 × 39]&gt;
+##  7 &lt;split [2.6K/284]&gt; Fold07 &lt;tibble [284 × 39]&gt;
+##  8 &lt;split [2.6K/284]&gt; Fold08 &lt;tibble [284 × 39]&gt;
+##  9 &lt;split [2.6K/284]&gt; Fold09 &lt;tibble [284 × 39]&gt;
+## 10 &lt;split [2.6K/284]&gt; Fold10 &lt;tibble [284 × 39]&gt;</code></pre>
+<p>And finally, apply the recipe to each dataset</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="wrapping-up.html#cb178-1"></a>cv <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb178-2"><a href="wrapping-up.html#cb178-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">assessment_data =</span> <span class="kw">map</span>(splits, assessment),</span>
+<span id="cb178-3"><a href="wrapping-up.html#cb178-3"></a>         <span class="dt">baked_data =</span> <span class="kw">map</span>(assessment_data, <span class="op">~</span><span class="kw">prep</span>(rec) <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">bake</span>(.x)))</span></code></pre></div>
+<pre><code>## #  10-fold cross-validation 
+## # A tibble: 10 x 4
+##    splits             id     assessment_data     baked_data         
+##    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;              &lt;list&gt;             
+##  1 &lt;split [2.6K/285]&gt; Fold01 &lt;tibble [285 × 39]&gt; &lt;tibble [285 × 17]&gt;
+##  2 &lt;split [2.6K/284]&gt; Fold02 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  3 &lt;split [2.6K/284]&gt; Fold03 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  4 &lt;split [2.6K/284]&gt; Fold04 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  5 &lt;split [2.6K/284]&gt; Fold05 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  6 &lt;split [2.6K/284]&gt; Fold06 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  7 &lt;split [2.6K/284]&gt; Fold07 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  8 &lt;split [2.6K/284]&gt; Fold08 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+##  9 &lt;split [2.6K/284]&gt; Fold09 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;
+## 10 &lt;split [2.6K/284]&gt; Fold10 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;</code></pre>
+<p>Let’s see how many principal components are in each data fold</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="wrapping-up.html#cb180-1"></a>cv <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb180-2"><a href="wrapping-up.html#cb180-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">assessment_data =</span> <span class="kw">map</span>(splits, assessment),</span>
+<span id="cb180-3"><a href="wrapping-up.html#cb180-3"></a>         <span class="dt">baked_data =</span> <span class="kw">map</span>(assessment_data, <span class="op">~</span><span class="kw">prep</span>(rec) <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">bake</span>(.x)),</span>
+<span id="cb180-4"><a href="wrapping-up.html#cb180-4"></a>         <span class="dt">n_components =</span> <span class="kw">map_int</span>(baked_data, <span class="op">~</span><span class="kw">sum</span>(<span class="kw">grepl</span>(<span class="st">&quot;^PC&quot;</span>, <span class="kw">names</span>(.x)))))</span></code></pre></div>
+<pre><code>## #  10-fold cross-validation 
+## # A tibble: 10 x 5
+##    splits             id     assessment_data     baked_data          n_components
+##    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;              &lt;list&gt;                     &lt;int&gt;
+##  1 &lt;split [2.6K/285]&gt; Fold01 &lt;tibble [285 × 39]&gt; &lt;tibble [285 × 17]&gt;            9
+##  2 &lt;split [2.6K/284]&gt; Fold02 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  3 &lt;split [2.6K/284]&gt; Fold03 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  4 &lt;split [2.6K/284]&gt; Fold04 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  5 &lt;split [2.6K/284]&gt; Fold05 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  6 &lt;split [2.6K/284]&gt; Fold06 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  7 &lt;split [2.6K/284]&gt; Fold07 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  8 &lt;split [2.6K/284]&gt; Fold08 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+##  9 &lt;split [2.6K/284]&gt; Fold09 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9
+## 10 &lt;split [2.6K/284]&gt; Fold10 &lt;tibble [284 × 39]&gt; &lt;tibble [284 × 17]&gt;            9</code></pre>
+<p>In this case, the <em>number</em> of components is the same across all folds, but the representation of those components is likely slightly different. This is because the recipe has been applied to each fold, independent of the other folds.</p>
+<p>Feature engineering can also regularly feel overwhelming. There are <em>so many</em> possible options that you could do to potentially increase model performance. This chapter just scratched the surface. The sheer number of decisions is why many believe that feature engineering is the most “art” part of machine learning. Strong domain knowledge will absolutely help, as will practice. For those looking to go further with feature engineering, we suggest <a href="http://www.feat.engineering">Kuhn and Johnson</a>, who wrote an entire book on the topic. It provides practical advice in an accessible way without skimping on important details.</p>
 
 </div>
 <!-- </div> -->
