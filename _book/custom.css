@@ -1,5 +1,5 @@
 /*fonts*/
-@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Forum&family=Nunito&family=Roboto+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Forum&family=Nunito&family=Source+Code+Pro::wght@500&display=swap');
 
 /*Declare variables*/
 :root {
@@ -10,15 +10,19 @@
   --highlight-blue-gray: #5E8192;
   --highlight-dark-gray: #3a4f5a;
   --highlight-seafoam: #B3E5D9;
+  --highlight-darker-green: #85d5c3;
 
   --txt-color: #26333b;
-
   --link-color:#4183c4;
+  --inline-code-color: #cb4aff;
+
 
   /*fonts*/
   --font-title: 'Forum', cursive;
   --font-body: 'Nunito', sans-serif;
   --font-h1: 'Cardo', serif;
+
+  --font-code: 'Source Code Pro', monospace;
 }
 
 /*Change link styling*/
@@ -125,77 +129,95 @@
 	font-size:1.1em;
 }
 
+/*inline code*/
+.book .book-body .page-wrapper .page-inner section.normal code {
+	font-family: var(--font-code), monospace;
+	color: var(--inline-code-color);
+	background: none;
+	padding: 0px;
+	font-size: 1em;
+}
 
 /*Code blocks*/
 .book .book-body .page-wrapper .page-inner section.normal pre {
-	border-top:4px solid var(--highlight-seafoam);
-	border-bottom:4px solid var(--highlight-seafoam);
+	border-top:2px solid var(--highlight-darker-green);
+	border-bottom:2px solid var(--highlight-darker-green);
 	background-color: #FDFDFD;
+	color: #415A6E;
+}
+
+code.sourceCode > span {
 	color: #415A6E;
 }
 
 code span.kw {
 	color: #389DCD;
 	font-weight: normal;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.co {
 	color: #9CA7A9;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.op {
 	color: #D85F00;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.dt {
 	color: #F8B411;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.st {
 	color: #04B6A1;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.va {
 	color: #AB69C3;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.cf {
 	color: #D85F00;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 code span.ot {
 	color: #AB69C3;
-	font-family: 'Roboto Mono', monospace;
+	font-family: var(--font-code), monospace;
 }
 
 /*Make code output look different from code*/
+.section.level1 pre > code { 
+	color: var(--main-bg-color) !important;
+}
+.section.level2 pre > code { 
+	color: var(--main-bg-color) !important;
+}
 .section.level1 > pre {
-	border: 3px dotted var(--main-bg-color) !important;
+	border: none !important;
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }
 
 .section.level2 > pre {
-	border: 3px dotted var(--main-bg-color) !important;
+	border: none !important;
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }
 
 .section.level3 > pre {
-	border: 3px dotted var(--main-bg-color) !important;
+	border: none !important;
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }
 
 .section.level4 > pre {
-	border: 3px dotted var(--main-bg-color) !important;
+	border: none !important;
 	color: var(--main-bg-color) !important;
 	background-color: var(--highlight-dark-gray) !important;
 }

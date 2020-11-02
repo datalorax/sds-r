@@ -27,7 +27,8 @@ Imports:
     ggplot2,
     dplyr,
     reactable,
-    here
+    here,
+    splines
 Depends: 
     tidyverse,
     tidymodels
