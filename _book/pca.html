@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-01" />
+<meta name="date" content="2020-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -267,18 +267,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="pca.html#cb168-1"></a>vars &lt;-<span class="st"> </span>prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]]<span class="op">$</span>res<span class="op">$</span>sdev<span class="op">^</span><span class="dv">2</span></span>
 <span id="cb168-2"><a href="pca.html#cb168-2"></a>pvar &lt;-<span class="st"> </span>vars <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(vars)</span>
 <span id="cb168-3"><a href="pca.html#cb168-3"></a>pvar</span></code></pre></div>
-<pre><code>##  [1] 7.503092e-01 5.138784e-02 5.055445e-02 4.135567e-02 2.388100e-02 1.154347e-02
-##  [7] 8.222078e-03 8.051600e-03 7.564274e-03 7.346244e-03 5.926695e-03 5.187219e-03
-## [13] 4.420626e-03 3.803443e-03 3.418581e-03 2.536214e-03 2.344631e-03 1.533003e-03
-## [19] 1.516079e-03 1.397730e-03 1.170231e-03 1.071354e-03 1.001754e-03 8.622161e-04
-## [25] 7.596821e-04 7.042076e-04 4.803264e-04 3.837786e-04 3.359652e-04 3.219790e-04
-## [31] 1.786945e-04 1.426193e-04 7.831676e-05 6.866070e-05 3.886009e-05 3.175614e-05
-## [37] 2.647517e-05 2.034393e-05 1.580665e-05 6.911480e-06 1.361666e-30 5.047925e-31
-## [43] 1.214792e-32 9.199957e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [49] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [55] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [61] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [67] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33</code></pre>
+<pre><code>##  [1] 7.503092e-01 5.138784e-02 5.055445e-02 4.135567e-02 2.388100e-02 1.154347e-02 8.222078e-03
+##  [8] 8.051600e-03 7.564274e-03 7.346244e-03 5.926695e-03 5.187219e-03 4.420626e-03 3.803443e-03
+## [15] 3.418581e-03 2.536214e-03 2.344631e-03 1.533003e-03 1.516079e-03 1.397730e-03 1.170231e-03
+## [22] 1.071354e-03 1.001754e-03 8.622161e-04 7.596821e-04 7.042076e-04 4.803264e-04 3.837786e-04
+## [29] 3.359652e-04 3.219790e-04 1.786945e-04 1.426193e-04 7.831676e-05 6.866070e-05 3.886009e-05
+## [36] 3.175614e-05 2.647517e-05 2.034393e-05 1.580665e-05 6.911480e-06 1.361666e-30 5.047925e-31
+## [43] 1.214792e-32 9.199957e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [50] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [57] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [64] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [71] 6.414887e-33 6.414887e-33</code></pre>
 <p>That’s difficult to read. Let’s plot it instead</p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="pca.html#cb170-1"></a>pcs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">pc =</span> <span class="kw">paste0</span>(<span class="st">&quot;PC&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(pvar)),</span>
 <span id="cb170-2"><a href="pca.html#cb170-2"></a>                  <span class="dt">percent_var =</span> pvar) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -305,8 +304,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  8 105122               2142                766 2018-05-08 00:00:00                2142
 ##  9 172543               1965                197 2018-05-23 00:00:00                1965
 ## 10  45153               2083                542 2018-05-10 00:00:00                2083
-## # … with 2,831 more rows, and 8 more variables: partic_schl_inst_id &lt;dbl&gt;,
-## #   ncessch &lt;dbl&gt;, score &lt;dbl&gt;, PC1 &lt;dbl&gt;, PC2 &lt;dbl&gt;, PC3 &lt;dbl&gt;, PC4 &lt;dbl&gt;, PC5 &lt;dbl&gt;</code></pre>
+## # … with 2,831 more rows, and 8 more variables: partic_schl_inst_id &lt;dbl&gt;, ncessch &lt;dbl&gt;,
+## #   score &lt;dbl&gt;, PC1 &lt;dbl&gt;, PC2 &lt;dbl&gt;, PC3 &lt;dbl&gt;, PC4 &lt;dbl&gt;, PC5 &lt;dbl&gt;</code></pre>
 <p>And as expected, we get only the five components we requested.</p>
 <p>PCA reduces the dimensionality in the data, which can help guard against overfitting. However, it also may introduce a small amount of bias. Plots like the above can help determine how many components we should retain because we can see that, for example, after about 20 components or so we’re getting almost nothing in return. If you are using PCA and your model still seems to be overfitting, try reducing the dimensionality more (extracting fewer components). On the other hand, if you do not appear to be in danger of overfitting, you might try extracting more components to help reduce bias.</p>
 </div>
