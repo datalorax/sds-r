@@ -23,9 +23,10 @@
 
 <meta name="author" content="Daniel Anderson" />
 <meta name="author" content="Brendan Cullen" />
+<meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-10-26" />
+<meta name="date" content="2020-11-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -126,7 +127,7 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="custom.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -165,9 +166,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a></li>
-<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.8</b> PCA</a></li>
-<li class="chapter" data-level="3.9" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.9</b> Wrapping up</a></li>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
+<li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
+<li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
+<li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
 </ul>
 
@@ -189,16 +202,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="encoding-categorical-data" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Encoding categorical data</h2>
 <p>For many (but not all) modeling frameworks, categorical data must be transformed somehow. The most common of these is, as we’ve already seen, dummy coding, which <code>stats::model.matrix</code> will do for you automatically using the <code>stats::contrasts</code> function. There are also other coding schemes you can use with base R, such as Helmert and polynomial coding (see <code>?contrasts</code> and related functions). Dummy coding leaves one group out (the first level of the factor, by default) and creates new columns for all the other groups coded <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span> depending on whether the original variable represented that value or not. For example</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="encoding-categorical-data.html#cb31-1"></a>f &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;green&quot;</span>))</span>
-<span id="cb31-2"><a href="encoding-categorical-data.html#cb31-2"></a><span class="kw">contrasts</span>(f)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="encoding-categorical-data.html#cb38-1"></a>f &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;green&quot;</span>))</span>
+<span id="cb38-2"><a href="encoding-categorical-data.html#cb38-2"></a><span class="kw">contrasts</span>(f)</span></code></pre></div>
 <pre><code>##       green red
 ## blue      0   0
 ## green     1   0
 ## red       0   1</code></pre>
 <p>In the above, <code>"blue"</code> has been assigned as the reference category (note that factor levels are assigned in alphabetical order by default), and dummy variables have been created for <code>"green"</code> and <code>"red"</code>. In a linear regression framework, <code>"blue"</code> would become the intercept.</p>
 <p>We can recreate this same coding scheme with {recipes}, but we need to first put it in a data frame.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="encoding-categorical-data.html#cb33-1"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(f, <span class="dt">score =</span> <span class="kw">rnorm</span>(<span class="kw">length</span>(f)))</span>
-<span id="cb33-2"><a href="encoding-categorical-data.html#cb33-2"></a>df</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="encoding-categorical-data.html#cb40-1"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(f, <span class="dt">score =</span> <span class="kw">rnorm</span>(<span class="kw">length</span>(f)))</span>
+<span id="cb40-2"><a href="encoding-categorical-data.html#cb40-2"></a>df</span></code></pre></div>
 <pre><code>##       f      score
 ## 1   red  1.0734291
 ## 2   red -0.2675359
@@ -206,10 +219,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 green  0.5436071
 ## 5 green  0.6940371
 ## 6 green -0.6446104</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="encoding-categorical-data.html#cb35-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb35-2"><a href="encoding-categorical-data.html#cb35-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb35-3"><a href="encoding-categorical-data.html#cb35-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb35-4"><a href="encoding-categorical-data.html#cb35-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="encoding-categorical-data.html#cb42-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-2"><a href="encoding-categorical-data.html#cb42-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-3"><a href="encoding-categorical-data.html#cb42-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-4"><a href="encoding-categorical-data.html#cb42-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##        score f_green f_red
 ##        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
@@ -225,10 +238,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">3.3.1</span> Transformations beyond dummy coding</h3>
 <p>Although less used in inferential statistics, there are a number of additional transformations we can use to encode categorical data. The most straightforward is <strong>one-hot</strong> encoding. One-hot encoding is essentially equivalent to dummy coding except we create the variables for <em>all</em> levels in the categorical variable (i.e., we do not leave one out as a reference group). This generally makes them less useful in linear regression frameworks (unless the model intercept is dropped), but they can be highly useful in a number of other frameworks, such as tree-based methods (covered later in the book).</p>
 <p>To use one-hot encoding, we pass the additional <code>one_hot</code> argument to <code>step_dummy</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="encoding-categorical-data.html#cb37-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb37-2"><a href="encoding-categorical-data.html#cb37-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(f, <span class="dt">one_hot =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb37-3"><a href="encoding-categorical-data.html#cb37-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb37-4"><a href="encoding-categorical-data.html#cb37-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="encoding-categorical-data.html#cb44-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb44-2"><a href="encoding-categorical-data.html#cb44-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(f, <span class="dt">one_hot =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb44-3"><a href="encoding-categorical-data.html#cb44-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb44-4"><a href="encoding-categorical-data.html#cb44-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 4
 ##        score f_blue f_green f_red
 ##        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
@@ -239,10 +252,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5  0.6940371      0       1     0
 ## 6 -0.6446104      0       1     0</code></pre>
 <p>Another relatively common encoding scheme, particularly within natural language processing frameworks, is <strong>integer encoding</strong>, where each level is associated with a unique integer. For example</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="encoding-categorical-data.html#cb39-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb39-2"><a href="encoding-categorical-data.html#cb39-2"></a><span class="st">  </span><span class="kw">step_integer</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb39-3"><a href="encoding-categorical-data.html#cb39-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb39-4"><a href="encoding-categorical-data.html#cb39-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="encoding-categorical-data.html#cb46-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-2"><a href="encoding-categorical-data.html#cb46-2"></a><span class="st">  </span><span class="kw">step_integer</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-3"><a href="encoding-categorical-data.html#cb46-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-4"><a href="encoding-categorical-data.html#cb46-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 2
 ##       f      score
 ##   &lt;dbl&gt;      &lt;dbl&gt;
@@ -257,14 +270,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="handling-new-levels" class="section level3" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Handling new levels</h3>
 <p>One other very common problem with encoding categorical data is how to handle new, unseen levels. For example, if we create a recipe as follows</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="encoding-categorical-data.html#cb41-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-2"><a href="encoding-categorical-data.html#cb41-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(f)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="encoding-categorical-data.html#cb48-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb48-2"><a href="encoding-categorical-data.html#cb48-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(f)</span></code></pre></div>
 <p>we will have no problem creating dummy variables as long as the levels of <span class="math inline">\(f\)</span> are within those contained in <code>df$f</code> (or, more mathematically, where <span class="math inline">\(f \in F\)</span>). But what if, in a new sample, <span class="math inline">\(f =\)</span> “purple” or <span class="math inline">\(f =\)</span> “gray”? Let’s try and see what happens</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="encoding-categorical-data.html#cb42-1"></a>df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">f =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;gray&quot;</span>)),</span>
-<span id="cb42-2"><a href="encoding-categorical-data.html#cb42-2"></a>                  <span class="dt">score =</span> <span class="kw">rnorm</span>(<span class="dv">4</span>))</span>
-<span id="cb42-3"><a href="encoding-categorical-data.html#cb42-3"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb42-4"><a href="encoding-categorical-data.html#cb42-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb42-5"><a href="encoding-categorical-data.html#cb42-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> df2)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="encoding-categorical-data.html#cb49-1"></a>df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">f =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;gray&quot;</span>)),</span>
+<span id="cb49-2"><a href="encoding-categorical-data.html#cb49-2"></a>                  <span class="dt">score =</span> <span class="kw">rnorm</span>(<span class="dv">4</span>))</span>
+<span id="cb49-3"><a href="encoding-categorical-data.html#cb49-3"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb49-4"><a href="encoding-categorical-data.html#cb49-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb49-5"><a href="encoding-categorical-data.html#cb49-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> df2)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##        score f_green f_red
 ##        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
@@ -273,13 +286,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 3 -2.351945       NA    NA
 ## 4 -0.1654947      NA    NA</code></pre>
 <p>We end up propagating missing data, which is obviously less than ideal. Luckily, the solution is pretty straightforward. We just add a new step to our recipe to handle <em>novel</em> (or new) categories, lumping them all in their own level.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="encoding-categorical-data.html#cb44-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb44-2"><a href="encoding-categorical-data.html#cb44-2"></a><span class="st">  </span><span class="kw">step_novel</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb44-3"><a href="encoding-categorical-data.html#cb44-3"></a><span class="st">  </span><span class="kw">step_dummy</span>(f)</span>
-<span id="cb44-4"><a href="encoding-categorical-data.html#cb44-4"></a></span>
-<span id="cb44-5"><a href="encoding-categorical-data.html#cb44-5"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb44-6"><a href="encoding-categorical-data.html#cb44-6"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb44-7"><a href="encoding-categorical-data.html#cb44-7"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> df2)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="encoding-categorical-data.html#cb51-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-2"><a href="encoding-categorical-data.html#cb51-2"></a><span class="st">  </span><span class="kw">step_novel</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-3"><a href="encoding-categorical-data.html#cb51-3"></a><span class="st">  </span><span class="kw">step_dummy</span>(f)</span>
+<span id="cb51-4"><a href="encoding-categorical-data.html#cb51-4"></a></span>
+<span id="cb51-5"><a href="encoding-categorical-data.html#cb51-5"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-6"><a href="encoding-categorical-data.html#cb51-6"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb51-7"><a href="encoding-categorical-data.html#cb51-7"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> df2)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 4
 ##        score f_green f_red f_new
 ##        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;

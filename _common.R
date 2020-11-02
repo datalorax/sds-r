@@ -7,10 +7,11 @@ knitr::opts_chunk$set(message = FALSE,
 # Make the fonts the same as the book
 # Also consider making a couple different themes for different types of plots
 theme_set(theme_minimal(20) +
-            theme(plot.title.position = "plot"))
+            theme(plot.title.position = "plot",
+                  legend.position = "bottom"))
 
-# update_geom_defaults('path', list(size = 3, 
-#                                   color = "#7EC1E7"))
+update_geom_defaults('path', list(size = 1.5,
+                                  color = "#7EC1E7"))
 update_geom_defaults('smooth', list(size = 1.5, 
                                     color = "#7EC1E7",
                                     fill = "#C7E4F5"))

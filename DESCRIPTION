@@ -11,7 +11,12 @@ Authors@R: c(
            family = "Cullen",
            role = "aut",
            email = "bcullen@uoregon.edu",
-           comment = c(ORCID = "https://orcid.org/0000-0003-4825-132X"))
+           comment = c(ORCID = "https://orcid.org/0000-0003-4825-132X")),
+    person(given = "Ouafaa",
+           family = "Hmaddi",
+           role = "aut",
+           email = "ohmaddi@uoregon.edu",
+           comment = c(ORCID = "https://orcid.org/0000-0003-1443-4830"))
     )
 License: CC BY 4.0
 URL: https://github.com/datalorax/sds-r
@@ -22,7 +27,8 @@ Imports:
     ggplot2,
     dplyr,
     reactable,
-    here
+    here,
+    splines
 Depends: 
     tidyverse,
     tidymodels
