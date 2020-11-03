@@ -5,10 +5,3 @@
 .DS_Store
 
 raw_data/*
-
-# add the following to match minimal bookdown example: 
-#https://github.com/rstudio/bookdown-demo/blob/master/.gitignore
-_publish.R
-_book
-_bookdown_files
-rsconnect
