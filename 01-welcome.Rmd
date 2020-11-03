@@ -45,3 +45,7 @@ mn(mpg$hwy)
 ```
 
 And overall, I'm pretty happy with how that's all looking.
+
+:::lightbulb
+Here is an example div tip.
+:::
