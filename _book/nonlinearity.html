@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3.7 Nonlinearity | Social Data Science with R</title>
+  <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3.7 Nonlinearity | Social Data Science with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3.7 Nonlinearity | Social Data Science with R" />
+  
+  <meta name="twitter:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
+  
+
+<meta name="author" content="Daniel Anderson" />
+<meta name="author" content="Brendan Cullen" />
+<meta name="author" content="Ouafaa Hmaddi" />
+
+
+<meta name="date" content="2020-11-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="transformations.html"/>
+<link rel="next" href="interactions.html"/>
+<script src="assets/header-attrs-2.5/header-attrs.js"></script>
+<script src="assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="assets/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="assets/anchor-sections-1.0/anchor-sections.js"></script>
+<script src="assets/core-js-2.5.3/shim.min.js"></script>
+<script src="assets/react-16.12.0/react.min.js"></script>
+<script src="assets/react-16.12.0/react-dom.min.js"></script>
+<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
+<script src="assets/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+<script src="assets/reactable-binding-0.2.3/reactable.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
+<li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
+<li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
+<li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
+<li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
+<li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
+<li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Social Data Science with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="nonlinearity" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Nonlinearity</h2>
+<p>Very regularly, predictor variables will have a nonlinear relation with the outcome. In the previous section, we simulated data to follow a log-linear trend, which is linear on the log scale and curvilinear on the raw scale. As a reminder, the data looked like this</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="nonlinearity.html#cb113-1"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb113-2"><a href="nonlinearity.html#cb113-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p>If we just looked at a plot of these data, we’d probably think to ourselves “that looks a whole lot like a log function!”, but let’s pretend for a moment that we’re not quite as brilliant as we actually are and we, say, didn’t plot the data first (<a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">always plot the data first!</a>). Or maybe we’re just not all that familiar with the log function and we didn’t realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.</p>
+<p>There are many different options for modeling curvilinnear relations, but we’ll focus on two: <a href="https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226">basis expansion</a> via polynomial transformations or natural splines.</p>
+<p>Basis expansion is defined, mathematically, as</p>
+<p><span class="math display">\[
+f(X) = \sum_{m = 1}^M\beta_mh_m(X)
+\]</span> where <span class="math inline">\(h_m\)</span> is the <span class="math inline">\(m\)</span>th transformation of <span class="math inline">\(X\)</span>. Once the transformations are defined, multiple coefficients (<span class="math inline">\(\beta\)</span>) are estimated to represent each transformation, which sum to form the non-linear trend. However, the model is itself still linear. We illustrate below.</p>
+<div id="polynomial-transformations" class="section level3" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> Polynomial transformations</h3>
+<p>Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming <span class="math inline">\(X\)</span> into <span class="math inline">\(X\)</span>, <span class="math inline">\(X^2\)</span>, and <span class="math inline">\(X^3\)</span>, and estimating coefficients for each. Let’s do this manually with the <code>sim</code> data</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="nonlinearity.html#cb114-1"></a><span class="co"># remove variables from previous example</span></span>
+<span id="cb114-2"><a href="nonlinearity.html#cb114-2"></a><span class="co"># keep only `x` and `y`</span></span>
+<span id="cb114-3"><a href="nonlinearity.html#cb114-3"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb114-4"><a href="nonlinearity.html#cb114-4"></a><span class="st">  </span><span class="kw">select</span>(x, y)</span>
+<span id="cb114-5"><a href="nonlinearity.html#cb114-5"></a></span>
+<span id="cb114-6"><a href="nonlinearity.html#cb114-6"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb114-7"><a href="nonlinearity.html#cb114-7"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">x2 =</span> x<span class="op">^</span><span class="dv">2</span>,</span>
+<span id="cb114-8"><a href="nonlinearity.html#cb114-8"></a>         <span class="dt">x3 =</span> x<span class="op">^</span><span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb114-9"><a href="nonlinearity.html#cb114-9"></a><span class="st">  </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;x&quot;</span>), y)</span>
+<span id="cb114-10"><a href="nonlinearity.html#cb114-10"></a></span>
+<span id="cb114-11"><a href="nonlinearity.html#cb114-11"></a><span class="kw">head</span>(sim)</span></code></pre></div>
+<pre><code>##   x x2  x3         y
+## 1 1  1   1  9.230453
+## 2 2  4   8 13.231715
+## 3 3  9  27 15.700092
+## 4 4 16  64 16.009766
+## 5 5 25 125 18.203816
+## 6 6 36 216 18.982897</code></pre>
+<p>Now let’s fit a model to the data, using the polynomial expansion, and plot the result.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="nonlinearity.html#cb116-1"></a>poly_m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> sim)</span>
+<span id="cb116-2"><a href="nonlinearity.html#cb116-2"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb116-3"><a href="nonlinearity.html#cb116-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">poly_pred =</span> <span class="kw">predict</span>(poly_m))</span>
+<span id="cb116-4"><a href="nonlinearity.html#cb116-4"></a><span class="kw">head</span>(sim)</span></code></pre></div>
+<pre><code>##   x x2  x3         y poly_pred
+## 1 1  1   1  9.230453  14.99051
+## 2 2  4   8 13.231715  15.63371
+## 3 3  9  27 15.700092  16.25849
+## 4 4 16  64 16.009766  16.86514
+## 5 5 25 125 18.203816  17.45393
+## 6 6 36 216 18.982897  18.02516</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="nonlinearity.html#cb118-1"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb118-2"><a href="nonlinearity.html#cb118-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb118-3"><a href="nonlinearity.html#cb118-3"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> poly_pred))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p>Not bad!</p>
+<p>Now let’s replicate it using {recipes}.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="nonlinearity.html#cb119-1"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb119-2"><a href="nonlinearity.html#cb119-2"></a><span class="st">  </span><span class="kw">select</span>(x, y)</span>
+<span id="cb119-3"><a href="nonlinearity.html#cb119-3"></a></span>
+<span id="cb119-4"><a href="nonlinearity.html#cb119-4"></a>poly_rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(y <span class="op">~</span><span class="st"> </span>., sim) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb119-5"><a href="nonlinearity.html#cb119-5"></a><span class="st">  </span><span class="kw">step_poly</span>(<span class="kw">all_predictors</span>(), <span class="dt">degree =</span> <span class="dv">3</span>)</span>
+<span id="cb119-6"><a href="nonlinearity.html#cb119-6"></a></span>
+<span id="cb119-7"><a href="nonlinearity.html#cb119-7"></a>poly_d &lt;-<span class="st"> </span>poly_rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb119-8"><a href="nonlinearity.html#cb119-8"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb119-9"><a href="nonlinearity.html#cb119-9"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
+<span id="cb119-10"><a href="nonlinearity.html#cb119-10"></a></span>
+<span id="cb119-11"><a href="nonlinearity.html#cb119-11"></a>poly_d</span></code></pre></div>
+<pre><code>## # A tibble: 100 x 4
+##        y x_poly_1 x_poly_2 x_poly_3
+##    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+##  1  9.23   -0.171    0.217  -0.249 
+##  2 13.2    -0.168    0.204  -0.219 
+##  3 15.7    -0.165    0.191  -0.190 
+##  4 16.0    -0.161    0.178  -0.163 
+##  5 18.2    -0.158    0.166  -0.137 
+##  6 19.0    -0.154    0.154  -0.113 
+##  7 19.8    -0.151    0.142  -0.0904
+##  8 21.3    -0.147    0.131  -0.0690
+##  9 20.0    -0.144    0.119  -0.0489
+## 10 22.5    -0.140    0.108  -0.0302
+## # … with 90 more rows</code></pre>
+<p>Notice that these values look quite a bot different than the ones we had before because these are <a href="https://en.wikipedia.org/wiki/Orthogonal_polynomials"><em>orthogonal</em> polynomials</a>. Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="nonlinearity.html#cb121-1"></a>poly_m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> poly_d)</span>
+<span id="cb121-2"><a href="nonlinearity.html#cb121-2"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb121-3"><a href="nonlinearity.html#cb121-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">poly_pred2 =</span> <span class="kw">predict</span>(poly_m2))</span>
+<span id="cb121-4"><a href="nonlinearity.html#cb121-4"></a></span>
+<span id="cb121-5"><a href="nonlinearity.html#cb121-5"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb121-6"><a href="nonlinearity.html#cb121-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb121-7"><a href="nonlinearity.html#cb121-7"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> poly_pred2))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p>But let’s be even more precise and verify that they are, indeed, identical in their fitted values.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="nonlinearity.html#cb122-1"></a><span class="kw">all</span>(</span>
+<span id="cb122-2"><a href="nonlinearity.html#cb122-2"></a>  <span class="kw">round</span>(<span class="kw">predict</span>(poly_m), <span class="dv">7</span>) <span class="op">==</span><span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(poly_m2), <span class="dv">7</span>)</span>
+<span id="cb122-3"><a href="nonlinearity.html#cb122-3"></a>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>This shows that, to seven decimal places, the results are identical (note, the only reason I had to round at all was because of <a href="https://floating-point-gui.de/basic/">floating point hell</a>).</p>
+</div>
+<div id="splines" class="section level3" number="3.7.2">
+<h3><span class="header-section-number">3.7.2</span> Splines</h3>
+<p>When thinking about splines, we find it most helpful to first think about <em>discontinuous</em> splines. Splines divide up the “x” region of the predictor into bins, and fits a model within each bin. Let’s first look at a very simple model, where we divide our <code>sim</code> dataset into lower and upper portions.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="nonlinearity.html#cb124-1"></a><span class="co"># get only x and y back</span></span>
+<span id="cb124-2"><a href="nonlinearity.html#cb124-2"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb124-3"><a href="nonlinearity.html#cb124-3"></a><span class="st">  </span><span class="kw">select</span>(x, y)</span>
+<span id="cb124-4"><a href="nonlinearity.html#cb124-4"></a></span>
+<span id="cb124-5"><a href="nonlinearity.html#cb124-5"></a><span class="co"># Fit a model to the lower and upper parts</span></span>
+<span id="cb124-6"><a href="nonlinearity.html#cb124-6"></a>lower_part &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="kw">filter</span>(sim, x <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>))</span>
+<span id="cb124-7"><a href="nonlinearity.html#cb124-7"></a>upper_part &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="kw">filter</span>(sim, x <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>))</span>
+<span id="cb124-8"><a href="nonlinearity.html#cb124-8"></a></span>
+<span id="cb124-9"><a href="nonlinearity.html#cb124-9"></a><span class="co"># make predictions from each part</span></span>
+<span id="cb124-10"><a href="nonlinearity.html#cb124-10"></a>lower_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(lower_part, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">50</span>))</span>
+<span id="cb124-11"><a href="nonlinearity.html#cb124-11"></a>upper_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(upper_part, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">51</span><span class="op">:</span><span class="dv">100</span>))</span>
+<span id="cb124-12"><a href="nonlinearity.html#cb124-12"></a></span>
+<span id="cb124-13"><a href="nonlinearity.html#cb124-13"></a><span class="co"># graph the results</span></span>
+<span id="cb124-14"><a href="nonlinearity.html#cb124-14"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb124-15"><a href="nonlinearity.html#cb124-15"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;rect&quot;</span>, </span>
+<span id="cb124-16"><a href="nonlinearity.html#cb124-16"></a>           <span class="dt">xmin =</span> <span class="op">-</span><span class="ot">Inf</span>, <span class="dt">ymin =</span> <span class="op">-</span><span class="ot">Inf</span>, <span class="dt">ymax =</span> <span class="ot">Inf</span>, <span class="dt">xmax =</span> <span class="dv">50</span>,</span>
+<span id="cb124-17"><a href="nonlinearity.html#cb124-17"></a>           <span class="dt">fill =</span> <span class="st">&quot;#7EC1E7&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb124-18"><a href="nonlinearity.html#cb124-18"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb124-19"><a href="nonlinearity.html#cb124-19"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">50</span>, <span class="dt">y =</span> lower_pred)) <span class="op">+</span></span>
+<span id="cb124-20"><a href="nonlinearity.html#cb124-20"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">51</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">y =</span> upper_pred))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p>As you can see, this gets at the same non-linearity, but with two models. We can better approximate the curve by increasings the number of “bins” in the x-axis. Let’s use 10 bins instead.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="nonlinearity.html#cb125-1"></a>ten_bins &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb125-2"><a href="nonlinearity.html#cb125-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">tens =</span> <span class="kw">as.integer</span>(x<span class="op">/</span><span class="dv">10</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb125-3"><a href="nonlinearity.html#cb125-3"></a><span class="st">  </span><span class="kw">group_by</span>(tens) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb125-4"><a href="nonlinearity.html#cb125-4"></a><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb125-5"><a href="nonlinearity.html#cb125-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">m =</span> <span class="kw">map</span>(data, <span class="op">~</span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, .x)),</span>
+<span id="cb125-6"><a href="nonlinearity.html#cb125-6"></a>         <span class="dt">pred_frame =</span> <span class="kw">map2</span>(data, m, <span class="op">~</span><span class="kw">data.frame</span>(<span class="dt">x =</span> .x<span class="op">$</span>x, <span class="dt">y =</span> <span class="kw">predict</span>(.y))))</span>
+<span id="cb125-7"><a href="nonlinearity.html#cb125-7"></a></span>
+<span id="cb125-8"><a href="nonlinearity.html#cb125-8"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb125-9"><a href="nonlinearity.html#cb125-9"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">90</span>, <span class="dv">10</span>),</span>
+<span id="cb125-10"><a href="nonlinearity.html#cb125-10"></a>             <span class="dt">color =</span> <span class="st">&quot;gray30&quot;</span>) <span class="op">+</span></span>
+<span id="cb125-11"><a href="nonlinearity.html#cb125-11"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb125-12"><a href="nonlinearity.html#cb125-12"></a><span class="st">  </span><span class="kw">map</span>(ten_bins<span class="op">$</span>pred_frame, <span class="op">~</span><span class="kw">geom_line</span>(<span class="dt">data =</span> .x))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p>This approximates the underlying curve quite well.</p>
+<p>We can try again by fitting polynomial models within each bin to see if that helps. Note we’ve place the point where <code>x == 100</code> into the bin for 9, because there’s only one point in that bin and the model can’t be fit to a single point.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="nonlinearity.html#cb126-1"></a>ten_bins &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb126-2"><a href="nonlinearity.html#cb126-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">tens =</span> <span class="kw">as.integer</span>(x <span class="op">/</span><span class="st"> </span><span class="dv">10</span>),</span>
+<span id="cb126-3"><a href="nonlinearity.html#cb126-3"></a>         <span class="dt">tens =</span> <span class="kw">ifelse</span>(tens <span class="op">==</span><span class="st"> </span><span class="dv">10</span>, <span class="dv">9</span>, tens)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb126-4"><a href="nonlinearity.html#cb126-4"></a><span class="st">  </span><span class="kw">group_by</span>(tens) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb126-5"><a href="nonlinearity.html#cb126-5"></a><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb126-6"><a href="nonlinearity.html#cb126-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">m =</span> <span class="kw">map</span>(data, <span class="op">~</span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(x, <span class="dv">3</span>), .x)),</span>
+<span id="cb126-7"><a href="nonlinearity.html#cb126-7"></a>         <span class="dt">pred_frame =</span> <span class="kw">map2</span>(data, m, <span class="op">~</span><span class="kw">data.frame</span>(<span class="dt">x =</span> .x<span class="op">$</span>x, </span>
+<span id="cb126-8"><a href="nonlinearity.html#cb126-8"></a>                                                <span class="dt">y =</span> <span class="kw">predict</span>(.y))))</span>
+<span id="cb126-9"><a href="nonlinearity.html#cb126-9"></a></span>
+<span id="cb126-10"><a href="nonlinearity.html#cb126-10"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb126-11"><a href="nonlinearity.html#cb126-11"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">90</span>, <span class="dv">10</span>),</span>
+<span id="cb126-12"><a href="nonlinearity.html#cb126-12"></a>             <span class="dt">color =</span> <span class="st">&quot;#7EC1E7&quot;</span>) <span class="op">+</span></span>
+<span id="cb126-13"><a href="nonlinearity.html#cb126-13"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb126-14"><a href="nonlinearity.html#cb126-14"></a><span class="st">  </span><span class="kw">map</span>(ten_bins<span class="op">$</span>pred_frame, <span class="op">~</span><span class="kw">geom_line</span>(<span class="dt">data =</span> .x))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<p>But now we have 10 different models! Wouldn’t it be better if we had a single curve? YES! Of course. And that’s exactly what a spline is. It forces each of these curves to connect in a smooth way. The points defining the bins are referred to as “knots”.</p>
+<p>Let’s fit a spline to these data, using 8 “interior” knots (for 10 knots total, including one on each boundary).</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="nonlinearity.html#cb127-1"></a><span class="kw">library</span>(splines)</span>
+<span id="cb127-2"><a href="nonlinearity.html#cb127-2"></a>ns_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">ns</span>(x, <span class="dv">8</span>), sim)</span>
+<span id="cb127-3"><a href="nonlinearity.html#cb127-3"></a></span>
+<span id="cb127-4"><a href="nonlinearity.html#cb127-4"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb127-5"><a href="nonlinearity.html#cb127-5"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb127-6"><a href="nonlinearity.html#cb127-6"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">y =</span> <span class="kw">predict</span>(ns_mod)))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p>And now we have our single curve! The purpose of our discussion here is to build conceptual understandings of splines, and we will therefore not go into the mathematics behind the constraints leading to a single curve. However, for those interested, we recommend <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Hastie, Tibshirani, and Friedman</a>.</p>
+<p>One of the drawbacks of polynomial regression is that they can be wild in the tails. Natural splines avoid this problem by constraining the tails of the curve to be linear. Sometimes, however, this property may not be desirable, and that’s when we instead use a B-spline.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="nonlinearity.html#cb128-1"></a>bs_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(x, <span class="dv">8</span>), sim)</span>
+<span id="cb128-2"><a href="nonlinearity.html#cb128-2"></a></span>
+<span id="cb128-3"><a href="nonlinearity.html#cb128-3"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb128-4"><a href="nonlinearity.html#cb128-4"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb128-5"><a href="nonlinearity.html#cb128-5"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">y =</span> <span class="kw">predict</span>(bs_mod)))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p>Let’s look at the true data-generating curve with each of the splines, omitting the points for clarity.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="nonlinearity.html#cb129-1"></a>ns_d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, </span>
+<span id="cb129-2"><a href="nonlinearity.html#cb129-2"></a>                   <span class="dt">y =</span> <span class="kw">predict</span>(ns_mod), </span>
+<span id="cb129-3"><a href="nonlinearity.html#cb129-3"></a>                   <span class="dt">method =</span> <span class="st">&quot;Natural Spline&quot;</span>)</span>
+<span id="cb129-4"><a href="nonlinearity.html#cb129-4"></a>bs_d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, </span>
+<span id="cb129-5"><a href="nonlinearity.html#cb129-5"></a>                   <span class="dt">y =</span> <span class="kw">predict</span>(bs_mod), </span>
+<span id="cb129-6"><a href="nonlinearity.html#cb129-6"></a>                   <span class="dt">method =</span> <span class="st">&quot;B-Spline&quot;</span>)</span>
+<span id="cb129-7"><a href="nonlinearity.html#cb129-7"></a></span>
+<span id="cb129-8"><a href="nonlinearity.html#cb129-8"></a><span class="kw">ggplot</span>(<span class="kw">rbind</span>(ns_d, bs_d), <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb129-9"><a href="nonlinearity.html#cb129-9"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> sim,</span>
+<span id="cb129-10"><a href="nonlinearity.html#cb129-10"></a>              <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb129-11"><a href="nonlinearity.html#cb129-11"></a>              <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(x),</span>
+<span id="cb129-12"><a href="nonlinearity.html#cb129-12"></a>              <span class="dt">se =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb129-13"><a href="nonlinearity.html#cb129-13"></a>              <span class="dt">color =</span> <span class="st">&quot;#5E8192&quot;</span>) <span class="op">+</span></span>
+<span id="cb129-14"><a href="nonlinearity.html#cb129-14"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color =</span> method)) <span class="op">+</span></span>
+<span id="cb129-15"><a href="nonlinearity.html#cb129-15"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>method)</span></code></pre></div>
+<p><img src="_main_files/figure-html/label,%20options-1.png" width="672" /></p>
+<p>Both are quite close, but you can see the natural spline does not dip quite as close to the true value for zero as the B-spline. It’s also a tiny bit more wiggly in the upper tail (because it’s not constrained to be linear). The number of knots is also likely a bit too high here and was chosen fairly randomly.</p>
+<div id="basis-expansion-with-recipes" class="section level4" number="3.7.2.1">
+<h4><span class="header-section-number">3.7.2.1</span> Basis expansion with {recipes}</h4>
+<p>Basis expansion via recipes proceeds in much the same way as we’ve seen before. We just specify a step specifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).</p>
+<p>Let’s try building a dataset using basis expansion with a B-Spline</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="nonlinearity.html#cb130-1"></a>bs_d_rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> sim) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb130-2"><a href="nonlinearity.html#cb130-2"></a><span class="st">  </span><span class="kw">step_bs</span>(x, <span class="dt">deg_free =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb130-3"><a href="nonlinearity.html#cb130-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb130-4"><a href="nonlinearity.html#cb130-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
+<span id="cb130-5"><a href="nonlinearity.html#cb130-5"></a></span>
+<span id="cb130-6"><a href="nonlinearity.html#cb130-6"></a>bs_d_rec</span></code></pre></div>
+<pre><code>## # A tibble: 100 x 9
+##        y x_bs_1  x_bs_2    x_bs_3 x_bs_4 x_bs_5 x_bs_6 x_bs_7 x_bs_8
+##    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1  9.23  0     0       0              0      0      0      0      0
+##  2 13.2   0.166 0.00531 0.0000371      0      0      0      0      0
+##  3 15.7   0.301 0.0204  0.000297       0      0      0      0      0
+##  4 16.0   0.407 0.0441  0.00100        0      0      0      0      0
+##  5 18.2   0.488 0.0751  0.00237        0      0      0      0      0
+##  6 19.0   0.545 0.112   0.00464        0      0      0      0      0
+##  7 19.8   0.580 0.154   0.00801        0      0      0      0      0
+##  8 21.3   0.596 0.200   0.0127         0      0      0      0      0
+##  9 20.0   0.596 0.248   0.0190         0      0      0      0      0
+## 10 22.5   0.582 0.298   0.0270         0      0      0      0      0
+## # … with 90 more rows</code></pre>
+<p>And as you can see, we get similar output to polynomial regression, but we’re just using a spline for our basis expansion now instead of polynomials. Note that the degrees of freedom can also be set to <code>tune()</code> and trained withing <code>tune::tune_grid()</code>. In other words, the amount of basis expansion (degree of “wiggliness”) can be treated as a hyperparamter to be tuned.</p>
+<p>Once the basis expansion is conducted, we can model it just like any other linear model.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="nonlinearity.html#cb132-1"></a>bs_mod_rec &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x_bs_<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">3</span> <span class="op">+</span></span>
+<span id="cb132-2"><a href="nonlinearity.html#cb132-2"></a><span class="st">                     </span>x_bs_<span class="dv">4</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">5</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">6</span> <span class="op">+</span></span>
+<span id="cb132-3"><a href="nonlinearity.html#cb132-3"></a><span class="st">                     </span>x_bs_<span class="dv">7</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">8</span>,</span>
+<span id="cb132-4"><a href="nonlinearity.html#cb132-4"></a>                 <span class="dt">data =</span> bs_d_rec)</span></code></pre></div>
+<p>And this will give us the same results we got before</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="nonlinearity.html#cb133-1"></a><span class="kw">all</span>(</span>
+<span id="cb133-2"><a href="nonlinearity.html#cb133-2"></a>  <span class="kw">round</span>(<span class="kw">predict</span>(bs_mod), <span class="dv">7</span>) <span class="op">==</span><span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(bs_mod_rec), <span class="dv">7</span>)</span>
+<span id="cb133-3"><a href="nonlinearity.html#cb133-3"></a>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>To use polynomial transformations or natural splines instead, we would just use <code>step_poly</code> or <code>step_ns</code>, respectively.</p>
+<p>One rather important note on tuning splines, you will probably want to avoid using code like</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="nonlinearity.html#cb135-1"></a><span class="kw">recipe</span>(murders <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> violence) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb135-2"><a href="nonlinearity.html#cb135-2"></a><span class="st">  </span><span class="kw">step_ns</span>(<span class="kw">all_predictors</span>(), <span class="dt">deg_free =</span> <span class="kw">tune</span>())</span></code></pre></div>
+<pre><code>## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor        147
+## 
+## Operations:
+## 
+## Natural Splines on all_predictors()</code></pre>
+<p>because this will constrain the smooth to be the same for all predictors. Instead, use exploratory analyses and plots to figure out which variables should be fit with splines, and then tune them separately. For example</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="nonlinearity.html#cb137-1"></a><span class="kw">recipe</span>(murders <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> violence) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb137-2"><a href="nonlinearity.html#cb137-2"></a><span class="st">  </span><span class="kw">step_ns</span>(pctPoverty, <span class="dt">deg_free =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb137-3"><a href="nonlinearity.html#cb137-3"></a><span class="st">  </span><span class="kw">step_ns</span>(houseVacant, <span class="dt">deg_free =</span> <span class="kw">tune</span>())</span></code></pre></div>
+<pre><code>## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor        147
+## 
+## Operations:
+## 
+## Natural Splines on pctPoverty
+## Natural Splines on houseVacant</code></pre>
+<p>Of course, the more splines you are tuning, the more computationally expensive it will become, so you’ll need to balance this with your expected return in model improvement (i.e., you likely can’t tune every predictor in your dataset).</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="transformations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="interactions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "static"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
