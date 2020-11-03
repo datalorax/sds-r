@@ -232,3 +232,21 @@ code span.ot {
 	border-top: 1px solid var(--highlight-seafoam) !important;
 	border-bottom: 1px solid var(--highlight-seafoam) !important;
 }
+
+/* -----------div tips------------- */
+div.lightbulb {
+  padding: 1em;
+  margin: 1em 0;
+  padding-left: 100px;
+  background-size: 70px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  min-height: 120px;
+  color: #75658c;
+  background-color: #dbceefab;
+  border: dashed 5px #d8c1f7;
+}
+
+div.lightbulb {
+  background-image: url("img/div_tip_icons/lightbulb.png");
+}
