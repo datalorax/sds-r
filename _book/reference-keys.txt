@@ -30,4 +30,5 @@ creating-interactions-with-recipes
 pca
 pca-with-recipes
 wrapping-up
-introduction-to-r
+decision-trees
+a-simple-decision-tree

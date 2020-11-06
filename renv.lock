@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.0.2",
+    "Version": "4.0.3",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -967,6 +967,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "9787c1fcb680e655d062e7611cadf78e"
+    },
+    "rpart.plot": {
+      "Package": "rpart.plot",
+      "Version": "3.0.9",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a62b7568da85b8d9cad407380349ba26"
     },
     "rprojroot": {
       "Package": "rprojroot",
