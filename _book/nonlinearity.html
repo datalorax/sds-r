@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-02" />
+<meta name="date" content="2020-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>4</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -262,18 +263,18 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 <span id="cb119-10"><a href="nonlinearity.html#cb119-10"></a></span>
 <span id="cb119-11"><a href="nonlinearity.html#cb119-11"></a>poly_d</span></code></pre></div>
 <pre><code>## # A tibble: 100 x 4
-##            y   x_poly_1  x_poly_2    x_poly_3
-##        &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-##  1  9.230453 -0.1714816 0.2169976 -0.2491645 
-##  2 13.23172  -0.1680173 0.2038462 -0.2189627 
-##  3 15.70009  -0.1645531 0.1909632 -0.1903019 
-##  4 16.00977  -0.1610888 0.1783486 -0.1631502 
-##  5 18.20382  -0.1576245 0.1660025 -0.1374758 
-##  6 18.98290  -0.1541602 0.1539247 -0.1132471 
-##  7 19.79788  -0.1506960 0.1421153 -0.09043211
-##  8 21.29050  -0.1472317 0.1305743 -0.06899922
-##  9 20.01104  -0.1437674 0.1193017 -0.04891661
-## 10 22.52682  -0.1403031 0.1082975 -0.03015251
+##        y x_poly_1 x_poly_2 x_poly_3
+##    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+##  1  9.23   -0.171    0.217  -0.249 
+##  2 13.2    -0.168    0.204  -0.219 
+##  3 15.7    -0.165    0.191  -0.190 
+##  4 16.0    -0.161    0.178  -0.163 
+##  5 18.2    -0.158    0.166  -0.137 
+##  6 19.0    -0.154    0.154  -0.113 
+##  7 19.8    -0.151    0.142  -0.0904
+##  8 21.3    -0.147    0.131  -0.0690
+##  9 20.0    -0.144    0.119  -0.0489
+## 10 22.5    -0.140    0.108  -0.0302
 ## # … with 90 more rows</code></pre>
 <p>Notice that these values look quite a bot different than the ones we had before because these are <a href="https://en.wikipedia.org/wiki/Orthogonal_polynomials"><em>orthogonal</em> polynomials</a>. Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below</p>
 <div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="nonlinearity.html#cb121-1"></a>poly_m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> poly_d)</span>
@@ -392,18 +393,18 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 <span id="cb130-5"><a href="nonlinearity.html#cb130-5"></a></span>
 <span id="cb130-6"><a href="nonlinearity.html#cb130-6"></a>bs_d_rec</span></code></pre></div>
 <pre><code>## # A tibble: 100 x 9
-##            y    x_bs_1      x_bs_2        x_bs_3 x_bs_4 x_bs_5 x_bs_6 x_bs_7 x_bs_8
-##        &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1  9.230453 0         0           0                  0      0      0      0      0
-##  2 13.23172  0.1656788 0.005305581 0.00003710197      0      0      0      0      0
-##  3 15.70009  0.3006372 0.02040608  0.0002968157       0      0      0      0      0
-##  4 16.00977  0.4072126 0.04407713  0.001001753        0      0      0      0      0
-##  5 18.20382  0.4877424 0.07509438  0.002374526        0      0      0      0      0
-##  6 18.98290  0.5445641 0.1122334   0.004637746        0      0      0      0      0
-##  7 19.79788  0.5800150 0.1542700   0.008014025        0      0      0      0      0
-##  8 21.29050  0.5964326 0.1999796   0.01272597         0      0      0      0      0
-##  9 20.01104  0.5961544 0.2481379   0.01899621         0      0      0      0      0
-## 10 22.52682  0.5815177 0.2975207   0.02704733         0      0      0      0      0
+##        y x_bs_1  x_bs_2    x_bs_3 x_bs_4 x_bs_5 x_bs_6 x_bs_7 x_bs_8
+##    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1  9.23  0     0       0              0      0      0      0      0
+##  2 13.2   0.166 0.00531 0.0000371      0      0      0      0      0
+##  3 15.7   0.301 0.0204  0.000297       0      0      0      0      0
+##  4 16.0   0.407 0.0441  0.00100        0      0      0      0      0
+##  5 18.2   0.488 0.0751  0.00237        0      0      0      0      0
+##  6 19.0   0.545 0.112   0.00464        0      0      0      0      0
+##  7 19.8   0.580 0.154   0.00801        0      0      0      0      0
+##  8 21.3   0.596 0.200   0.0127         0      0      0      0      0
+##  9 20.0   0.596 0.248   0.0190         0      0      0      0      0
+## 10 22.5   0.582 0.298   0.0270         0      0      0      0      0
 ## # … with 90 more rows</code></pre>
 <p>And as you can see, we get similar output to polynomial regression, but we’re just using a spline for our basis expansion now instead of polynomials. Note that the degrees of freedom can also be set to <code>tune()</code> and trained withing <code>tune::tune_grid()</code>. In other words, the amount of basis expansion (degree of “wiggliness”) can be treated as a hyperparamter to be tuned.</p>
 <p>Once the basis expansion is conducted, we can model it just like any other linear model.</p>

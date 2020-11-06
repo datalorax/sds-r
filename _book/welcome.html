@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-02" />
+<meta name="date" content="2020-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>4</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -218,36 +219,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-4"><a href="welcome.html#cb2-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_cty =</span> <span class="kw">mean</span>(cty),</span>
 <span id="cb2-5"><a href="welcome.html#cb2-5"></a>            <span class="dt">sd_cty =</span> <span class="kw">sd</span>(cty))</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
-##     cyl mean_cty    sd_cty
-##   &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1     4 21.01235 3.498192 
-## 2     5 20.5     0.5773503
-## 3     6 16.21519 1.773530 
-## 4     8 12.57143 1.806361</code></pre>
+##     cyl mean_cty sd_cty
+##   &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1     4     21.0  3.50 
+## 2     5     20.5  0.577
+## 3     6     16.2  1.77 
+## 4     8     12.6  1.81</code></pre>
 <p>But the above doesn’t give us an example of a string, which we’ll also use a lot, so let’s try an example with that.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="welcome.html#cb4-1"></a>mpg <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-2"><a href="welcome.html#cb4-2"></a><span class="st">  </span><span class="kw">filter</span>(manufacturer <span class="op">==</span><span class="st"> &quot;audi&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 18 x 11
-##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  
-##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
-##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact
-##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact
-##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact
-##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact
-##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact
-##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact
-##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compact
-##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact
-##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact
-## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact
-## 11 audi         a4 quattro   2    2008     4 auto(s6)   4        19    27 p     compact
-## 12 audi         a4 quattro   2.8  1999     6 auto(l5)   4        15    25 p     compact
-## 13 audi         a4 quattro   2.8  1999     6 manual(m5) 4        17    25 p     compact
-## 14 audi         a4 quattro   3.1  2008     6 auto(s6)   4        17    25 p     compact
-## 15 audi         a4 quattro   3.1  2008     6 manual(m6) 4        15    25 p     compact
-## 16 audi         a6 quattro   2.8  1999     6 auto(l5)   4        15    24 p     midsize
-## 17 audi         a6 quattro   3.1  2008     6 auto(s6)   4        17    25 p     midsize
-## 18 audi         a6 quattro   4.2  2008     8 auto(s6)   4        16    23 p     midsize</code></pre>
+##    manufacturer model    displ  year   cyl trans    drv     cty   hwy fl    class 
+##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; 
+##  1 audi         a4         1.8  1999     4 auto(l5) f        18    29 p     compa…
+##  2 audi         a4         1.8  1999     4 manual(… f        21    29 p     compa…
+##  3 audi         a4         2    2008     4 manual(… f        20    31 p     compa…
+##  4 audi         a4         2    2008     4 auto(av) f        21    30 p     compa…
+##  5 audi         a4         2.8  1999     6 auto(l5) f        16    26 p     compa…
+##  6 audi         a4         2.8  1999     6 manual(… f        18    26 p     compa…
+##  7 audi         a4         3.1  2008     6 auto(av) f        18    27 p     compa…
+##  8 audi         a4 quat…   1.8  1999     4 manual(… 4        18    26 p     compa…
+##  9 audi         a4 quat…   1.8  1999     4 auto(l5) 4        16    25 p     compa…
+## 10 audi         a4 quat…   2    2008     4 manual(… 4        20    28 p     compa…
+## 11 audi         a4 quat…   2    2008     4 auto(s6) 4        19    27 p     compa…
+## 12 audi         a4 quat…   2.8  1999     6 auto(l5) 4        15    25 p     compa…
+## 13 audi         a4 quat…   2.8  1999     6 manual(… 4        17    25 p     compa…
+## 14 audi         a4 quat…   3.1  2008     6 auto(s6) 4        17    25 p     compa…
+## 15 audi         a4 quat…   3.1  2008     6 manual(… 4        15    25 p     compa…
+## 16 audi         a6 quat…   2.8  1999     6 auto(l5) 4        15    24 p     midsi…
+## 17 audi         a6 quat…   3.1  2008     6 auto(s6) 4        17    25 p     midsi…
+## 18 audi         a6 quat…   4.2  2008     8 auto(s6) 4        16    23 p     midsi…</code></pre>
 <p>Finally, let’s write a quick function that has a logical in it (since we haven’t tested those yet).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="welcome.html#cb6-1"></a>mn &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
 <span id="cb6-2"><a href="welcome.html#cb6-2"></a>  <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>

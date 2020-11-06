@@ -36,7 +36,7 @@ Finally, we will now import data. There are many ways you can this, but I person
 Here, I am importing an spss dataset (.sav) called 'sesame13'. I then store the data imported in an object called sesame13. 
 
 ```{r}
-sesame13 <- import('sesame13.sav')
+sesame13 <- import('data/sesame13.sav')
 ```
 
 The next thing we want to do is take a look at the data but without loading all of it. We use the function `head` to look at the first 6 lines. You can also use `tail` to look at the bottom 6 lines. 
