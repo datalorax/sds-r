@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-02" />
+<meta name="date" content="2020-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>4</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -320,18 +321,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb150-4"><a href="interactions.html#cb150-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb150-5"><a href="interactions.html#cb150-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 174 x 6
-##    rdg_fall rdg_spr ell_Monitor ell_Non.ELL rdg_fall_x_ell_Monitor rdg_fall_x_ell_Non.ELL
-##       &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;                  &lt;dbl&gt;                  &lt;dbl&gt;
-##  1      181     194           0           0                      0                      0
-##  2      166     159           0           1                      0                    166
-##  3      216     198           0           1                      0                    216
-##  4      203     204           0           1                      0                    203
-##  5      198     173           0           0                      0                      0
-##  6      188     173           0           0                      0                      0
-##  7      202     200           1           0                    202                      0
-##  8      182     206           0           0                      0                      0
-##  9      194     191           0           1                      0                    194
-## 10      170     185           0           0                      0                      0
+##    rdg_fall rdg_spr ell_Monitor ell_Non.ELL rdg_fall_x_ell_Mon… rdg_fall_x_ell_No…
+##       &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;               &lt;dbl&gt;              &lt;dbl&gt;
+##  1      181     194           0           0                   0                  0
+##  2      166     159           0           1                   0                166
+##  3      216     198           0           1                   0                216
+##  4      203     204           0           1                   0                203
+##  5      198     173           0           0                   0                  0
+##  6      188     173           0           0                   0                  0
+##  7      202     200           1           0                 202                  0
+##  8      182     206           0           0                   0                  0
+##  9      194     191           0           1                   0                194
+## 10      170     185           0           0                   0                  0
 ## # … with 164 more rows</code></pre>
 <p>There are a few things to mention here. First, the data do look identical (minus the column names) to what we created by hand, so that’s good news. However, we also used <code>starts_with</code> here, rather than just specifying something like <code>step_interact(~rdg_fall:ell)</code>. This is because after dummy coding, the column names change (as you can see in the above). By specifying <code>starts_with</code>, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.</p>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="interactions.html#cb152-1"></a><span class="kw">recipe</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell, benchmarks) <span class="op">%&gt;%</span><span class="st"> </span></span>

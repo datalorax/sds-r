@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-02" />
+<meta name="date" content="2020-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>4</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -224,14 +225,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb42-3"><a href="encoding-categorical-data.html#cb42-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb42-4"><a href="encoding-categorical-data.html#cb42-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
-##        score f_green f_red
-##        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-## 1  1.073429        0     1
-## 2 -0.2675359       0     1
-## 3  0.7512238       0     0
-## 4  0.5436071       1     0
-## 5  0.6940371       1     0
-## 6 -0.6446104       1     0</code></pre>
+##    score f_green f_red
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1  1.07        0     1
+## 2 -0.268       0     1
+## 3  0.751       0     0
+## 4  0.544       1     0
+## 5  0.694       1     0
+## 6 -0.645       1     0</code></pre>
 <p>In the above, we’ve created the actual columns we need, while in the base example we only created the contrast matrix (although it’s relatively straightforward to then create the columns).</p>
 <p>The {recipes} version is, admittedly, a fair amount of additional code, but as we saw in the previous section, {recipes} is capable of making a wide range of transformation in a systematic way.</p>
 <div id="transformations-beyond-dummy-coding" class="section level3" number="3.3.1">
@@ -243,28 +244,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb44-3"><a href="encoding-categorical-data.html#cb44-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb44-4"><a href="encoding-categorical-data.html#cb44-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 4
-##        score f_blue f_green f_red
-##        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-## 1  1.073429       0       0     1
-## 2 -0.2675359      0       0     1
-## 3  0.7512238      1       0     0
-## 4  0.5436071      0       1     0
-## 5  0.6940371      0       1     0
-## 6 -0.6446104      0       1     0</code></pre>
+##    score f_blue f_green f_red
+##    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1  1.07       0       0     1
+## 2 -0.268      0       0     1
+## 3  0.751      1       0     0
+## 4  0.544      0       1     0
+## 5  0.694      0       1     0
+## 6 -0.645      0       1     0</code></pre>
 <p>Another relatively common encoding scheme, particularly within natural language processing frameworks, is <strong>integer encoding</strong>, where each level is associated with a unique integer. For example</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="encoding-categorical-data.html#cb46-1"></a><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb46-2"><a href="encoding-categorical-data.html#cb46-2"></a><span class="st">  </span><span class="kw">step_integer</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb46-3"><a href="encoding-categorical-data.html#cb46-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb46-4"><a href="encoding-categorical-data.html#cb46-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 2
-##       f      score
-##   &lt;dbl&gt;      &lt;dbl&gt;
-## 1     3  1.073429 
-## 2     3 -0.2675359
-## 3     1  0.7512238
-## 4     2  0.5436071
-## 5     2  0.6940371
-## 6     2 -0.6446104</code></pre>
+##       f  score
+##   &lt;dbl&gt;  &lt;dbl&gt;
+## 1     3  1.07 
+## 2     3 -0.268
+## 3     1  0.751
+## 4     2  0.544
+## 5     2  0.694
+## 6     2 -0.645</code></pre>
 <p>Notice that the syntax is essentially equivalent to the previous dummy-coding example, but we’ve just swapped out <code>step_dummy</code> for <code>step_integer</code>. Integer encoding can be useful in natural language processing in particular because words can be encoded as integers, and then the algorithm can search for patterns in the numbers.</p>
 </div>
 <div id="handling-new-levels" class="section level3" number="3.3.2">
@@ -279,12 +280,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb49-4"><a href="encoding-categorical-data.html#cb49-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb49-5"><a href="encoding-categorical-data.html#cb49-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> df2)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
-##        score f_green f_red
-##        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-## 1  1.389833        0     0
-## 2  0.6157117       1     0
-## 3 -2.351945       NA    NA
-## 4 -0.1654947      NA    NA</code></pre>
+##    score f_green f_red
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1  1.39        0     0
+## 2  0.616       1     0
+## 3 -2.35       NA    NA
+## 4 -0.165      NA    NA</code></pre>
 <p>We end up propagating missing data, which is obviously less than ideal. Luckily, the solution is pretty straightforward. We just add a new step to our recipe to handle <em>novel</em> (or new) categories, lumping them all in their own level.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="encoding-categorical-data.html#cb51-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>f, <span class="dt">data =</span> df) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb51-2"><a href="encoding-categorical-data.html#cb51-2"></a><span class="st">  </span><span class="kw">step_novel</span>(f) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -294,12 +295,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb51-6"><a href="encoding-categorical-data.html#cb51-6"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb51-7"><a href="encoding-categorical-data.html#cb51-7"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> df2)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 4
-##        score f_green f_red f_new
-##        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1  1.389833        0     0     0
-## 2  0.6157117       1     0     0
-## 3 -2.351945        0     0     1
-## 4 -0.1654947       0     0     1</code></pre>
+##    score f_green f_red f_new
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  1.39        0     0     0
+## 2  0.616       1     0     0
+## 3 -2.35        0     0     1
+## 4 -0.165       0     0     1</code></pre>
 <p>This is not perfect, because <code>"purple"</code> and <code>"orange"</code> may be highly different, and we’re modeling them as a single category. But at least we’re able to move forward with our model without introducing new missing data. As an aside, this is a small example of why having good training data is so important. If you don’t have all the levels of a categorical variable represented, you may end up essentially collapsing levels when there is meaningful variance that could be parsed out.</p>
 <p>You can also use a similar approach with <code>step_other</code> if you have a categorical variable with lots of levels (and a small-ish <span class="math inline">\(n\)</span> by comparison). Using <code>step_other</code>, you specify a threshold below which levels should be collapsed into a single “other” category. The threshold can be passed as a proportion or a frequency.</p>
 </div>
