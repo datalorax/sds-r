@@ -234,7 +234,7 @@ code span.ot {
 }
 
 /* -----------div tips------------- */
-div.lightbulb {
+div.lightbulb, div.dictionary {
   padding: 1em;
   margin: 1em 0;
   padding-left: 100px;
@@ -249,4 +249,8 @@ div.lightbulb {
 
 div.lightbulb {
   background-image: url("img/div_tip_icons/lightbulb.png");
+}
+
+div.dictionary {
+  background-image: url("img/div_tip_icons/dictionary.png");
 }

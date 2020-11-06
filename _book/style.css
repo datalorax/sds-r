@@ -232,3 +232,25 @@ code span.ot {
 	border-top: 1px solid var(--highlight-seafoam) !important;
 	border-bottom: 1px solid var(--highlight-seafoam) !important;
 }
+
+/* -----------div tips------------- */
+div.lightbulb, div.dictionary {
+  padding: 1em;
+  margin: 1em 0;
+  padding-left: 100px;
+  background-size: 70px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  min-height: 120px;
+  color: #75658c;
+  background-color: var(--highlight-purple);
+  border: dashed 5px #aa5972;
+}
+
+div.lightbulb {
+  background-image: url("img/div_tip_icons/lightbulb.png");
+}
+
+div.dictionary {
+  background-image: url("img/div_tip_icons/dictionary.png");
+}

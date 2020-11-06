@@ -45,3 +45,11 @@ mn(mpg$hwy)
 ```
 
 And overall, I'm pretty happy with how that's all looking.
+
+:::lightbulb
+Here's an example div tip. We can play around with fonts and colors. 
+:::
+
+:::dictionary
+Here's another div tip. To use for important definitions? 
+:::
