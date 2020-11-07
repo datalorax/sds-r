@@ -24,6 +24,11 @@
   --font-code: 'Source Code Pro', monospace;
 }
 
+/*Increase display equation size*/
+.MJXc-display {
+	font-size: 1.3em !important;
+}
+
 /*Change link styling*/
 .book .book-body .page-wrapper .page-inner section.normal a:hover {
 	text-decoration: none;
@@ -254,3 +259,41 @@ div.lightbulb {
 div.dictionary {
   background-image: url("img/div_tip_icons/dictionary.png");
 }
+
+/*table style for definitions inside div tips*/
+div.definition-tbl table, tr {
+	table-layout: fixed;
+	background-color: var(--main-bg-color);
+	border: none;
+}
+
+/*Tables*/
+table {
+	border: 4px solid var(--highlight-darker-green);
+}
+th {
+	background-color: var(--highlight-darker-green);
+	color: var(--main-bg-color);
+}
+tr:nth-child(odd) {
+	background-color: #f1f9f9;
+	color: var(--txt-color);
+}
+tr:nth-child(even) {
+	background-color: var(--main-bg-color);
+	color: var(--txt-color);
+}
+
+
+/*div.definition-tbl tr:hover {
+	color: var(--highlight-orange);
+}
+*/
+/*.book .book-body .page-wrapper .page-inner section.normal div.dictionary h1 {
+	color: #fff;
+}
+
+
+.book .book-body .page-wrapper .page-inner section.normal div.lightbulb h1 {
+	color: #fff;
+}*/
