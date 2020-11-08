@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-05" />
+<meta name="date" content="2020-11-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,7 +35,6 @@
   
 <link rel="prev" href="interactions.html"/>
 <link rel="next" href="wrapping-up.html"/>
-<script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -64,17 +63,18 @@
 
 
 <style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -94,7 +94,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,47 +142,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
-<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
-<ul>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a><ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
-<ul>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
-<ul>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
 <li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
 <li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
-<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
-<ul>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a><ul>
 <li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
 <li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
-<ul>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a><ul>
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
-<ul>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a><ul>
 <li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
 <li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
-<ul>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a><ul>
 <li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
 <li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
 </ul></li>
-<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
-<ul>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a><ul>
 <li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>4</b> Introduction to R</a></li>
+<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
+<li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
+<li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a></li>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -200,20 +199,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="pca" class="section level2" number="3.9">
+<div id="pca" class="section level2">
 <h2><span class="header-section-number">3.9</span> PCA</h2>
 <p>For some sets of models (such as linear regression) highly correlated variables may cause model instability or, perhaps more importantly, lead to wider confidence intervals around model predictions (i.e., how confident we are about our prediction). In these cases, it may help to collapse these variables, while still accounting for the majority of the variance. This is the basic idea behind Principal Components Analysis (PCA). You use PCA to collapse sets of variables into principal components, reducing the dimensionality of your data while maintainingg <span class="math inline">\(X\)</span> percent of the original variation in the data. Reducing the dimensionality generally has an associated cost of higher model bias. However, it will also nearly always reduce model variability. The proportion of the original variability to maintain can thus be considered a tuning parameter, balancing bias with variance.</p>
 <p>Probably my favorite discussion of PCA comes from a <a href="https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues">discussion on CrossValidated</a> on how to make sense of PCA. The opening poster asked how you would explain PCA to a layman and why it’s needed. The entire thread is worth reading through, and there’s a particularly nice example from <a href="https://twitter.com/CMastication">JD Long</a> comparing the first principal component to the line of best fit in linear regression.</p>
 <p>For our purposes, we’re primarily interested in what proportion of the total variability in the independent variables we should maintain. That is, can we improve our model performance by collapsing groups of (correlated) columns into a smaller set of principal components?</p>
-<div id="pca-with-recipes" class="section level3" number="3.9.1">
+<div id="pca-with-recipes" class="section level3">
 <h3><span class="header-section-number">3.9.1</span> PCA with {recipes}</h3>
 <p>Let’s move back to our full dataset. Our final recipe looked like this.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="pca.html#cb154-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb154-2"><a href="pca.html#cb154-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb154-3"><a href="pca.html#cb154-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
-<span id="cb154-4"><a href="pca.html#cb154-4"></a>              <span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb154-5"><a href="pca.html#cb154-5"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb154-6"><a href="pca.html#cb154-6"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="pca.html#cb147-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb147-2"><a href="pca.html#cb147-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb147-3"><a href="pca.html#cb147-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
+<span id="cb147-4"><a href="pca.html#cb147-4"></a>              <span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb147-5"><a href="pca.html#cb147-5"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb147-6"><a href="pca.html#cb147-6"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>())</span></code></pre></div>
 <p>To conduct PCA we need to make sure that</p>
 <ol style="list-style-type: decimal">
 <li>All variables are numeric</li>
@@ -221,78 +220,82 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>No missing data</li>
 </ol>
 <p>Our recipe above ensures all variables are numeric, but it doesn’t handle missing data, and there is no standardization of variables. Let’s redo this recipe to make sure it’s ready for PCA.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="pca.html#cb155-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb155-2"><a href="pca.html#cb155-2"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb155-3"><a href="pca.html#cb155-3"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb155-4"><a href="pca.html#cb155-4"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb155-5"><a href="pca.html#cb155-5"></a><span class="st">  </span><span class="kw">step_unknown</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span></span>
-<span id="cb155-6"><a href="pca.html#cb155-6"></a><span class="st">  </span><span class="kw">step_medianimpute</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb155-7"><a href="pca.html#cb155-7"></a><span class="st">  </span><span class="kw">step_normalize</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb155-8"><a href="pca.html#cb155-8"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="pca.html#cb148-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb148-2"><a href="pca.html#cb148-2"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb148-3"><a href="pca.html#cb148-3"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb148-4"><a href="pca.html#cb148-4"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb148-5"><a href="pca.html#cb148-5"></a><span class="st">  </span><span class="kw">step_unknown</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb148-6"><a href="pca.html#cb148-6"></a><span class="st">  </span><span class="kw">step_medianimpute</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb148-7"><a href="pca.html#cb148-7"></a><span class="st">  </span><span class="kw">step_normalize</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb148-8"><a href="pca.html#cb148-8"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>))</span></code></pre></div>
 <p>The above is not a whole lot more complex than our original recipe. It just assigns an <code>"unknown"</code> level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables (center/scales) and dummy codes the nominal variables.</p>
 <p>This recipe gives us a data frame with many columns. Specifically</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="pca.html#cb156-1"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb156-2"><a href="pca.html#cb156-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb156-3"><a href="pca.html#cb156-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb156-4"><a href="pca.html#cb156-4"></a><span class="st">  </span><span class="kw">ncol</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="pca.html#cb149-1"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb149-2"><a href="pca.html#cb149-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb149-3"><a href="pca.html#cb149-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb149-4"><a href="pca.html#cb149-4"></a><span class="st">  </span><span class="kw">ncol</span>()</span></code></pre></div>
 <pre><code>## [1] 80</code></pre>
 <p>Let’s create a recipe that retains 80% of the total variability with a smaller set of principal components.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="pca.html#cb158-1"></a>rec_<span class="dv">80</span> &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb158-2"><a href="pca.html#cb158-2"></a><span class="st">  </span><span class="kw">step_pca</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>), </span>
-<span id="cb158-3"><a href="pca.html#cb158-3"></a>           <span class="dt">threshold =</span> <span class="fl">.80</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="pca.html#cb151-1"></a>rec_<span class="dv">80</span> &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb151-2"><a href="pca.html#cb151-2"></a><span class="st">  </span><span class="kw">step_pca</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>), </span>
+<span id="cb151-3"><a href="pca.html#cb151-3"></a>           <span class="dt">threshold =</span> <span class="fl">.80</span>)</span></code></pre></div>
 <p>Notice that we just have to specify the threshold of variance we want to maintain. How many columns do we have now?</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="pca.html#cb159-1"></a>rec_<span class="dv">80</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb159-2"><a href="pca.html#cb159-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb159-3"><a href="pca.html#cb159-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb159-4"><a href="pca.html#cb159-4"></a><span class="st">  </span><span class="kw">ncol</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="pca.html#cb152-1"></a>rec_<span class="dv">80</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-2"><a href="pca.html#cb152-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-3"><a href="pca.html#cb152-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-4"><a href="pca.html#cb152-4"></a><span class="st">  </span><span class="kw">ncol</span>()</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
 <p>We’ve dramatically reduced the dimensionality in the data, while still retaining 80% of the total variability.</p>
 <p>An alternative method is to specify the number of components we want. For example, let’s extract only the first five components.</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="pca.html#cb161-1"></a>rec_<span class="dv">5</span> &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb161-2"><a href="pca.html#cb161-2"></a><span class="st">  </span><span class="kw">step_pca</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>), </span>
-<span id="cb161-3"><a href="pca.html#cb161-3"></a>           <span class="dt">num_comp =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="pca.html#cb154-1"></a>rec_<span class="dv">5</span> &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb154-2"><a href="pca.html#cb154-2"></a><span class="st">  </span><span class="kw">step_pca</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span><span class="kw">all_outcomes</span>(), <span class="op">-</span><span class="kw">has_role</span>(<span class="st">&quot;id vars&quot;</span>), </span>
+<span id="cb154-3"><a href="pca.html#cb154-3"></a>           <span class="dt">num_comp =</span> <span class="dv">5</span>)</span></code></pre></div>
 <p>I generally prefer the former because, if we’re thinking about PCA through a predictive modeling framework, we’re probably less concerned with the number of components and more concerned with the variation they represent.</p>
 <p>So how do we know how much of the variabilty we should retain? This is a difficult question, but sometimes plots of the principal components can help. Let’s look at the five components we just extracted. If we prep the recipe, you’ll see there’s some extra information we can access.</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="pca.html#cb162-1"></a>prepped_pca &lt;-<span class="st"> </span><span class="kw">prep</span>(rec_<span class="dv">5</span>)</span>
-<span id="cb162-2"><a href="pca.html#cb162-2"></a><span class="kw">names</span>(prepped_pca)</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="pca.html#cb155-1"></a>prepped_pca &lt;-<span class="st"> </span><span class="kw">prep</span>(rec_<span class="dv">5</span>)</span>
+<span id="cb155-2"><a href="pca.html#cb155-2"></a><span class="kw">names</span>(prepped_pca)</span></code></pre></div>
 <pre><code>## [1] &quot;var_info&quot;       &quot;term_info&quot;      &quot;steps&quot;          &quot;template&quot;      
 ## [5] &quot;retained&quot;       &quot;tr_info&quot;        &quot;orig_lvls&quot;      &quot;last_term_info&quot;</code></pre>
 <p>If we access the steps we can get additional information. The PCA step is the seventh, and it has the following elements stored in the list.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="pca.html#cb164-1"></a><span class="kw">names</span>(prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="pca.html#cb157-1"></a><span class="kw">names</span>(prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]])</span></code></pre></div>
 <pre><code>##  [1] &quot;terms&quot;     &quot;role&quot;      &quot;trained&quot;   &quot;num_comp&quot;  &quot;threshold&quot; &quot;options&quot;  
 ##  [7] &quot;res&quot;       &quot;prefix&quot;    &quot;skip&quot;      &quot;id&quot;</code></pre>
 <p>Let’s look into <code>res</code></p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="pca.html#cb166-1"></a><span class="kw">names</span>(prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]]<span class="op">$</span>res)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="pca.html#cb159-1"></a><span class="kw">names</span>(prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]]<span class="op">$</span>res)</span></code></pre></div>
 <pre><code>## [1] &quot;sdev&quot;     &quot;rotation&quot; &quot;center&quot;   &quot;scale&quot;</code></pre>
 <p>And now we get what we’ve been (perhaps unknowingly to you, dear reader) looking for, the <code>sdev</code> object, which lists the standard deviation of each principal component. We can look at how much variance each component accounts for as follows</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="pca.html#cb168-1"></a>vars &lt;-<span class="st"> </span>prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]]<span class="op">$</span>res<span class="op">$</span>sdev<span class="op">^</span><span class="dv">2</span></span>
-<span id="cb168-2"><a href="pca.html#cb168-2"></a>pvar &lt;-<span class="st"> </span>vars <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(vars)</span>
-<span id="cb168-3"><a href="pca.html#cb168-3"></a>pvar</span></code></pre></div>
-<pre><code>##  [1] 7.503092e-01 5.138784e-02 5.055445e-02 4.135567e-02 2.388100e-02 1.154347e-02
-##  [7] 8.222078e-03 8.051600e-03 7.564274e-03 7.346244e-03 5.926695e-03 5.187219e-03
-## [13] 4.420626e-03 3.803443e-03 3.418581e-03 2.536214e-03 2.344631e-03 1.533003e-03
-## [19] 1.516079e-03 1.397730e-03 1.170231e-03 1.071354e-03 1.001754e-03 8.622161e-04
-## [25] 7.596821e-04 7.042076e-04 4.803264e-04 3.837786e-04 3.359652e-04 3.219790e-04
-## [31] 1.786945e-04 1.426193e-04 7.831676e-05 6.866070e-05 3.886009e-05 3.175614e-05
-## [37] 2.647517e-05 2.034393e-05 1.580665e-05 6.911480e-06 1.361666e-30 5.047925e-31
-## [43] 1.214792e-32 9.199957e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [49] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [55] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [61] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
-## [67] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33</code></pre>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="pca.html#cb161-1"></a>vars &lt;-<span class="st"> </span>prepped_pca<span class="op">$</span>steps[[<span class="dv">7</span>]]<span class="op">$</span>res<span class="op">$</span>sdev<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb161-2"><a href="pca.html#cb161-2"></a>pvar &lt;-<span class="st"> </span>vars <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(vars)</span>
+<span id="cb161-3"><a href="pca.html#cb161-3"></a>pvar</span></code></pre></div>
+<pre><code>##  [1] 7.503092e-01 5.138784e-02 5.055445e-02 4.135567e-02 2.388100e-02
+##  [6] 1.154347e-02 8.222078e-03 8.051600e-03 7.564274e-03 7.346244e-03
+## [11] 5.926695e-03 5.187219e-03 4.420626e-03 3.803443e-03 3.418581e-03
+## [16] 2.536214e-03 2.344631e-03 1.533003e-03 1.516079e-03 1.397730e-03
+## [21] 1.170231e-03 1.071354e-03 1.001754e-03 8.622161e-04 7.596821e-04
+## [26] 7.042076e-04 4.803264e-04 3.837786e-04 3.359652e-04 3.219790e-04
+## [31] 1.786945e-04 1.426193e-04 7.831676e-05 6.866070e-05 3.886009e-05
+## [36] 3.175614e-05 2.647517e-05 2.034393e-05 1.580665e-05 6.911480e-06
+## [41] 1.361666e-30 5.047925e-31 1.214792e-32 9.199957e-33 6.414887e-33
+## [46] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [51] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [56] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [61] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [66] 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33 6.414887e-33
+## [71] 6.414887e-33 6.414887e-33</code></pre>
 <p>That’s difficult to read. Let’s plot it instead</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="pca.html#cb170-1"></a>pcs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">pc =</span> <span class="kw">paste0</span>(<span class="st">&quot;PC&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(pvar)),</span>
-<span id="cb170-2"><a href="pca.html#cb170-2"></a>                  <span class="dt">percent_var =</span> pvar) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb170-3"><a href="pca.html#cb170-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pc =</span> <span class="kw">reorder</span>(<span class="kw">factor</span>(pc), percent_var))</span>
-<span id="cb170-4"><a href="pca.html#cb170-4"></a></span>
-<span id="cb170-5"><a href="pca.html#cb170-5"></a><span class="kw">ggplot</span>(pcs, <span class="kw">aes</span>(pc, percent_var)) <span class="op">+</span></span>
-<span id="cb170-6"><a href="pca.html#cb170-6"></a><span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span></span>
-<span id="cb170-7"><a href="pca.html#cb170-7"></a><span class="st">  </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="pca.html#cb163-1"></a>pcs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">pc =</span> <span class="kw">paste0</span>(<span class="st">&quot;PC&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(pvar)),</span>
+<span id="cb163-2"><a href="pca.html#cb163-2"></a>                  <span class="dt">percent_var =</span> pvar) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb163-3"><a href="pca.html#cb163-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pc =</span> <span class="kw">reorder</span>(<span class="kw">factor</span>(pc), percent_var))</span>
+<span id="cb163-4"><a href="pca.html#cb163-4"></a></span>
+<span id="cb163-5"><a href="pca.html#cb163-5"></a><span class="kw">ggplot</span>(pcs, <span class="kw">aes</span>(pc, percent_var)) <span class="op">+</span></span>
+<span id="cb163-6"><a href="pca.html#cb163-6"></a><span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span></span>
+<span id="cb163-7"><a href="pca.html#cb163-7"></a><span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb163-8"><a href="pca.html#cb163-8"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">expand =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="co"># move this to a book theme for plots</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
 <p>A few things are of note here. First, it appears the majority of the variance is accounted for by our first few components, which is not altogether surprising given that we already new the first 10 components accounted for approximately 85% of the total variability. However, you might also wonder <em>why there are so many freaking components shown?! I thought we only asked for five!?</em> That is true. But the model actually estimates all the components, and then just pulls out whatever we ask, based on either the <code>threshold</code> or the <code>num_comp</code> arguments. For example, let’s <code>bake</code> the five component recipe on the full training data.</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="pca.html#cb171-1"></a>rec_<span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb171-2"><a href="pca.html#cb171-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb171-3"><a href="pca.html#cb171-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="pca.html#cb164-1"></a>rec_<span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb164-2"><a href="pca.html#cb164-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb164-3"><a href="pca.html#cb164-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 2,841 x 13
 ##        id attnd_dist_inst… attnd_schl_inst… tst_dt              partic_dist_ins…
 ##     &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;                         &lt;dbl&gt;

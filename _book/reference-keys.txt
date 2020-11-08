@@ -30,4 +30,14 @@ creating-interactions-with-recipes
 pca
 pca-with-recipes
 wrapping-up
+decision-trees
+a-simple-decision-tree
+determining-optimal-splits
+visualizing-decision-trees
+fitting-a-decision-tree
+tuning-decision-trees
 introduction-to-r
+load-the-data
+decision-tree-hyperparamters
+conducting-the-grid-search
+finalizing-our-model-fit

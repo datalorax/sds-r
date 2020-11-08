@@ -28,7 +28,11 @@ Imports:
     dplyr,
     reactable,
     here,
-    splines
+    splines,
+    rpart,
+    rpart.plot,
+    parttree,
+    tictoc
 Depends: 
     tidyverse,
     tidymodels
