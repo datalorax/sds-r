@@ -30,7 +30,9 @@ Imports:
     here,
     splines,
     rpart,
-    rpart.plot
+    rpart.plot,
+    parttree,
+    tictoc
 Depends: 
     tidyverse,
     tidymodels

@@ -16,9 +16,14 @@ update_geom_defaults('smooth', list(size = 1.5,
                                     color = "#7EC1E7",
                                     fill = "#C7E4F5"))
 update_geom_defaults('point', list(size = 3, color = "#B3E5D9"))
+update_geom_defaults('col', list(size = 3, fill = "#B3E5D9"))
 
 scale_colour_discrete <- function(...) {
  colorspace::scale_color_discrete_qualitative(palette = "cold", ...)
+}
+
+scale_fill_discrete <- function(...) {
+  colorspace::scale_fill_discrete_qualitative(palette = "cold", ...)
 }
 
 options(

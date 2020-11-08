@@ -1,4 +1,5 @@
 library(synthpop)
+library(tidyverse)
 
 d <- rio::import(here::here("data", "OKA_1415_20180110_NCAASE_Research_Agreement_8519.xlsx"), setclass = "tbl_df")
 
@@ -81,3 +82,26 @@ names(violence) <- violence_colnames
 
 write_csv(violence,
           here::here("data", "violence.csv"))
+
+
+#### data science bowl data
+train <- read_csv(
+  here::here("raw_data", "data-science-bowl-2019", "train.csv"),
+  n_max = 5e4 
+) %>%
+  select(-event_data)
+train_labels <- read_csv(
+  here::here("raw_data", "data-science-bowl-2019", "train_labels.csv")
+)
+
+k_train <- left_join(train, train_labels) %>% 
+  select(event_count, event_code, game_time, title, world, 
+         accuracy_group) %>% 
+  mutate(accuracy_group = as.factor(accuracy_group),
+         title = as.factor(title),
+         world = as.factor(world))
+
+# set.seed(8675309)
+# k_train_sim <- syn(k_train)$syn
+
+write_csv(k_train, here::here("data", "ds-bowl-2019.csv"))
