@@ -213,16 +213,9 @@ UPDATE: The data have actually been removed so they are fairly obviously not ver
 -->
 
 ```{r }
-train <- read_csv(
-    here::here("data", "data-science-bowl-2019", "train.csv"),
-    n_max = 1e4 
-  ) %>%
-  select(-event_data)
-train_labels <- read_csv(
-  here::here("data", "data-science-bowl-2019", "train_labels.csv")
-)
-
-k_train <- left_join(train, train_labels)
+k_train <- read_csv(here::here("data", "ds-bowl-2019.csv"),
+                    col_types = cols(.default = col_guess(),
+                                     accuracy_group = col_character()))
 ```
 
 After joining the training data with the labels, our full training dataset look like this
@@ -235,13 +228,7 @@ Next we'll create our initial split, pull our training data, and create our $k$-
 
 ```{r message = FALSE}
 library(tidymodels)
-
-model_set <- k_train %>%
-  select(event_count, event_code, game_time, title, world, 
-         accuracy_group) %>%
-  drop_na(accuracy_group)
-
-splt <- initial_split(model_set)
+splt <- initial_split(k_train)
 train <- training(splt)
 cv <- vfold_cv(train)
 ```
@@ -316,10 +303,10 @@ rpart.plot(all_mods[[1]], type = 4)
 
 If you're running this with me, you'll notice that you get a warning here about not being able to retrieve the data used to build the model. This is generally not a big deal for our purposes. I've also included the optional `type` argument, which just changes the way the tree is drawn a bit.
 
-By comparison, let's look at the tree for the second fold.
+By comparison, let's look at the tree for the third fold.
 
 ```{r }
-rpart.plot(all_mods[[2]], type = 4)
+rpart.plot(all_mods[[3]], type = 4)
 ```
 
 Notice that the models are quite different. This show the potential for high variability with decision trees (while also potentially having low bias).
@@ -414,7 +401,7 @@ So generally it's looking like lower values of of cost complexity are leading to
 show_best(dt_tune_fit, metric = "roc_auc")
 ```
 
-And we see a little bit different picture here. It appears cost complexity is having almost no effect. We may not want to prune using the cost complexity parameter at all. Let's use all the results again to look at the minimum $n$ a little closer.
+And we see a little bit different picture here. Our best model has a minimum $n$ of 11 with a relatively higher cost complexity. But the amount this model is "better" is trivial and could easily be due to sampling variability. All of the rest of the best models have the same minimum $n$, with the cost complexity playing essentially no role. This may lead us to consider *not* pruning by the cost complexity parameter at all. Let's use all the results again to look at the minimum $n$ a little closer. We'll filter for a very low cost complexity.
 
 ```{r }
 dt_tune_metrics %>% 
@@ -423,10 +410,10 @@ dt_tune_metrics %>%
   arrange(desc(mean))
 ```
 
-Unsurprisingly, 21 is looking best for our minimum $n$. To be sure we've got this right though, let's set cost_complexity and tune *just* on the minimum $n$. We know that values of 11 and 30 are both worst than 21, but let's see if there's any more room for optimization around there. This shouldn't take quite as long as our previous grid search.
+Unsurprisingly, 30 is looking best for our minimum $n$. To be sure we've got this right though, let's set cost_complexity and tune *just* on the minimum $n$. We know that values of 21 and 40 are both worst than 30, but let's see if there's any more room for optimization around there. This shouldn't take quite as long as our previous grid search.
 
 ```{r }
-grid_min_n <- tibble(min_n = 14:28)
+grid_min_n <- tibble(min_n = 23:37)
 
 dt_tune2 <- dt_tune %>% 
   set_args(cost_complexity = 0.0000000001)
@@ -447,10 +434,10 @@ Let's look at our best metrics now and see if we've made any improvements.
 show_best(dt_tune_fit2, metric = "roc_auc")
 ```
 
-And look at that! It's a marginal improvement, but we have optimized our model a bit more.
+And look at that! It's a (very) marginal improvement, but we have optimized our model a bit more.
 
 ### Finalizing our model fit
-Generally before moving to the our final fit I'd probably want to do a bit more work with the model to make sure I was confident it was really the best model I could produce. But for illustration purposes, let's assume we're ready to go (and really, decision trees don't really have a lot more tuning you can do with them, at least using the *rpart* engine).
+Generally before moving to the our final fit we'd probably want to do a bit more work with the model to make sure we were confident it was really the best model we could produce. I'd be particularly interested at looking at minimum $n$ around the 0.001 cost complexity parameter (given that the overall optimum in our original gridsearch had this value with a minimum $n$ of 11). But for illustration purposes, let's assume we're ready to go (and really, decision trees don't have a lot more tuning we can do with them, at least using the *rpart* engine).
 
 First, let's finalize our model using the best `min_n` we found from our grid search. We'll use `finalize_model` along with `select_best` (rather than `show_best`) to set the final model parameters.
 
@@ -487,15 +474,23 @@ predictions
 This shows us the predicted probability that each case would be in each class, along with a "hard" prediction into a class, and their observed class (`accuracy_group`). We can use this for further visualizations and to better understand how our model makes predictions and where it is wrong. For example, let's look at a quick heat map of the predicted class versus the observed.
 
 ```{r }
-predictions %>% 
+counts <- predictions %>% 
   count(.pred_class, accuracy_group) %>% 
-  ggplot(aes(.pred_class, accuracy_group)) +
-  geom_tile(aes(fill = n)) +
-  geom_label(aes(label = n))
+  drop_na() %>% 
+  group_by(accuracy_group) %>% 
+  mutate(prop = n/sum(n)) 
+
+ggplot(counts, aes(.pred_class, accuracy_group)) +
+  geom_tile(aes(fill = prop)) +
+  geom_label(aes(label = round(prop, 2))) +
+  colorspace::scale_fill_continuous_diverging(
+    palette = "Blue-Red2",
+    mid = .25,
+    rev = TRUE)
 ```
 
-We can see that there are no cases where our model predicts Class 0 but the observed was 3, which is good. But we do have a relatively large number of cases where the predicted was Class 2 but the observed was class 0 and vice versa. This error seems to be more prominent then on the Class 2 versus Class 3 error. 
+Notice that I've omitted NA's here, which is less than ideal, because we have a lot of them. This is mostly because the original data themselves have so much missing data on the outcome, so it's hard to know how well we're actually doing with those cases. Instead, we're just evaluating our model with the cases for which we actually have an observed outcome. The plot above shows the proportion *by row*. In other words, each row sums to 1.0. 
 
-Generally, this model appears to be functioning reasonably well. Because we've evaluated the model against the test set, we can no longer make revisions to the model without collecting new data. However, if new data are easily collectable (as they likely are in this case - remember, we only read in a small portion of the overall data), then it may be worth considering revisions for future model developments to be evaluated again that new data.
+We can fairly quickly see that our model has some fairly significant issues. We are doing okay predicting classes for 0 and 3 (about 75% correct, in each case) but we're not a whole lot better than random chance leve (which would be 0.25-ish in each cell) when predicting Classes 1 and 2. It's fairly concerning that 32% of cases that were actually Class 2 were predicted to be Class 0. We would likely want to conduct a post-mortem with these cases to see if we could understand why our model was failing in this particular direction. 
 
 Decision trees, generally, are easily interpretable and easy to communicate with stakeholders. They also make no assumptions about the data, and can be applied in a large number of situations. Unfortunately, they often suffer from rapid overfitting to the data leading to poor generalizations to unseen data. In the next chapter, we'll build on decision trees to talk about *ensemble* methods, where we use multiple trees to make a single prediction.

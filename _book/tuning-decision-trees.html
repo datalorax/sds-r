@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-06" />
+<meta name="date" content="2020-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -277,23 +277,23 @@ SSE + \alpha |T|
 <span id="cb25-6"><a href="tuning-decision-trees.html#cb25-6"></a>  <span class="dt">grid =</span> dt_grid</span>
 <span id="cb25-7"><a href="tuning-decision-trees.html#cb25-7"></a>)</span>
 <span id="cb25-8"><a href="tuning-decision-trees.html#cb25-8"></a><span class="kw">toc</span>()</span></code></pre></div>
-<pre><code>## 189.721 sec elapsed</code></pre>
+<pre><code>## 215.628 sec elapsed</code></pre>
 <p>First let’s look at our results by hyperparameter. We can use <code>collect_metrics</code> to get a summary (mean) of the metrics we set (which we didn’t, so we’ll get the defaults, which in this case are <a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a> and <a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy</a>) across folds. You can optionally get te results by fold (no summarizing) by specifying <code>summarize = FALSE</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tuning-decision-trees.html#cb27-1"></a>dt_tune_metrics &lt;-<span class="st"> </span><span class="kw">collect_metrics</span>(dt_tune_fit)</span>
 <span id="cb27-2"><a href="tuning-decision-trees.html#cb27-2"></a>dt_tune_metrics</span></code></pre></div>
 <pre><code>## # A tibble: 100 x 8
 ##    cost_complexity min_n .metric  .estimator  mean     n std_err .config
 ##              &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-##  1    0.0000000001     2 accuracy multiclass 0.692    10  0.0187 Model01
-##  2    0.0000000001     2 roc_auc  hand_till  0.770    10  0.0177 Model01
-##  3    0.000000001      2 accuracy multiclass 0.692    10  0.0187 Model02
-##  4    0.000000001      2 roc_auc  hand_till  0.770    10  0.0177 Model02
-##  5    0.00000001       2 accuracy multiclass 0.692    10  0.0187 Model03
-##  6    0.00000001       2 roc_auc  hand_till  0.770    10  0.0177 Model03
-##  7    0.0000001        2 accuracy multiclass 0.692    10  0.0187 Model04
-##  8    0.0000001        2 roc_auc  hand_till  0.770    10  0.0177 Model04
-##  9    0.000001         2 accuracy multiclass 0.692    10  0.0187 Model05
-## 10    0.000001         2 roc_auc  hand_till  0.770    10  0.0177 Model05
+##  1    0.0000000001     2 accuracy multiclass 0.631    10 0.00859 Model01
+##  2    0.0000000001     2 roc_auc  hand_till  0.722    10 0.00833 Model01
+##  3    0.000000001      2 accuracy multiclass 0.631    10 0.00859 Model02
+##  4    0.000000001      2 roc_auc  hand_till  0.722    10 0.00833 Model02
+##  5    0.00000001       2 accuracy multiclass 0.631    10 0.00859 Model03
+##  6    0.00000001       2 roc_auc  hand_till  0.722    10 0.00833 Model03
+##  7    0.0000001        2 accuracy multiclass 0.631    10 0.00859 Model04
+##  8    0.0000001        2 roc_auc  hand_till  0.722    10 0.00833 Model04
+##  9    0.000001         2 accuracy multiclass 0.631    10 0.00859 Model05
+## 10    0.000001         2 roc_auc  hand_till  0.722    10 0.00833 Model05
 ## # … with 90 more rows</code></pre>
 <p>To get an idea of how things are performing, let’s look at our two hyperparameters with <code>roc_auc</code> as our metric. This is a metric we want to maximize, with a value of 1.0 indicating perfect predictions.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="tuning-decision-trees.html#cb29-1"></a>dt_tune_metrics <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -307,12 +307,12 @@ SSE + \alpha |T|
 <pre><code>## # A tibble: 5 x 8
 ##   cost_complexity min_n .metric .estimator  mean     n std_err .config
 ##             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-## 1    0.0000000001    21 roc_auc hand_till  0.850    10  0.0177 Model21
-## 2    0.000000001     21 roc_auc hand_till  0.850    10  0.0177 Model22
-## 3    0.00000001      21 roc_auc hand_till  0.850    10  0.0177 Model23
-## 4    0.0000001       21 roc_auc hand_till  0.850    10  0.0177 Model24
-## 5    0.000001        21 roc_auc hand_till  0.850    10  0.0177 Model25</code></pre>
-<p>And we see a little bit different picture here. It appears cost complexity is having almost no effect. We may not want to prune using the cost complexity parameter at all. Let’s use all the results again to look at the minimum <span class="math inline">\(n\)</span> a little closer.</p>
+## 1    0.001            2 roc_auc hand_till  0.823    10 0.00562 Model08
+## 2    0.001           11 roc_auc hand_till  0.822    10 0.00595 Model18
+## 3    0.0001          30 roc_auc hand_till  0.821    10 0.00711 Model37
+## 4    0.0000000001    30 roc_auc hand_till  0.821    10 0.00704 Model31
+## 5    0.000000001     30 roc_auc hand_till  0.821    10 0.00704 Model32</code></pre>
+<p>And we see a little bit different picture here. Our best model has a minimum <span class="math inline">\(n\)</span> of 11 with a relatively higher cost complexity. But the amount this model is “better” is trivial and could easily be due to sampling variability. All of the rest of the best models have the same minimum <span class="math inline">\(n\)</span>, with the cost complexity playing essentially no role. This may lead us to consider <em>not</em> pruning by the cost complexity parameter at all. Let’s use all the results again to look at the minimum <span class="math inline">\(n\)</span> a little closer. We’ll filter for a very low cost complexity.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tuning-decision-trees.html#cb32-1"></a>dt_tune_metrics <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb32-2"><a href="tuning-decision-trees.html#cb32-2"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;roc_auc&quot;</span> <span class="op">&amp;</span></span>
 <span id="cb32-3"><a href="tuning-decision-trees.html#cb32-3"></a><span class="st">           </span>cost_complexity <span class="op">==</span><span class="st"> </span><span class="fl">0.0000000001</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -320,13 +320,13 @@ SSE + \alpha |T|
 <pre><code>## # A tibble: 5 x 8
 ##   cost_complexity min_n .metric .estimator  mean     n std_err .config
 ##             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-## 1    0.0000000001    21 roc_auc hand_till  0.850    10  0.0177 Model21
-## 2    0.0000000001    11 roc_auc hand_till  0.840    10  0.0144 Model11
-## 3    0.0000000001    30 roc_auc hand_till  0.838    10  0.0167 Model31
-## 4    0.0000000001    40 roc_auc hand_till  0.815    10  0.0149 Model41
-## 5    0.0000000001     2 roc_auc hand_till  0.770    10  0.0177 Model01</code></pre>
-<p>Unsurprisingly, 21 is looking best for our minimum <span class="math inline">\(n\)</span>. To be sure we’ve got this right though, let’s set cost_complexity and tune <em>just</em> on the minimum <span class="math inline">\(n\)</span>. We know that values of 11 and 30 are both worst than 21, but let’s see if there’s any more room for optimization around there. This shouldn’t take quite as long as our previous grid search.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tuning-decision-trees.html#cb34-1"></a>grid_min_n &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">min_n =</span> <span class="dv">14</span><span class="op">:</span><span class="dv">28</span>)</span>
+## 1    0.0000000001    30 roc_auc hand_till  0.821    10 0.00704 Model31
+## 2    0.0000000001    40 roc_auc hand_till  0.820    10 0.00560 Model41
+## 3    0.0000000001    21 roc_auc hand_till  0.815    10 0.00747 Model21
+## 4    0.0000000001    11 roc_auc hand_till  0.808    10 0.00718 Model11
+## 5    0.0000000001     2 roc_auc hand_till  0.722    10 0.00833 Model01</code></pre>
+<p>Unsurprisingly, 30 is looking best for our minimum <span class="math inline">\(n\)</span>. To be sure we’ve got this right though, let’s set cost_complexity and tune <em>just</em> on the minimum <span class="math inline">\(n\)</span>. We know that values of 21 and 40 are both worst than 30, but let’s see if there’s any more room for optimization around there. This shouldn’t take quite as long as our previous grid search.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tuning-decision-trees.html#cb34-1"></a>grid_min_n &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">min_n =</span> <span class="dv">23</span><span class="op">:</span><span class="dv">37</span>)</span>
 <span id="cb34-2"><a href="tuning-decision-trees.html#cb34-2"></a></span>
 <span id="cb34-3"><a href="tuning-decision-trees.html#cb34-3"></a>dt_tune2 &lt;-<span class="st"> </span>dt_tune <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb34-4"><a href="tuning-decision-trees.html#cb34-4"></a><span class="st">  </span><span class="kw">set_args</span>(<span class="dt">cost_complexity =</span> <span class="fl">0.0000000001</span>)</span>
@@ -339,22 +339,22 @@ SSE + \alpha |T|
 <span id="cb34-11"><a href="tuning-decision-trees.html#cb34-11"></a>  <span class="dt">grid =</span> grid_min_n</span>
 <span id="cb34-12"><a href="tuning-decision-trees.html#cb34-12"></a>)</span>
 <span id="cb34-13"><a href="tuning-decision-trees.html#cb34-13"></a><span class="kw">toc</span>()</span></code></pre></div>
-<pre><code>## 59.053 sec elapsed</code></pre>
+<pre><code>## 62.332 sec elapsed</code></pre>
 <p>Let’s look at our best metrics now and see if we’ve made any improvements.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="tuning-decision-trees.html#cb36-1"></a><span class="kw">show_best</span>(dt_tune_fit2, <span class="dt">metric =</span> <span class="st">&quot;roc_auc&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 7
 ##   min_n .metric .estimator  mean     n std_err .config
 ##   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-## 1    18 roc_auc hand_till  0.852    10  0.0181 Model05
-## 2    19 roc_auc hand_till  0.852    10  0.0181 Model06
-## 3    17 roc_auc hand_till  0.852    10  0.0181 Model04
-## 4    20 roc_auc hand_till  0.851    10  0.0172 Model07
-## 5    21 roc_auc hand_till  0.850    10  0.0177 Model08</code></pre>
-<p>And look at that! It’s a marginal improvement, but we have optimized our model a bit more.</p>
+## 1    35 roc_auc hand_till  0.825    10 0.00667 Model13
+## 2    36 roc_auc hand_till  0.824    10 0.00615 Model14
+## 3    34 roc_auc hand_till  0.824    10 0.00685 Model12
+## 4    37 roc_auc hand_till  0.824    10 0.00624 Model15
+## 5    33 roc_auc hand_till  0.824    10 0.00715 Model11</code></pre>
+<p>And look at that! It’s a (very) marginal improvement, but we have optimized our model a bit more.</p>
 </div>
 <div id="finalizing-our-model-fit" class="section level3">
 <h3><span class="header-section-number">4.4.3</span> Finalizing our model fit</h3>
-<p>Generally before moving to the our final fit I’d probably want to do a bit more work with the model to make sure I was confident it was really the best model I could produce. But for illustration purposes, let’s assume we’re ready to go (and really, decision trees don’t really have a lot more tuning you can do with them, at least using the <em>rpart</em> engine).</p>
+<p>Generally before moving to the our final fit we’d probably want to do a bit more work with the model to make sure we were confident it was really the best model we could produce. I’d be particularly interested at looking at minimum <span class="math inline">\(n\)</span> around the 0.001 cost complexity parameter (given that the overall optimum in our original gridsearch had this value with a minimum <span class="math inline">\(n\)</span> of 11). But for illustration purposes, let’s assume we’re ready to go (and really, decision trees don’t have a lot more tuning we can do with them, at least using the <em>rpart</em> engine).</p>
 <p>First, let’s finalize our model using the best <code>min_n</code> we found from our grid search. We’ll use <code>finalize_model</code> along with <code>select_best</code> (rather than <code>show_best</code>) to set the final model parameters.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tuning-decision-trees.html#cb38-1"></a>best_params &lt;-<span class="st"> </span><span class="kw">select_best</span>(dt_tune_fit2, <span class="dt">metric =</span> <span class="st">&quot;roc_auc&quot;</span>)</span>
 <span id="cb38-2"><a href="tuning-decision-trees.html#cb38-2"></a>final_mod &lt;-<span class="st"> </span><span class="kw">finalize_model</span>(dt_tune2, best_params)</span>
@@ -363,7 +363,7 @@ SSE + \alpha |T|
 ## 
 ## Main Arguments:
 ##   cost_complexity = 1e-10
-##   min_n = 18
+##   min_n = 35
 ## 
 ## Computational engine: rpart</code></pre>
 <p>Note that the min_n is now set. If we had done any tuning with our recipe we could follow a similar process.</p>
@@ -375,42 +375,50 @@ SSE + \alpha |T|
 <pre><code>## # Resampling results
 ## # Monte Carlo cross-validation (0.75/0.25) with 1 resamples  
 ## # A tibble: 1 x 6
-##   splits        id           .metrics      .notes      .predictions    .workflow
-##   &lt;list&gt;        &lt;chr&gt;        &lt;list&gt;        &lt;list&gt;      &lt;list&gt;          &lt;list&gt;   
-## 1 &lt;split [468/… train/test … &lt;tibble [2 ×… &lt;tibble [0… &lt;tibble [156 ×… &lt;workflo…</code></pre>
+##   splits         id          .metrics     .notes      .predictions     .workflow
+##   &lt;list&gt;         &lt;chr&gt;       &lt;list&gt;       &lt;list&gt;      &lt;list&gt;           &lt;list&gt;   
+## 1 &lt;split [37.5K… train/test… &lt;tibble [2 … &lt;tibble [0… &lt;tibble [12,500… &lt;workflo…</code></pre>
 <p>What we get output doesn’t look terrifically helpful, but it is. It’s basically everything we need. For example, let’s look at our metrics.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="tuning-decision-trees.html#cb42-1"></a>dt_finalized<span class="op">$</span>.metrics[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 3
 ##   .metric  .estimator .estimate
 ##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-## 1 accuracy multiclass     0.712
-## 2 roc_auc  hand_till      0.871</code></pre>
+## 1 accuracy multiclass     0.640
+## 2 roc_auc  hand_till      0.838</code></pre>
 <p>unsurprisingly, our AUC is a bit lower for our test set. What if we want our predictions?</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tuning-decision-trees.html#cb44-1"></a>predictions &lt;-<span class="st"> </span>dt_finalized<span class="op">$</span>.predictions[[<span class="dv">1</span>]]</span>
 <span id="cb44-2"><a href="tuning-decision-trees.html#cb44-2"></a>predictions</span></code></pre></div>
-<pre><code>## # A tibble: 156 x 6
-##    .pred_0 .pred_2 .pred_3  .row .pred_class accuracy_group
-##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;fct&gt;       &lt;fct&gt;         
-##  1   0.12    0.08    0.8       6 3           3             
-##  2   0.12    0.08    0.8      10 3           3             
-##  3   0.12    0.08    0.8      11 3           3             
-##  4   0.12    0.08    0.8      19 3           3             
-##  5   0.5     0.25    0.25     21 0           3             
-##  6   0.308   0.231   0.462    26 3           3             
-##  7   0       0.667   0.333    29 2           3             
-##  8   0.154   0.385   0.462    30 3           3             
-##  9   0       0.250   0.75     32 3           3             
-## 10   0       0.250   0.75     34 3           3             
-## # … with 146 more rows</code></pre>
+<pre><code>## # A tibble: 12,500 x 7
+##    .pred_0 .pred_1 .pred_2 .pred_3  .row .pred_class accuracy_group
+##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;fct&gt;       &lt;fct&gt;         
+##  1   0.192       0  0.0385   0.769     3 3           &lt;NA&gt;          
+##  2   0.176       0  0        0.824     5 3           &lt;NA&gt;          
+##  3   0.105       0  0        0.895     7 3           &lt;NA&gt;          
+##  4   0.105       0  0        0.895     9 3           &lt;NA&gt;          
+##  5   0.105       0  0        0.895    10 3           &lt;NA&gt;          
+##  6   0.105       0  0        0.895    11 3           &lt;NA&gt;          
+##  7   0.105       0  0        0.895    12 3           &lt;NA&gt;          
+##  8   0.105       0  0        0.895    13 3           &lt;NA&gt;          
+##  9   0.294       0  0.157    0.549    16 3           &lt;NA&gt;          
+## 10   0.5         0  0.214    0.286    19 0           &lt;NA&gt;          
+## # … with 12,490 more rows</code></pre>
 <p>This shows us the predicted probability that each case would be in each class, along with a “hard” prediction into a class, and their observed class (<code>accuracy_group</code>). We can use this for further visualizations and to better understand how our model makes predictions and where it is wrong. For example, let’s look at a quick heat map of the predicted class versus the observed.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tuning-decision-trees.html#cb46-1"></a>predictions <span class="op">%&gt;%</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tuning-decision-trees.html#cb46-1"></a>counts &lt;-<span class="st"> </span>predictions <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb46-2"><a href="tuning-decision-trees.html#cb46-2"></a><span class="st">  </span><span class="kw">count</span>(.pred_class, accuracy_group) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb46-3"><a href="tuning-decision-trees.html#cb46-3"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(.pred_class, accuracy_group)) <span class="op">+</span></span>
-<span id="cb46-4"><a href="tuning-decision-trees.html#cb46-4"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> n)) <span class="op">+</span></span>
-<span id="cb46-5"><a href="tuning-decision-trees.html#cb46-5"></a><span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> n))</span></code></pre></div>
+<span id="cb46-3"><a href="tuning-decision-trees.html#cb46-3"></a><span class="st">  </span><span class="kw">drop_na</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-4"><a href="tuning-decision-trees.html#cb46-4"></a><span class="st">  </span><span class="kw">group_by</span>(accuracy_group) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-5"><a href="tuning-decision-trees.html#cb46-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">prop =</span> n<span class="op">/</span><span class="kw">sum</span>(n)) </span>
+<span id="cb46-6"><a href="tuning-decision-trees.html#cb46-6"></a></span>
+<span id="cb46-7"><a href="tuning-decision-trees.html#cb46-7"></a><span class="kw">ggplot</span>(counts, <span class="kw">aes</span>(.pred_class, accuracy_group)) <span class="op">+</span></span>
+<span id="cb46-8"><a href="tuning-decision-trees.html#cb46-8"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> prop)) <span class="op">+</span></span>
+<span id="cb46-9"><a href="tuning-decision-trees.html#cb46-9"></a><span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> <span class="kw">round</span>(prop, <span class="dv">2</span>))) <span class="op">+</span></span>
+<span id="cb46-10"><a href="tuning-decision-trees.html#cb46-10"></a><span class="st">  </span>colorspace<span class="op">::</span><span class="kw">scale_fill_continuous_diverging</span>(</span>
+<span id="cb46-11"><a href="tuning-decision-trees.html#cb46-11"></a>    <span class="dt">palette =</span> <span class="st">&quot;Blue-Red2&quot;</span>,</span>
+<span id="cb46-12"><a href="tuning-decision-trees.html#cb46-12"></a>    <span class="dt">mid =</span> <span class="fl">.25</span>,</span>
+<span id="cb46-13"><a href="tuning-decision-trees.html#cb46-13"></a>    <span class="dt">rev =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
-<p>We can see that there are no cases where our model predicts Class 0 but the observed was 3, which is good. But we do have a relatively large number of cases where the predicted was Class 2 but the observed was class 0 and vice versa. This error seems to be more prominent then on the Class 2 versus Class 3 error.</p>
-<p>Generally, this model appears to be functioning reasonably well. Because we’ve evaluated the model against the test set, we can no longer make revisions to the model without collecting new data. However, if new data are easily collectable (as they likely are in this case - remember, we only read in a small portion of the overall data), then it may be worth considering revisions for future model developments to be evaluated again that new data.</p>
+<p>Notice that I’ve omitted NA’s here, which is less than ideal, because we have a lot of them. This is mostly because the original data themselves have so much missing data on the outcome, so it’s hard to know how well we’re actually doing with those cases. Instead, we’re just evaluating our model with the cases for which we actually have an observed outcome. The plot above shows the proportion <em>by row</em>. In other words, each row sums to 1.0.</p>
+<p>We can fairly quickly see that our model has some fairly significant issues. We are doing okay predicting classes for 0 and 3 (about 75% correct, in each case) but we’re not a whole lot better than random chance leve (which would be 0.25-ish in each cell) when predicting Classes 1 and 2. It’s fairly concerning that 32% of cases that were actually Class 2 were predicted to be Class 0. We would likely want to conduct a post-mortem with these cases to see if we could understand why our model was failing in this particular direction.</p>
 <p>Decision trees, generally, are easily interpretable and easy to communicate with stakeholders. They also make no assumptions about the data, and can be applied in a large number of situations. Unfortunately, they often suffer from rapid overfitting to the data leading to poor generalizations to unseen data. In the next chapter, we’ll build on decision trees to talk about <em>ensemble</em> methods, where we use multiple trees to make a single prediction.</p>
 
 </div>
