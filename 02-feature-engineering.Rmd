@@ -12,13 +12,13 @@ One of the biggest challenges with feature engineering is what's referred to as 
 
 <!-- In the above, things like k-fold cv will probably have chapters of their own. We should link to them in the text -->
 
-In this chapter, we'll introduce feature engineering using the [{recipes}](https://recipes.tidymodels.org) package from the [{tidymodels}](https://www.tidymodels.org) suite of packages which, as we will see, helps you to be explicit about the decisions you're making, while avoiding potential issues with data leakage.
+In this chapter, we'll introduce feature engineering using the [**{recipes}**](https://recipes.tidymodels.org)package from the [**{tidymodels}**](https://www.tidymodels.org)suite of packages which, as we will see, helps you to be explicit about the decisions you're making, while avoiding potential issues with data leakage.
 
 ## Basics of {recipes}
 
 ![](https://github.com/tidymodels/recipes/raw/master/man/figures/logo.png)
 
-The recipes package is designed to replace the [stats::model.matrix](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html) function that you're probably familiar with. For example, if you fit a model like the below
+The **{recipes}** package is designed to replace the [stats::model.matrix()](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html) function that you might be familiar with. For example, if you fit a model like the one below
 
 ```{r}
 library(palmerpenguins)
@@ -26,11 +26,11 @@ m1 <- lm(bill_length_mm ~ species, data = penguins)
 summary(m1)
 ```
 
-You can see that our `species` column, which has the values `r unique(penguins$species)`, is automatically dummy-coded for us, with the first level in the factor variable set as the reference group.
+You can see that our `species` column, which has the values `r unique(penguins$species)`, is automatically dummy-coded for us, with the first level in the factor variable (Adelie) set as the reference group. The **{recipes}** package forces you to be a bit more explicit in these decisions. But it also has a much wider range of modifications it can make to the data. 
 
-The {recipes} package forces you to be a bit more explicit in these decisions. But it also has a much wider range of modifications it can make to the data. Another piece that is slightly different is that, in the above, you may not have even realized `stats::model.matrix` was doing anything for you because it's wrapped within the `stats::lm` modeling code. But with {recipes}, you make the modifications to your data first, then conduct your analysis.
+Using **{recipes}** also allows you to more easily separate the pre-processing and modeling stages of your data analysis workflow. In the above example, you may not have even realized `stats::model.matrix()` was doing anything for you because it's wrapped within the `stats::lm()` modeling code. But with **{recipes}**, you make the modifications to your data first and *then* conduct your analysis.
 
-The {recipes} package allows you to create a blueprint (or recipe) to apply to a given dataset, without actually applying those operations. We can then use this blueprint iteratively across sets of data (e.g., folds) as well as on new (potentially unseen) data that has the same structure (variables). This process helps avoid data leakage because all operations are carried forward and applied together, and no operations are conducted until explicitly requested.
+How does this separation work? With **{recipes}**, you can create a blueprint (or recipe) to apply to a given dataset, without actually applying those operations. You can then use this blueprint iteratively across sets of data (e.g., folds) as well as on new (potentially unseen) data that has the same structure (variables). This process helps avoid data leakage because all operations are carried forward and applied together, and no operations are conducted until explicitly requested.
 
 ## Creating a recipe
 
@@ -871,6 +871,7 @@ all(
 This shows that, to seven decimal places, the results are identical (note, the only reason I had to round at all was because of [floating point hell](https://floating-point-gui.de/basic/)).
 
 ### Splines
+
 When thinking about splines, we find it most helpful to first think about *discontinuous* splines. Splines divide up the "x" region of the predictor into bins, and fits a model within each bin. Let's first look at a very simple model, where we divide our `sim` dataset into lower and upper portions.
 
 ```{r }
@@ -947,9 +948,9 @@ ggplot(sim, aes(x, y)) +
   geom_line(data = data.frame(x = 1:100, y = predict(ns_mod)))
 ```
 
-And now we have our single curve! The purpose of our discussion here is to build conceptual understandings of splines, and we will therefore not go into the mathematics behind the constraints leading to a single curve. However, for those interested, we recommend [Hastie, Tibshirani, and Friedman](https://web.stanford.edu/~hastie/ElemStatLearn/). 
+And now we have our single curve! The purpose of our discussion here is to build conceptual understandings of splines, and we will therefore not go into the mathematics behind the constraints leading to a single curve. However, for those interested, we recommend [Hastie, Tibshirani, and Friedman](https://web.stanford.edu/~hastie/ElemStatLearn/).
 
-One of the drawbacks of polynomial regression is that they can be wild in the tails. Natural splines avoid this problem by constraining the tails of the curve to be linear. Sometimes, however, this property may not be desirable, and that's when we instead use a B-spline. 
+One of the drawbacks of polynomial regression is that they can be wild in the tails. Natural splines avoid this problem by constraining the tails of the curve to be linear. Sometimes, however, this property may not be desirable, and that's when we instead use a B-spline.
 
 ```{r }
 bs_mod <- lm(y ~ bs(x, 8), sim)
@@ -979,9 +980,10 @@ ggplot(rbind(ns_d, bs_d), aes(x, y)) +
   facet_wrap(~method)
 ```
 
-Both are quite close, but you can see the natural spline does not dip quite as close to the true value for zero as the B-spline. It's also a tiny bit more wiggly in the upper tail (because it's not constrained to be linear). The number of knots is also likely a bit too high here and was chosen fairly randomly. 
+Both are quite close, but you can see the natural spline does not dip quite as close to the true value for zero as the B-spline. It's also a tiny bit more wiggly in the upper tail (because it's not constrained to be linear). The number of knots is also likely a bit too high here and was chosen fairly randomly.
 
 #### Basis expansion with {recipes}
+
 Basis expansion via recipes proceeds in much the same way as we've seen before. We just specify a step specifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).
 
 Let's try building a dataset using basis expansion with a B-Spline
@@ -1014,9 +1016,9 @@ all(
 )
 ```
 
-To use polynomial transformations or natural splines instead, we would just use `step_poly` or `step_ns`, respectively. 
+To use polynomial transformations or natural splines instead, we would just use `step_poly` or `step_ns`, respectively.
 
-One rather important note on tuning splines, you will probably want to avoid using code like 
+One rather important note on tuning splines, you will probably want to avoid using code like
 
 ```{r }
 recipe(murders ~ ., data = violence) %>% 
@@ -1034,6 +1036,7 @@ recipe(murders ~ ., data = violence) %>%
 Of course, the more splines you are tuning, the more computationally expensive it will become, so you'll need to balance this with your expected return in model improvement (i.e., you likely can't tune every predictor in your dataset).
 
 ## Interactions
+
 An interaction occurs when the slope, or relation, between one variable and the outcome *depends upon* a second variable. This is also often referred to as *moderation* or a *moderating variable*. For example, consider data that look like this
 
 ```{r }
@@ -1049,6 +1052,7 @@ ggplot(benchmarks, aes(rdg_fall, rdg_spr)) +
 where *ell* stands for *English language learner*. The plot above shows the relation between students scores on a reading assessment administered in the fall and the spring by ELL status. Notice that the slope for *Non-ELL* is markedly steeper than the other two groups. ELL status thus moderates the relation between the fall and spring assessment scores. If we're fitting a model within a linear regression framework, we'll want to make sure that we model the slopes separately for each of these groups (otherwise we would be leaving out important structure in the data, and our model performance would suffer). Interactions are powerful and important to consider, particularly if there is strong theory (or empirical evidence) suggesting that an interaction exists. However, they are not needed in many frameworks and can be derived from the data directly (e.g., tree-based methods, where the degree of possible interaction is determined by the depth of the tree). In this section, we therefore focus on interactions within a linear regression framework.
 
 ### Creating interactions "by hand"
+
 Even with base R, modeling interactions is pretty straightforward. In the above, we would just specify something like
 
 ```{r eval = FALSE}
@@ -1061,7 +1065,7 @@ or equivalently
 lm(rdg_spr ~ rdg_fall + ell + rdg_fall:ell, data = benchmarks)
 ```
 
-However, this is doing some work under the hood for you which might go unnoticed. First, it's dummy-coding `ell`, then it's creating, in this case, two new variables that are equal to $ELL_{Monitor} \times Rdg_{fall}$ and $ELL_{Non-ELL} \times Rdg_{fall}$ (with $ELL_{Active}$ set as the reference group by default). 
+However, this is doing some work under the hood for you which might go unnoticed. First, it's dummy-coding `ell`, then it's creating, in this case, two new variables that are equal to $ELL_{Monitor} \times Rdg_{fall}$ and $ELL_{Non-ELL} \times Rdg_{fall}$ (with $ELL_{Active}$ set as the reference group by default).
 
 Let's try doing this manually. First we need to dummy code `ell`. To make things a bit more clear, I'll only select the variables here that we're using in our modeling.
 
@@ -1100,6 +1104,7 @@ summary(
 ```
 
 ### Creating interactions with {recipes}
+
 Specifying interactions in a recipe is similar to other steps, with one small exception, which is that the use of the tilde, `~`, is required. Note that, once again, order does matter, and you should always do your dummy coding *before* specifying interactions with categorical variables. In the example before, this would correspond to
 
 ```{r }
@@ -1112,7 +1117,6 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
 
 There are a few things to mention here. First, the data do look identical (minus the column names) to what we created by hand, so that's good news. However, we also used `starts_with` here, rather than just specifying something like `step_interact(~rdg_fall:ell)`. This is because after dummy coding, the column names change (as you can see in the above). By specifying `starts_with`, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.
 
-
 ```{r }
 recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>% 
   step_dummy(all_nominal()) %>% 
@@ -1124,6 +1128,7 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
 This is because its trying to find a column called `ell` to multiply with `rdg_fall`, but no such variable exists after dummy coding.
 
 ## PCA
+
 For some sets of models (such as linear regression) highly correlated variables may cause model instability or, perhaps more importantly, lead to wider confidence intervals around model predictions (i.e., how confident we are about our prediction). In these cases, it may help to collapse these variables, while still accounting for the majority of the variance. This is the basic idea behind Principal Components Analysis (PCA). You use PCA to collapse sets of variables into principal components, reducing the dimensionality of your data while maintainingg $X$ percent of the original variation in the data. Reducing the dimensionality generally has an associated cost of higher model bias. However, it will also nearly always reduce model variability. The proportion of the original variability to maintain can thus be considered a tuning parameter, balancing bias with variance.
 
 Probably my favorite discussion of PCA comes from a [discussion on CrossValidated](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues) on how to make sense of PCA. The opening poster asked how you would explain PCA to a layman and why it's needed. The entire thread is worth reading through, and there's a particularly nice example from [JD Long](https://twitter.com/CMastication) comparing the first principal component to the line of best fit in linear regression.
@@ -1131,6 +1136,7 @@ Probably my favorite discussion of PCA comes from a [discussion on CrossValidate
 For our purposes, we're primarily interested in what proportion of the total variability in the independent variables we should maintain. That is, can we improve our model performance by collapsing groups of (correlated) columns into a smaller set of principal components?
 
 ### PCA with {recipes}
+
 Let's move back to our full dataset. Our final recipe looked like this.
 
 ```{r }
@@ -1144,9 +1150,9 @@ rec <- recipe(score ~ ., train) %>%
 
 To conduct PCA we need to make sure that
 
-1. All variables are numeric
-2. All variables are on the same scale
-3. No missing data
+1.  All variables are numeric
+2.  All variables are on the same scale
+3.  No missing data
 
 Our recipe above ensures all variables are numeric, but it doesn't handle missing data, and there is no standardization of variables. Let's redo this recipe to make sure it's ready for PCA.
 
@@ -1161,7 +1167,7 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal(), -has_role("id vars"))
 ```
 
-The above is not a whole lot more complex than our original recipe. It just assigns an `"unknown"` level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables (center/scales) and dummy codes the nominal variables. 
+The above is not a whole lot more complex than our original recipe. It just assigns an `"unknown"` level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables (center/scales) and dummy codes the nominal variables.
 
 This recipe gives us a data frame with many columns. Specifically
 
@@ -1189,7 +1195,7 @@ rec_80 %>%
   ncol()
 ```
 
-We've dramatically reduced the dimensionality in the data, while still retaining 80% of the total variability. 
+We've dramatically reduced the dimensionality in the data, while still retaining 80% of the total variability.
 
 An alternative method is to specify the number of components we want. For example, let's extract only the first five components.
 
@@ -1199,7 +1205,7 @@ rec_5 <- rec %>%
            num_comp = 5)
 ```
 
-I generally prefer the former because, if we're thinking about PCA through a predictive modeling framework, we're probably less concerned with the number of components and more concerned with the variation they represent. 
+I generally prefer the former because, if we're thinking about PCA through a predictive modeling framework, we're probably less concerned with the number of components and more concerned with the variation they represent.
 
 So how do we know how much of the variabilty we should retain? This is a difficult question, but sometimes plots of the principal components can help. Let's look at the five components we just extracted. If we prep the recipe, you'll see there's some extra information we can access.
 
@@ -1304,4 +1310,4 @@ cv %>%
 
 In this case, the *number* of components is the same across all folds, but the representation of those components is likely slightly different. This is because the recipe has been applied to each fold, independent of the other folds.
 
-Feature engineering can also regularly feel overwhelming. There are *so many* possible options that you could do to potentially increase model performance. This chapter just scratched the surface. The sheer number of decisions is why many believe that feature engineering is the most "art" part of machine learning. Strong domain knowledge will absolutely help, as will practice. For those looking to go further with feature engineering, we suggest [Kuhn and Johnson](http://www.feat.engineering), who wrote an entire book on the topic. It provides practical advice in an accessible way without skimping on important details. 
+Feature engineering can also regularly feel overwhelming. There are *so many* possible options that you could do to potentially increase model performance. This chapter just scratched the surface. The sheer number of decisions is why many believe that feature engineering is the most "art" part of machine learning. Strong domain knowledge will absolutely help, as will practice. For those looking to go further with feature engineering, we suggest [Kuhn and Johnson](http://www.feat.engineering), who wrote an entire book on the topic. It provides practical advice in an accessible way without skimping on important details.
