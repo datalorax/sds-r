@@ -32,7 +32,8 @@ Imports:
     rpart,
     rpart.plot,
     parttree,
-    tictoc
+    tictoc,
+    baguette
 Depends: 
     tidyverse,
     tidymodels

@@ -41,3 +41,9 @@ load-the-data
 decision-tree-hyperparamters
 conducting-the-grid-search
 finalizing-our-model-fit
+bagged-trees
+bagging-in-practice
+bagging-by-hand
+bagging-via-baguette
+bagging-and-bagged-trees
+general-bagging

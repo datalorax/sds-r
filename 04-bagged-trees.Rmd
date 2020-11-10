@@ -1,0 +1,124 @@
+# Bagging and Bagged Trees
+
+```{r include = FALSE}
+source("_common.R")
+
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+In the last chapter, we talked about how decision trees are highly flexible, but are often not the most performant model on their own because they can easily overfit, leading to poor generalizability to new/unseen data. One way to avoid this problem is to build an *ensemble* of trees from random bootstrap samples of the data, and aggregate the predictions across the entire ensemble. This is a general approach known as **bagging**, or **b**ootstrap **agg**regation, which can be applied to any modeling framework, but generally will only provide large gains in improvement if, like decision trees, the model has high variability.
+
+:::dictionary
+**Bagging**: A general process to improve the performance of highly variable models, regularly applied to decision trees.
+
+1. Create $b$ bootstrap resamples of the original data
+2. Fit the model (**base learner**) to each $b$ resample
+3. Aggregate predictions across all models
+  + For regression problems, the final prediction is the average of all model predictions
+  + For classification problems, either (a) average model classification probabilities or (b) take the mode of model classifications.
+  
+**Benefits:** Leads to more stable model predictions (reduces model variability)
+:::
+
+## Bagging in practice
+As mentioned previously, bagging does not tend to help much (and increases computational burdens) when the model already has low variance. Models like linear regression will generally not change much in their model predictions when using bagging. Decision trees, however, can be highly variable. Bagging can help reduce the variance of these models and lead to more stable model predictions.
+
+:::lightbulb
+**How many bags?**
+
+There is no hard and fast rule. The important thing is to have **enough** bags to reach a stable model.
+
+Noisier data will require more bags. Data with strongly predictive features will require fewer bags.
+
+Start with somewhere between between 50-500 bags, evaluate the learning curve, and adjust the bags from there.
+:::
+
+There is no rule for the number of "bags", or bootstrap resamples, that one should use to create a stable model. Further, the number of bags just needs to be sufficiently high that the model becomes stable---after stability is achieved, additional bags will not help model performance. In other words, there is no upper bound for the number of bags (the only burden is computational), but it is critical that there are *enough* bags to create a stable model. Datasets with highly predictive features will generally need fewer bags to reach stability. A good rule of thumb is to start with somewhere between 50-500 bags, depending on how variable you think your data are, and then adjust up or down from there accordingly.
+
+### Bagging "by hand"
+To understand bagging we first have to be clear about what bootstrap resampling implies. When we take bootstrap resamples from our dataset, we sample $n$ rows of our dataset *with replacement*, where $n$ represents the total number of rows in our data. For example, suppose we had a dataset that had the first five letters of the alphabet, each with an associated score.
+
+```{r }
+lets <- data.frame(letters = c("a", "b", "c", "d", "e"),
+                   score = c(5, 7, 2, 4, 9))
+lets
+```
+
+Bootstrap resampling would imply sampling five rows from the above dataset with replacement. This means some rows may be represented multiple times, and others not at all. Let's do this and see what the first three datasets look like.
+
+```{r }
+# set seed for reproducibility
+set.seed(42)
+
+# specify the number of bootstrap resamples
+b <- 3
+resamples <- replicate(b, 
+                       lets[sample(1:5, 5, replace = TRUE), ],
+                       simplify = FALSE)
+resamples
+```
+
+Notice that in the first bootstrap resample, `a` is represented three times, `b` once, `c` and `d` not at all, and `e` once. Similar patterns, with different distributional frequencies, are represented in the second and third datasets. 
+
+Why is this useful? It turns out that if we do this enough times, we develop a [sampling distribution](https://en.wikipedia.org/wiki/Sampling_distribution). Fitting the model to all of these different samples then gives us an idea of the variability of the model, which we can reduce by averaging across all samples. Bootstrap resampling is useful in all sorts of different ways in statistics. In the above, our observed mean across the letters is `r mean(lets$score)`. We can compute the standard error of this mean analytically by $\sigma/\sqrt{n}$, or `sd(lets$score)/sqrt(5)`, which is equal to `r sd(lets$score)/sqrt(5)`. We can also approximate this same standard error by computing the mean of many bootstrap resamples, and estimating the standard deviation among these means. For example
+
+```{r }
+library(tidyverse)
+
+set.seed(42)
+b <- 5000
+resamples <- replicate(b, 
+                       lets[sample(1:5, 5, replace = TRUE), ],
+                       simplify = FALSE)
+means <- map_dbl(resamples, ~mean(.x$score))
+sd(means)
+```
+
+In this case, the difference between the analytic standard error and the bootstrap estimate is greater than typical because the sample size is so small.
+
+The process of bagging is essentially equivalent to the above, except instead of computing the mean with each bootstrap resample, we fit a full model. We then compute the predictions from all of these models and either average the resulting predictions, or take the mode of the classifications.
+
+## Bagging via {baguette}
+The [**{baguette}**](https://baguette.tidymodels.org/index.html) package, part of the [**{tidymodels}**](https://www.tidymodels.org) metapackage, provides a general interface for bagging in R, as well specific functions for models where bagging is commonly used. The **{baguette}** package is *not* part of the [core](https://www.tidymodels.org/packages/) set of packages, implying it is *installed* with **{tidymodels}** but *not loaded*. You must load **{baguette}** outside of your call to **{tidymodels}** (i.e., similar to the [**{lubridate}**](https://lubridate.tidyverse.org) package in the [**{tidyverse}**](https://www.tidyverse.org)). 
+
+### Bagged trees
+
+Recall our best model when [fitting a decision tree] in the previous chapter had an average AUC across folds of $0.825$. This included a very low cost complexity parameter of $0.0000000001$ and a minimum $n$ for our terminal nodes of 35. Can we improve performance from this model when using bagging? Let's try!
+
+First, we need to load the data, create a split training/test set, pull the training data, and create a $k$-fold cross-validation dataset.
+
+```{r message = FALSE}
+library(tidyverse)
+library(tidymodels)
+
+k_train <- read_csv(here::here("data", "ds-bowl-2019.csv"),
+                    col_types = cols(.default = col_guess(),
+                                     accuracy_group = col_character()))
+
+splt <- initial_split(k_train)
+train <- training(splt)
+cv <- vfold_cv(train)
+```
+
+Next, we'll specify a basic recipe.
+
+```{r }
+rec <- recipe(accuracy_group ~ ., data = train) %>% 
+  step_mutate(accuracy_group = as.factor(accuracy_group))
+```
+
+And now we're ready to specify our model. This is *pretty much* the same as before, except now we are going to load the **{baguette}** package in addition to **{tidymodels}** and use `bag_tree()` instead of `decision_tree()`. Additionally, we'll specify a `times` argument when we set the engine. Let's start by fitting  a model to 50 bootstrap resamples and aggregating across the results. The rest is the same as before.
+
+```{r }
+library(tidymodels)
+library(baguette)
+
+bt_mod <- bag_tree() %>% 
+  set_engine("rpart", times = 50) %>% 
+  set_mode("classification")
+```
+
+
+### General bagging
+As mentioned previously, bagging works best for models that are highly variable, like decision trees. But it can also be used for any model. Let's look at bagging for a $knn$ model with a very low $n$. The **{baguette}** package does not, at the time of this writing, provide an interface equivalent to `bag_tree()`. However, there is a general bagging interface that can be used for *any* model, via the `bagger` function.
+
