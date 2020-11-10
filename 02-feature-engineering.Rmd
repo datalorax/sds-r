@@ -296,7 +296,7 @@ There are, of course, many other ways you can encode categorical data. One impor
 
 Occasionally you have (or can create) variables that are highly imbalanced. A common example might include a gender variable that takes on the values "male", "female", "non-binary", "other", and "refused to answer". Once you dummy-code a variable like this, it is possible that one or more of the categories may be so infrequent that it makes modeling that category difficult. This is not to say that these categories are not important, particularly when considering the representation of your training dataset to real-world applications (and any demographic variable is going to be associated with issues of ethics). Ignoring this variation may lead to systematic biases in model predictions. However, you also regularly have to make compromises to get models to work and be useful. One of those compromises often includes (with many types of variables, not just demographics) dropping highly imbalanced predictors.
 
-Let's look back at our statewide testing data. Let's `bake` the final recipe from our [Creating a recipe] section on the training data (that we fed to the recipe) and look at the dummy variables that are created.
+Let's look back at our statewide testing data. Let's `bake` the final recipe from our [Creating a recipe] section on the training data and look at the dummy variables that are created.
 
 ```{r warning = FALSE}
 rec <- recipe(score ~ ., train) %>% 
@@ -348,7 +348,7 @@ So how is `step_nzv` working and how can we adjust it to be not quite so aggress
 -   Have very few unique values, and
 -   The frequency ratio for the most common value to the second most common value is large
 
-These criteria are implemented in `step_nzv` through the `unique_cut` and `freq_cut` arguments, respectively. The former is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent), while the latter is estimated by the most common level frequency divided by the second most common level frequency. The default for `unique_cut` is 10, while the default for `freq_cut` is $95/5 = 19$. For a column to be "caught" by a near-zero variance filter, and removed from the training set, it must be *below* the specified `unique_cut` and *above* the specified `freq_cut`.
+These criteria are implemented in `step_nzv` through the `unique_cut` and `freq_cut` arguments, respectively. `unique_cut` is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent). `freq_cut` is estimated by dividing the most common level frequency by the second most common level frequency. The default for `unique_cut` is 10, while the default for `freq_cut` is $95/5 = 19$. For a column to be "caught" by a near-zero variance filter, and removed from the training set, it must be *below* the specified `unique_cut` and *above* the specified `freq_cut`.
 
 In the case of `ethnic_cd_B`, we see that there are two unique values, $0$ and $1$ (because it's a dummy-coded variable). There are `r nrow(baked)` rows, so the `unique_cut` value is $(2 / 2841) \times 100 = 0.07$. The frequency ratio is $2786/55 = 50.65$. It therefore meets both of the default criteria (below `unique_cut` and above `freq_cut`) and is removed.
 
@@ -367,7 +367,7 @@ removed_columns2 <- names(baked)[!(names(baked) %in% names(baked_rm_nzv2))]
 removed_columns2
 ```
 
-Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the `unique_cut` criteria. But it can be achieved by fiddling with the `freq_cut` variable and, actually, could be considered part of your model tuning process. In this case, we've set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you'll end up with variables that have such low frequency that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.
+Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the `unique_cut` criteria. But it can be achieved by fiddling with the `freq_cut` variable and, actually, could be considered part of your model tuning process. In this case, we've set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you'll end up with variables that have such low variance that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.
 
 ## Missing data
 
