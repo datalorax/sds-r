@@ -202,7 +202,7 @@ All of the above serves as a basic introduction to developing a recipe, and what
 
 ## Encoding categorical data
 
-For many (but not all) modeling frameworks, categorical data must be transformed somehow. The most common of these is, as we've already seen, dummy coding, which `stats::model.matrix` will do for you automatically using the `stats::contrasts` function. There are also other coding schemes you can use with base R, such as Helmert and polynomial coding (see `?contrasts` and related functions). Dummy coding leaves one group out (the first level of the factor, by default) and creates new columns for all the other groups coded $0$ or $1$ depending on whether the original variable represented that value or not. For example
+For many (but not all) modeling frameworks, categorical data must be transformed somehow. The most common strategy for this is dummy coding, which `stats::model.matrix()` will do for you automatically using the `stats::contrasts()` function. There are also other coding schemes you can use with base R, such as Helmert and polynomial coding (see `?contrasts` and related functions). Dummy coding leaves one group out (the first level of the factor, by default) and creates new columns for all the other groups coded $0$ or $1$ depending on whether the original variable represented that value or not. For example:
 
 ```{r }
 f <- factor(c("red", "red", "blue", "green", "green", "green"))
@@ -211,7 +211,7 @@ contrasts(f)
 
 In the above, `"blue"` has been assigned as the reference category (note that factor levels are assigned in alphabetical order by default), and dummy variables have been created for `"green"` and `"red"`. In a linear regression framework, `"blue"` would become the intercept.
 
-We can recreate this same coding scheme with {recipes}, but we need to first put it in a data frame.
+We can recreate this same coding scheme with **{recipes}**, but we need to first put it in a data frame.
 
 ```{r }
 df <- data.frame(f, score = rnorm(length(f)))
@@ -225,13 +225,13 @@ recipe(score ~ f, data = df) %>%
 
 In the above, we've created the actual columns we need, while in the base example we only created the contrast matrix (although it's relatively straightforward to then create the columns).
 
-The {recipes} version is, admittedly, a fair amount of additional code, but as we saw in the previous section, {recipes} is capable of making a wide range of transformation in a systematic way.
+The **{recipes}** version is, admittedly, a fair amount of additional code, but as we saw in the previous section, **{recipes}** is capable of making a wide range of transformation in a systematic way.
 
 ### Transformations beyond dummy coding
 
 Although less used in inferential statistics, there are a number of additional transformations we can use to encode categorical data. The most straightforward is **one-hot** encoding. One-hot encoding is essentially equivalent to dummy coding except we create the variables for *all* levels in the categorical variable (i.e., we do not leave one out as a reference group). This generally makes them less useful in linear regression frameworks (unless the model intercept is dropped), but they can be highly useful in a number of other frameworks, such as tree-based methods (covered later in the book).
 
-To use one-hot encoding, we pass the additional `one_hot` argument to `step_dummy`.
+To use one-hot encoding, we pass the additional `one_hot` argument to `step_dummy()`.
 
 ```{r}
 recipe(score ~ f, data = df) %>% 
@@ -249,18 +249,18 @@ recipe(score ~ f, data = df) %>%
   bake(new_data = NULL)
 ```
 
-Notice that the syntax is essentially equivalent to the previous dummy-coding example, but we've just swapped out `step_dummy` for `step_integer`. Integer encoding can be useful in natural language processing in particular because words can be encoded as integers, and then the algorithm can search for patterns in the numbers.
+Notice that the syntax is essentially equivalent to the previous dummy-coding example, but we've just swapped out `step_dummy()` for `step_integer()`. Integer encoding can be useful in natural language processing in particular because words can be encoded as integers, and then the algorithm can search for patterns in the numbers.
 
 ### Handling new levels
 
-One other very common problem with encoding categorical data is how to handle new, unseen levels. For example, if we create a recipe as follows
+One other very common problem with encoding categorical data is how to handle new, unseen levels. For example, let's take a look at the recipe below:
 
 ```{r }
 rec <- recipe(score ~ f, data = df) %>% 
   step_dummy(f)
 ```
 
-we will have no problem creating dummy variables as long as the levels of $f$ are within those contained in `df$f` (or, more mathematically, where $f \in F$). But what if, in a new sample, $f =$ "purple" or $f =$ "gray"? Let's try and see what happens
+We will have no problem creating dummy variables within this recipe as long as the levels of $f$ are within those contained in `df$f` (or, more mathematically, where $f \in F$). But what if, in a new sample, $f =$ "purple" or $f =$ "gray"? Let's try and see what happens.
 
 ```{r }
 df2 <- data.frame(f = factor(c("blue", "green", "purple", "gray")),
@@ -270,7 +270,7 @@ rec %>%
   bake(new_data = df2)
 ```
 
-We end up propagating missing data, which is obviously less than ideal. Luckily, the solution is pretty straightforward. We just add a new step to our recipe to handle *novel* (or new) categories, lumping them all in their own level.
+We end up propagating missing data, which is obviously less than ideal. Luckily, the solution is pretty straightforward. We just add a new step to our recipe to handle *novel* (or new) categories, lumping them all in their own level (labeled with the suffix `_new`).
 
 ```{r }
 rec <- recipe(score ~ f, data = df) %>% 
@@ -284,11 +284,11 @@ rec %>%
 
 This is not perfect, because `"purple"` and `"orange"` may be highly different, and we're modeling them as a single category. But at least we're able to move forward with our model without introducing new missing data. As an aside, this is a small example of why having good training data is so important. If you don't have all the levels of a categorical variable represented, you may end up essentially collapsing levels when there is meaningful variance that could be parsed out.
 
-You can also use a similar approach with `step_other` if you have a categorical variable with lots of levels (and a small-ish $n$ by comparison). Using `step_other`, you specify a threshold below which levels should be collapsed into a single "other" category. The threshold can be passed as a proportion or a frequency.
+You can also use a similar approach with `step_other()` if you have a categorical variable with lots of levels (and a small-ish $n$ by comparison). Using `step_other()`, you specify a threshold below which levels should be collapsed into a single "other" category. The threshold can be passed as a proportion or a frequency.
 
 ### Final thoughts on encoding categorical data
 
-There are, of course, many other ways you can encode categorical data. One important consideration is whether or not the variable is *ordered* (e.g., low, medium, high) in which case it may make sense to have a corresponding ordered numeric variable (e.g., $0$, $1$, $2$). Of course, the method of coding these ordered values will relate to assumptions of your modeling process (in the previous example, that there is a *linear*, constant change across categories). In our experience, however, the combination of dummy coding (with potentially a one-hot alternative used), integer coding, or simply leaving the categorical variables as they are (for specific frameworks, like tree-based methods) is sufficient most (but not all) of the time. For a more complete discussion of encoding categorical data for predictive modeling frameworks, we recommend [Chapter 5](http://www.feat.engineering/encoding-categorical-predictors.html) of Kuhn & Johnson (2019).
+There are, of course, many other ways you can encode categorical data. One important consideration is whether or not the variable is *ordered* (e.g., low, medium, high) in which case it may make sense to have a corresponding ordered numeric variable (e.g., $0$, $1$, $2$). Of course, the method of coding these ordered values will relate to assumptions of your modeling process. For example, in the previous example, we assumed that there is a *linear*, constant change across categories. In our experience, however, the combination of dummy coding (with potentially a one-hot alternative used), integer coding, or simply leaving the categorical variables as they are (for specific frameworks, like tree-based methods) is sufficient most (but not all) of the time. For a more complete discussion of encoding categorical data for predictive modeling frameworks, we recommend [Chapter 5](http://www.feat.engineering/encoding-categorical-predictors.html) of Kuhn & Johnson (2019).
 
 <!-- Need to get a bibliography going -->
 
