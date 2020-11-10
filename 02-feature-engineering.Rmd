@@ -1117,7 +1117,7 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
 
 There are a few things to mention here. First, the data look identical (minus the column names) to what we created by hand, so that's good news. However, we also used `starts_with()` here, rather than just specifying something like `step_interact(~rdg_fall:ell)`. This is because after dummy coding, the column names change (as you can see in the above). By specifying `starts_with()`, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.
 
-```{r }
+```{r warning=TRUE}
 recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>% 
   step_dummy(all_nominal()) %>% 
   step_interact(~rdg_fall:ell) %>% 
