@@ -371,7 +371,7 @@ Removing near-zero variance dummy variables can be a bit tricky because they wil
 
 ## Missing data
 
-If we look closely at our statewide testing data, we will see that there is a considerable amount of missingness. In fact, every row of the data frame has at least one value that is missing. The amount to which missing data impacts your work varies by field, but in most fields you're likely to run into situations where you have to handle missing data in some way. The purpose of this section is to discuss a few approaches using **{recipes}** to handling missingness for predictive modeling purposes. Note that this is not a comprehensive discussion on the topic (for which, we recommend [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563)), but is instead an applied discussion of what you *can* do. As with many aspects of data analysis, generally, there is no single approach that will always work best, and it's worth trying a few different approaches in your model development to see how different choices impact your model performance.
+If we look closely at our statewide testing data, we will see that there is a considerable amount of missingness. In fact, every row of the data frame has at least one value that is missing. The amount to which missing data impacts your work varies by field, but in most fields you're likely to run into situations where you have to handle missing data in some way. The purpose of this section is to discuss a few approaches using **{recipes}** to handle missingness for predictive modeling purposes. Note that this is not a comprehensive discussion on the topic (for which, we recommend [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563)), but is instead an applied discussion of what you *can* do. As with many aspects of data analysis, generally, there is no single approach that will always work best, and it's worth trying a few different approaches in your model development to see how different choices impact your model performance.
 
 There are three basic ways of handling missing data:
 
@@ -379,7 +379,7 @@ There are three basic ways of handling missing data:
 -   **Encode** or **Impute** the missing data
 -   **Ignore** the missing data and estimate from the available data
 
-The last option is not always feasible and will depend the modeling framework you're working within. Some estimation procedures can also lend themselves to efficient handling of missing data (for example, imputation via the posterior distribution with Bayesian estimation). In this section, we'll mostly focus on the first two approaches. Additionally, we will only really be concerned with missingness on the predictor variables here, rather than the outcome. Generally, missing data in the predictors is a much more difficult problem than missingness in the outcome, because most models assume you have complete data across your predictors.
+The last option is not always feasible and will depend the modeling framework you're working within. Some estimation procedures can also lend themselves to efficient handling of missing data (for example, imputation via the posterior distribution with Bayesian estimation). In this section, we'll mostly focus on the first two approaches. Additionally, we will only really be concerned with missingness on the predictor variables here, rather than the outcome. Generally, missing data in the predictors is a much more difficult problem than missingness in the outcome, because most models assume you have complete data across your predictors. This is not to say that missingness on your outcome is not challenging (it can be highly challenging, and can make model performance evaluation more difficult). However, without handling missing data on your predictors, you generally cannot even *fit* the model. So we'll mostly focus there.
 
 ### Omission
 
@@ -651,7 +651,7 @@ Now we have four steps. We can look at any one step by declaring the step number
 tidy(rec, n = 1)
 ```
 
-Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to prep the recipe if we want it to actually do any work. Let's prep the recipe and try again.
+Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to `prep()` the recipe if we want it to actually do any work. Let's prep the recipe and try again.
 
 ```{r }
 lm_imputation <- rec %>% 
