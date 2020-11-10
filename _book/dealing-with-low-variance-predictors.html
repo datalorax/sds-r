@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-06" />
+<meta name="date" content="2020-11-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,6 +35,7 @@
   
 <link rel="prev" href="encoding-categorical-data.html"/>
 <link rel="next" href="missing-data.html"/>
+<script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -63,18 +64,17 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -94,7 +94,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,44 +142,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
-<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a><ul>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a><ul>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a><ul>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
 <li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
 <li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
-<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a><ul>
-<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
-<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#omission"><i class="fa fa-check"></i><b>3.5.1</b> Omission</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#encoding-and-simple-imputation"><i class="fa fa-check"></i><b>3.5.2</b> Encoding and simple imputation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="missing-data.html"><a href="missing-data.html#modeling-the-missingness"><i class="fa fa-check"></i><b>3.5.3</b> Modeling the missingness</a></li>
+<li class="chapter" data-level="3.5.4" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.4</b> A few words of caution</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a><ul>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a><ul>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
 <li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
 <li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a><ul>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
 <li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
 <li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
 </ul></li>
-<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a><ul>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
 <li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a><ul>
+<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a>
+<ul>
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a></li>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
+<li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
+<li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
 </ul>
@@ -199,10 +218,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="dealing-with-low-variance-predictors" class="section level2">
+<div id="dealing-with-low-variance-predictors" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Dealing with low variance predictors</h2>
 <p>Occasionally you have (or can create) variables that are highly imbalanced. A common example might include a gender variable that takes on the values “male”, “female”, “non-binary”, “other”, and “refused to answer”. Once you dummy-code a variable like this, it is possible that one or more of the categories may be so infrequent that it makes modeling that category difficult. This is not to say that these categories are not important, particularly when considering the representation of your training dataset to real-world applications (and any demographic variable is going to be associated with issues of ethics). Ignoring this variation may lead to systematic biases in model predictions. However, you also regularly have to make compromises to get models to work and be useful. One of those compromises often includes (with many types of variables, not just demographics) dropping highly imbalanced predictors.</p>
-<p>Let’s look back at our statewide testing data. Let’s <code>bake</code> the final recipe from our <a href="creating-a-recipe.html#creating-a-recipe">Creating a recipe</a> section on the training data (that we fed to the recipe) and look at the dummy variables that are created.</p>
+<p>Let’s look back at our statewide testing data. Let’s <code>bake</code> the final recipe from our <a href="creating-a-recipe.html#creating-a-recipe">Creating a recipe</a> section on the training data and look at the dummy variables that are created.</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="dealing-with-low-variance-predictors.html#cb46-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb46-2"><a href="dealing-with-low-variance-predictors.html#cb46-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb46-3"><a href="dealing-with-low-variance-predictors.html#cb46-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
@@ -241,7 +260,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Have very few unique values, and</li>
 <li>The frequency ratio for the most common value to the second most common value is large</li>
 </ul>
-<p>These criteria are implemented in <code>step_nzv</code> through the <code>unique_cut</code> and <code>freq_cut</code> arguments, respectively. The former is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent), while the latter is estimated by the most common level frequency divided by the second most common level frequency. The default for <code>unique_cut</code> is 10, while the default for <code>freq_cut</code> is <span class="math inline">\(95/5 = 19\)</span>. For a column to be “caught” by a near-zero variance filter, and removed from the training set, it must be <em>below</em> the specified <code>unique_cut</code> and <em>above</em> the specified <code>freq_cut</code>.</p>
+<p>These criteria are implemented in <code>step_nzv</code> through the <code>unique_cut</code> and <code>freq_cut</code> arguments, respectively. <code>unique_cut</code> is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent). <code>freq_cut</code> is estimated by dividing the most common level frequency by the second most common level frequency. The default for <code>unique_cut</code> is <span class="math inline">\(10\)</span>, while the default for <code>freq_cut</code> is <span class="math inline">\(95/5 = 19\)</span>. For a column to be “caught” by a near-zero variance filter, and removed from the training set, it must be <em>below</em> the specified <code>unique_cut</code> and <em>above</em> the specified <code>freq_cut</code>.</p>
 <p>In the case of <code>ethnic_cd_B</code>, we see that there are two unique values, <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> (because it’s a dummy-coded variable). There are 2841 rows, so the <code>unique_cut</code> value is <span class="math inline">\((2 / 2841) \times 100 = 0.07\)</span>. The frequency ratio is <span class="math inline">\(2786/55 = 50.65\)</span>. It therefore meets both of the default criteria (below <code>unique_cut</code> and above <code>freq_cut</code>) and is removed.</p>
 <p>If you’re applying a near-zero variance filter on dummy variables, there will always be only 2 values, leading to a small <code>unique_cut</code>. This might encourage you to up the <code>freq_cut</code> to a higher value. Let’s try this approach</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="dealing-with-low-variance-predictors.html#cb50-1"></a>rec_nzv2 &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -259,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  [7] &quot;ayp_schl_partic_Y&quot;     &quot;rc_dist_partic_Y&quot;      &quot;rc_schl_partic_Y&quot;     
 ## [10] &quot;tst_atmpt_fg_Y&quot;        &quot;grp_rpt_dist_partic_Y&quot; &quot;grp_rpt_schl_partic_Y&quot;
 ## [13] &quot;grp_rpt_dist_prfrm_Y&quot;</code></pre>
-<p>Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the <code>unique_cut</code> criteria. But it can be achieved by fiddling with the <code>freq_cut</code> variable and, actually, could be considered part of your model tuning process. In this case, we’ve set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you’ll end up with variables that have such low frequency that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.</p>
+<p>Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the <code>unique_cut</code> criteria. But it can be achieved by fiddling with the <code>freq_cut</code> variable and, actually, could be considered part of your model tuning process. In this case, we’ve set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you’ll end up with variables that have such low variance that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.</p>
 </div>
             </section>
 

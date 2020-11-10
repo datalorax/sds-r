@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-06" />
+<meta name="date" content="2020-11-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,6 +35,7 @@
   
 <link rel="prev" href="basics-of-recipes.html"/>
 <link rel="next" href="encoding-categorical-data.html"/>
+<script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -63,18 +64,17 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -94,7 +94,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,44 +142,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
-<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a><ul>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a><ul>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a><ul>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
 <li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
 <li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
-<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a><ul>
-<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
-<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#omission"><i class="fa fa-check"></i><b>3.5.1</b> Omission</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#encoding-and-simple-imputation"><i class="fa fa-check"></i><b>3.5.2</b> Encoding and simple imputation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="missing-data.html"><a href="missing-data.html#modeling-the-missingness"><i class="fa fa-check"></i><b>3.5.3</b> Modeling the missingness</a></li>
+<li class="chapter" data-level="3.5.4" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.4</b> A few words of caution</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a><ul>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a><ul>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
 <li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
 <li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a><ul>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
 <li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
 <li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
 </ul></li>
-<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a><ul>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
 <li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a><ul>
+<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a>
+<ul>
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a></li>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
+<li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
+<li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
 </ul>
@@ -199,7 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="creating-a-recipe" class="section level2">
+<div id="creating-a-recipe" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Creating a recipe</h2>
 <p>Let’s read in some data and begin creating a basic recipe. We’ll work with the simulated statewide testing data introduced previously. This is a fairly decent sized dataset, and since we’re just illustrating concepts here, we’ll pull a random sample of 2% of the total data to make everything run a bit quicker. We’ll also remove the <code>classification</code> variable, which is just a categorical version of <code>score</code>, our outcome.</p>
 <p>In the chunk below, we read in the data, sample a random 2% of the data (being careful to set a seed first so our results are reproducible), split it into training and test sets, and extract just the training dataset. We’ll hold off on splitting it into CV folds for now.</p>
@@ -219,7 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>And you can see the full data dictionary on the Kaggle website <a href="https://www.kaggle.com/c/edld-654-fall-2020/data?select=data_dictionary.csv">here</a>.</p>
 <p>When creating recipes, we can still use the formula interface to define how the data will be modeled. In this case, we’ll say that the <code>score</code> column is predicted by everything else in the data frame.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="creating-a-recipe.html#cb4-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train)</span></code></pre></div>
-<p>Notice that I still declare the dataset, even though this is just a blueprint. It uses the dataset I provide to get the names of the columns from the dataset, but it doesn’t actually do anything with this dataset (unless we ask it to). Let’s look at what this recipe looks like</p>
+<p>Notice that I still declare the dataset (in this case, the <em>training</em> data), even though this is just a blueprint. It uses the dataset I provide to get the names of the columns, but it doesn’t actually do anything with this dataset (unless we ask it to). Let’s look at what this recipe looks like.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="creating-a-recipe.html#cb5-1"></a>rec</span></code></pre></div>
 <pre><code>## Data Recipe
 ## 
@@ -228,8 +247,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##       role #variables
 ##    outcome          1
 ##  predictor         38</code></pre>
-<p>Notice it just states that this is a data recipe in which we have specified 1 outcome variable and 39 predictors.</p>
-<p>We can <code>prep</code> this recipe to learn more</p>
+<p>Notice it just states that this is a data recipe in which we have specified 1 outcome variable and 38 predictors.</p>
+<p>We can <code>prep</code> this recipe to learn more.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="creating-a-recipe.html#cb7-1"></a><span class="kw">prep</span>(rec)</span></code></pre></div>
 <pre><code>## Data Recipe
 ## 
@@ -241,23 +260,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Training data contained 2841 data points and 2841 incomplete rows.</code></pre>
 <p>Notice we now get an additional message about how many rows are in the data, and how many of these rows contain missing (incomplete data). So the recipe is the blueprint, and we prep the recipe to get it to actually go into the data and conduct the operations. The dataset it has now, however, is just a placeholder than can be substituted in for any other dataset with an equivalent structure.</p>
-<p>But of course modeling score as the outcome with everything else predicting it (as is) is not reasonable for multiple reasons. We have many ID variables, for one, and we also multipe categorical variables. For some methods (like tree-based models) it might be okay to leave these as is, but for others (like any model in the linear regression family) we’ll wan to encode them somehow (e.g., dummy code).</p>
-<p>We can do these operations by adding <em>steps</em> to our recipe. In the first step, we’ll update the role of all the ID variables so they are not included among the predictors. In the second, we will dummy code all nominal variables.</p>
+<p>But of course, modeling score as the outcome with everything else predicting it is not a reasonable choice in this case. For example, we have many ID variables, and we also have multiple categorical variables. For some methods (like tree-based models) it might be okay to leave these categorical variables as they are, but for others (like any model in the linear regression family) we’ll want to encode them somehow (e.g., dummy code).</p>
+<p>We can address these concerns by adding <em>steps</em> to our recipe. In the first step, we’ll update the role of all the ID variables so they are not included among the predictors. In the second, we will dummy code all nominal (i.e. categorical) variables.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="creating-a-recipe.html#cb9-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-2"><a href="creating-a-recipe.html#cb9-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-3"><a href="creating-a-recipe.html#cb9-3"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>())</span></code></pre></div>
 <p>When updating the roles, we can change the variable label (text passed to the <code>new_role</code> argument) to be anything we want, so long as it’s not <code>"predictor"</code> or <code>"outcome"</code>.</p>
-<p>Notice in the above I am also using helper functions to apply the operations to all variables of a specific type. There are five main helper functions: <code>all_predictors()</code>, <code>all_outcomes()</code>, <code>all_nominal()</code>, <code>all_numeric()</code> and <code>has_role()</code>. You can use these together, including with negation (e.g., <code>-all_outcomes</code> to specify the operation should <strong>not</strong> apply to the outcome variable(s)) to select any set of variables you want to apply the operation to.</p>
-<p>Let’s try <code>prep</code>ping this recipe</p>
+<p>Notice in the above I am also using helper functions to apply the operations to all variables of a specific type. There are five main helper functions for creating recipes: <code>all_predictors()</code>, <code>all_outcomes()</code>, <code>all_nominal()</code>, <code>all_numeric()</code> and <code>has_role()</code>. You can use these together, including with negation (e.g., <code>-all_outcomes()</code> to specify the operation should <strong>not</strong> apply to the outcome variable(s)) to select any set of variables you want to apply the operation to.</p>
+<p>Let’s try to <code>prep</code> this updated recipe.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="creating-a-recipe.html#cb10-1"></a><span class="kw">prep</span>(rec)</span></code></pre></div>
 <pre><code>## Error: Only one factor level in lang_cd</code></pre>
 <p>Uh oh! We have an error. Our recipe is trying to dummy code the <code>lang_cd</code> variable, but it has only one level. It’s kind of hard to dummy-code a constant!</p>
-<p>Luckily, we can expand our recipe to first remove any zero-variance predictors, like so</p>
+<p>Luckily, we can expand our recipe to first remove any zero-variance predictors, like so:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="creating-a-recipe.html#cb12-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-2"><a href="creating-a-recipe.html#cb12-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-3"><a href="creating-a-recipe.html#cb12-3"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-4"><a href="creating-a-recipe.html#cb12-4"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>())</span></code></pre></div>
-<p>The <code>zv</code> part stands for “zero variance” and should take care of this problem. Let’s try again.</p>
+<p>The <code>_zv</code> part stands for “zero variance” and should take care of this problem. Let’s try again.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="creating-a-recipe.html#cb13-1"></a><span class="kw">prep</span>(rec)</span></code></pre></div>
 <pre><code>## Data Recipe
 ## 
@@ -274,7 +293,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Zero variance filter removed calc_admn_cd, lang_cd [trained]
 ## Dummy variables from gndr, ethnic_cd, tst_bnch, tst_dt, ... [trained]</code></pre>
-<p>Beautiful! Note we do still get a warning here, but I’ve omitted it in the text (we’ll take care of it later). Our recipe says we now have 6 ID variables, 1 outcome, and 33 predictors, with 2841 data points (rows of data). The <code>calc_admn_cd</code> and <code>lang_cd</code> variables have been removed because they have zero variance, and several variables have been dummy coded, including <code>gndr</code> and <code>ethnic_cd</code>, among others.</p>
+<p>Beautiful! Note we do still get a warning here, but I’ve omitted it in the text (we’ll come back to this in the section on <a href="missing-data.html#missing-data">Missing data</a>). Our recipe says we now have 6 ID variables, 1 outcome, and 32 predictors, with 2841 data points (rows of data). The <code>calc_admn_cd</code> and <code>lang_cd</code> variables have been removed because they have zero variance, and several variables have been dummy coded, including <code>gndr</code> and <code>ethnic_cd</code>, among others.</p>
 <p>Let’s dig just a bit deeper here though. What’s going on with these zero-variance variables? Let’s look back at the training data.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="creating-a-recipe.html#cb15-1"></a>train <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb15-2"><a href="creating-a-recipe.html#cb15-2"></a><span class="st">  </span><span class="kw">count</span>(calc_admn_cd)</span></code></pre></div>
@@ -289,7 +308,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   &lt;chr&gt;   &lt;int&gt;
 ## 1 S          80
 ## 2 &lt;NA&gt;     2761</code></pre>
-<p>So at least in our sample, <code>calc_admn_cd</code> really is just fully missing, which means it might as well be dropped because it’s providing us exactly nothing. But that’s not the case with <code>lang_cd</code>. It has two values, <code>NA</code> and <code>S</code>. This variable represents the language the test was administered in and the <code>NA</code> values are actually meaningful here because they are the the “default” administration, meaning English. So rather than dropping these, let’s <code>mutate</code> them to transform the <code>NA</code> values to <code>"E"</code> for English. We could reasonably do this inside or outside the recipe, but a good rule of thumb is, if it <em>can</em> go in the recipe, put it in the recipe. It can’t hurt, and doing operations outside of the recipe risks data leakage.</p>
+<p>So at least in our sample, <code>calc_admn_cd</code> really is just fully missing, which means it might as well be dropped because it’s providing us exactly nothing. But that’s not the case with <code>lang_cd</code>. It has two values, <code>NA</code> and <code>"S"</code> (for “Spanish”). This variable represents the language the test was administered in and the <code>NA</code> values are actually meaningful here because they are the the “default” administration, meaning English. So rather than dropping these, let’s <code>mutate</code> them to transform the <code>NA</code> values to <code>"E"</code> for English. We could reasonably do this inside or outside the recipe, but a good rule of thumb is, if it <em>can</em> go in the recipe, put it in the recipe. It can’t hurt, and doing operations outside of the recipe risks data leakage.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="creating-a-recipe.html#cb19-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb19-2"><a href="creating-a-recipe.html#cb19-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb19-3"><a href="creating-a-recipe.html#cb19-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -314,7 +333,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Variable mutation for lang_cd [trained]
 ## Zero variance filter removed calc_admn_cd [trained]
 ## Dummy variables from gndr, ethnic_cd, tst_bnch, tst_dt, ... [trained]</code></pre>
-<p>And we see that <code>lang_cd</code> is no longer being caught by the zero variance filter. Next we’ll <code>bake</code> the recipe to actually apply it <em>to our data</em>. If we specify <code>new_data = NULL</code>, <code>bake</code> will apply the operation to the data we specified in the recipe. But we can also pass new data as an additional argument and it will apply the operations to <em>that</em> data instead of the data specified in the recipe.</p>
+<p>And we see that <code>lang_cd</code> is no longer being caught by the zero variance filter. Next we’ll <code>bake</code> the prepped recipe to actually <em>apply</em> it to our data. If we specify <code>new_data = NULL</code>, <code>bake()</code> will apply the operation to the data we originally specified in the recipe. But we can also pass new data as an additional argument and it will apply the operations to <em>that</em> data instead of the data specified in the recipe.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="creating-a-recipe.html#cb22-1"></a><span class="kw">bake</span>(prepped, <span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 2,841 x 106
 ##        id attnd_dist_inst… attnd_schl_inst… enrl_grd partic_dist_ins…
@@ -371,14 +390,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   tst_atmpt_fg_Y &lt;dbl&gt;, grp_rpt_dist_partic_Y &lt;dbl&gt;,
 ## #   grp_rpt_schl_partic_Y &lt;dbl&gt;, grp_rpt_dist_prfrm_Y &lt;dbl&gt;, …</code></pre>
 <p>And now we can actually <em>see</em> the dummy-coded categorical variables, along with the other operations we requested. For example, <code>calc_admn_cd</code> is not in the dataset. Notice the ID variables are output though, which makes sense because they are often neccessary for joining with other data sources. But it’s important to realize that they are output (i.e., all variables are returned, regardless of role) because if we passed this directly to a model they would be included as predictors. Note that there may be reasons you would want to include a school and/or district level ID variable in your modeling, but you certainly would not want redundant variables.</p>
-<p>We do still have one minor issue with this recipe though, which is pretty evident when looking at the column names of our baked dataset. The <code>tst_dt</code> variable, which specifies the data the test was taken, was treated as a categorical variable because it read in as a character vector. That means all the dates are being dummy coded! Let’s fix this by just transforming it to a date within our <code>step_mutate</code>.</p>
+<p>We do still have one minor issue with this recipe though, which is pretty evident when looking at the column names of our baked dataset. The <code>tst_dt</code> variable, which specifies the date the test was taken, was treated as a categorical variable because it was read in as a character vector. That means all the dates are being dummy coded! Let’s fix this by just transforming it to a date within our <code>step_mutate</code>.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="creating-a-recipe.html#cb24-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb24-2"><a href="creating-a-recipe.html#cb24-2"></a><span class="st">  </span><span class="kw">update_role</span>(<span class="kw">contains</span>(<span class="st">&quot;id&quot;</span>), ncessch, <span class="dt">new_role =</span> <span class="st">&quot;id vars&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb24-3"><a href="creating-a-recipe.html#cb24-3"></a><span class="st">  </span><span class="kw">step_mutate</span>(<span class="dt">lang_cd =</span> <span class="kw">factor</span>(<span class="kw">ifelse</span>(<span class="kw">is.na</span>(lang_cd), <span class="st">&quot;E&quot;</span>, lang_cd)),</span>
 <span id="cb24-4"><a href="creating-a-recipe.html#cb24-4"></a>              <span class="dt">tst_dt =</span> lubridate<span class="op">::</span><span class="kw">mdy_hms</span>(tst_dt)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb24-5"><a href="creating-a-recipe.html#cb24-5"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb24-6"><a href="creating-a-recipe.html#cb24-6"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>())</span></code></pre></div>
-<p>And now when we <code>prep</code>/<code>bake</code> the dataset it’s still a date variable, which is what we probably want (it will modeled as a numeric variable).</p>
+<p>And now when we <code>prep</code>/<code>bake</code> the dataset it’s still a date variable, which is what we probably want (it will be modeled as a numeric variable).</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="creating-a-recipe.html#cb25-1"></a>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb25-2"><a href="creating-a-recipe.html#cb25-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb25-3"><a href="creating-a-recipe.html#cb25-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
@@ -412,16 +431,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   tst_atmpt_fg_Y &lt;dbl&gt;, grp_rpt_dist_partic_Y &lt;dbl&gt;,
 ## #   grp_rpt_schl_partic_Y &lt;dbl&gt;, grp_rpt_dist_prfrm_Y &lt;dbl&gt;,
 ## #   grp_rpt_schl_prfrm_Y &lt;dbl&gt;</code></pre>
-<div id="order-matters" class="section level3">
+<div id="order-matters" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Order matters</h3>
-<p>It’s important to realize that the order of the steps matters. In our recipe, we first declare ID variables as having a different role than predictors or outcomes, we then modify two variables, remove zero-variance predictors, and finally dummy code all categorical (nominal) variables. What happens if we instead dummy code and <em>then</em> remove zero-variance predictors?</p>
+<p>It’s important to realize that the order of the steps matters. In our recipe, we first declare ID variables as having a different role than predictors or outcomes. We then modify two variables, remove zero-variance predictors, and finally dummy code all categorical (nominal) variables. What happens if we instead dummy code and <em>then</em> remove zero-variance predictors?</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="creating-a-recipe.html#cb27-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb27-2"><a href="creating-a-recipe.html#cb27-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb27-3"><a href="creating-a-recipe.html#cb27-3"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) </span>
 <span id="cb27-4"><a href="creating-a-recipe.html#cb27-4"></a></span>
 <span id="cb27-5"><a href="creating-a-recipe.html#cb27-5"></a><span class="kw">prep</span>(rec)</span></code></pre></div>
 <pre><code>## Error: Only one factor level in lang_cd</code></pre>
-<p>We end up with the error, whereas we don’t if we remove zero variance predictors <em>and then</em> dummy code</p>
+<p>We end up with our original error. We don’t get this error if we remove zero variance predictors <em>and then</em> dummy code.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="creating-a-recipe.html#cb29-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(score <span class="op">~</span><span class="st"> </span>., train) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb29-2"><a href="creating-a-recipe.html#cb29-2"></a><span class="st">  </span><span class="kw">step_zv</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb29-3"><a href="creating-a-recipe.html#cb29-3"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) </span>
@@ -441,8 +460,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Zero variance filter removed calc_admn_cd, lang_cd [trained]
 ## Dummy variables from gndr, ethnic_cd, tst_bnch, tst_dt, ... [trained]</code></pre>
-<p>This is true for all steps, and may occasionally lead to you needing to apply the same operation at multiple steps (e.g., a <em>near</em> zero variance filter could be applied before and after dummy-coding).</p>
-<p>All of the above serves as a basic introduction to developing a recipe, and the what follows goes into more detail on specific feature engineering pieces. For complete documentation on all possible recipe steps, please see the <a href="https://recipes.tidymodels.org/reference/index.html">documentaion</a>.</p>
+<p>The fact that order matters may occasionally require that you apply the same operation at multiple steps (e.g., a <em>near</em> zero variance filter could be applied before and after dummy-coding).</p>
+<p>All of the above serves as a basic introduction to developing a recipe, and what follows goes into more detail on specific feature engineering pieces. For complete information on all possible recipe steps, please see the <a href="https://recipes.tidymodels.org/reference/index.html">documentation</a>.</p>
 </div>
 </div>
             </section>

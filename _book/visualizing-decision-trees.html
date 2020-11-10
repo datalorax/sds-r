@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-07" />
+<meta name="date" content="2020-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,6 +35,7 @@
   
 <link rel="prev" href="determining-optimal-splits.html"/>
 <link rel="next" href="fitting-a-decision-tree.html"/>
+<script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -63,18 +64,17 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -94,7 +94,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,46 +142,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
-<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a><ul>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a><ul>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a><ul>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
 <li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
 <li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
-<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a><ul>
-<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
-<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#omission"><i class="fa fa-check"></i><b>3.5.1</b> Omission</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#encoding-and-simple-imputation"><i class="fa fa-check"></i><b>3.5.2</b> Encoding and simple imputation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="missing-data.html"><a href="missing-data.html#modeling-the-missingness"><i class="fa fa-check"></i><b>3.5.3</b> Modeling the missingness</a></li>
+<li class="chapter" data-level="3.5.4" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.4</b> A few words of caution</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a><ul>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a><ul>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
 <li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
 <li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a><ul>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
 <li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
 <li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
 </ul></li>
-<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a><ul>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
 <li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a><ul>
+<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a>
+<ul>
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a><ul>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a>
+<ul>
 <li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a><ul>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
 <li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
 <li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
@@ -205,53 +218,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="visualizing-decision-trees" class="section level2">
+<div id="visualizing-decision-trees" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Visualizing decision trees</h2>
 <p>The decision tree itself is often helpful for understanding how predictions are made. Scatterplots can also be helpful in terms of viewing how the predictor space is being partitioned. For example, imagine we are fitting a model to the following data</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="visualizing-decision-trees.html#cb2-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb2-2"><a href="visualizing-decision-trees.html#cb2-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="visualizing-decision-trees.html#cb183-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb183-2"><a href="visualizing-decision-trees.html#cb183-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
 <p>In this case, we only have a single predictor variable, <code>displ</code>, but we can split on that variable multiple times. Let’s start with a single split, and we’ll build from there. The decision tree for a single split model (also called a “stump”) looks like this</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
 <p>So we are just splitting based on whether <code>displ</code> is greater than or equal to 2.6. How does this look in the scatterplot? Well, if the <code>displ &gt;= 2.6</code>, it’s a horizontal line at 14, and if <code>displ &lt;= 2.6</code>, it’s a horizontal line at 21.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <p>What if we add one additional split? Well then the decision tree looks like this</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 <p>and the scatterplot looks like this</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <p>As the number of splits increases, the fit to the data increases. However, the model can also quickly overfit and not generalize to new data well, which is why a single decision tree is often not the most performant model.</p>
 <p>We can visualize classification problems with decision trees using scatterplots as well, as long as there are two continuous predictor variables. Sticking with our <code>mpg</code> dataset, let’s say we wanted to predict the drivetrain: front-wheel drive, rear-wheel drive, or four-wheel drive. The scatterplot would then look like this (assuming we’re now using <code>displ</code> and <code>cty</code> as predictor variables).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="visualizing-decision-trees.html#cb3-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb3-2"><a href="visualizing-decision-trees.html#cb3-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="visualizing-decision-trees.html#cb184-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb184-2"><a href="visualizing-decision-trees.html#cb184-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
 <p>How does the predictor space get divided up? Let’s try first with a stump model. The tree looks like this</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="visualizing-decision-trees.html#cb4-1"></a>drv_stump &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
-<span id="cb4-2"><a href="visualizing-decision-trees.html#cb4-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">1</span>))</span>
-<span id="cb4-3"><a href="visualizing-decision-trees.html#cb4-3"></a><span class="kw">rpart.plot</span>(drv_stump, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="visualizing-decision-trees.html#cb185-1"></a>drv_stump &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
+<span id="cb185-2"><a href="visualizing-decision-trees.html#cb185-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">1</span>))</span>
+<span id="cb185-3"><a href="visualizing-decision-trees.html#cb185-3"></a><span class="kw">rpart.plot</span>(drv_stump, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
 <p>This model isn’t doing too well. It looks like we’re not capturing any of the rear-wheel drive cases. That of course makes sense, because we only have one split, so we can’t predict three different classes. Here’s what it looks like with the scatterplot</p>
 <p><strong>NOTE:</strong> There’s a bug (I think) in the package that currently means I have to flip the axes here. We should come back and change it when it’s fixed. See here: <a href="https://github.com/grantmcdermott/parttree/issues/5" class="uri">https://github.com/grantmcdermott/parttree/issues/5</a></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="visualizing-decision-trees.html#cb5-1"></a><span class="kw">library</span>(parttree)</span>
-<span id="cb5-2"><a href="visualizing-decision-trees.html#cb5-2"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, displ)) <span class="op">+</span></span>
-<span id="cb5-3"><a href="visualizing-decision-trees.html#cb5-3"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
-<span id="cb5-4"><a href="visualizing-decision-trees.html#cb5-4"></a>                <span class="dt">data =</span> drv_stump, </span>
-<span id="cb5-5"><a href="visualizing-decision-trees.html#cb5-5"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb5-6"><a href="visualizing-decision-trees.html#cb5-6"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
-<span id="cb5-7"><a href="visualizing-decision-trees.html#cb5-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="visualizing-decision-trees.html#cb186-1"></a><span class="kw">library</span>(parttree)</span>
+<span id="cb186-2"><a href="visualizing-decision-trees.html#cb186-2"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, displ)) <span class="op">+</span></span>
+<span id="cb186-3"><a href="visualizing-decision-trees.html#cb186-3"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
+<span id="cb186-4"><a href="visualizing-decision-trees.html#cb186-4"></a>                <span class="dt">data =</span> drv_stump, </span>
+<span id="cb186-5"><a href="visualizing-decision-trees.html#cb186-5"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
+<span id="cb186-6"><a href="visualizing-decision-trees.html#cb186-6"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb186-7"><a href="visualizing-decision-trees.html#cb186-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
 <p>And what if we go with a more complicated model? Say, 3 splits? Then the tree looks like this.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="visualizing-decision-trees.html#cb6-1"></a>drv_threesplits &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
-<span id="cb6-2"><a href="visualizing-decision-trees.html#cb6-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">3</span>))</span>
-<span id="cb6-3"><a href="visualizing-decision-trees.html#cb6-3"></a><span class="kw">rpart.plot</span>(drv_threesplits, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="visualizing-decision-trees.html#cb187-1"></a>drv_threesplits &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
+<span id="cb187-2"><a href="visualizing-decision-trees.html#cb187-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">3</span>))</span>
+<span id="cb187-3"><a href="visualizing-decision-trees.html#cb187-3"></a><span class="kw">rpart.plot</span>(drv_threesplits, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
 <p>And our predictor space can now be divided up better.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="visualizing-decision-trees.html#cb7-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb7-2"><a href="visualizing-decision-trees.html#cb7-2"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
-<span id="cb7-3"><a href="visualizing-decision-trees.html#cb7-3"></a>                <span class="dt">data =</span> drv_threesplits, </span>
-<span id="cb7-4"><a href="visualizing-decision-trees.html#cb7-4"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb7-5"><a href="visualizing-decision-trees.html#cb7-5"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
-<span id="cb7-6"><a href="visualizing-decision-trees.html#cb7-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="visualizing-decision-trees.html#cb188-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb188-2"><a href="visualizing-decision-trees.html#cb188-2"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
+<span id="cb188-3"><a href="visualizing-decision-trees.html#cb188-3"></a>                <span class="dt">data =</span> drv_threesplits, </span>
+<span id="cb188-4"><a href="visualizing-decision-trees.html#cb188-4"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
+<span id="cb188-5"><a href="visualizing-decision-trees.html#cb188-5"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb188-6"><a href="visualizing-decision-trees.html#cb188-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
 <p>This looks considerably better and, although we still have some misclassification, that’s ultimately probably a good thing because we don’t want to start to overfit to our training data. Decision trees, like all models, should balance the bias-variance tradeoff. They are flexible and make few assumptions about the data, but that can also quickly lead to overfitting and poor generalizations to new data.</p>
 </div>
             </section>

@@ -6,19 +6,19 @@ source("_common.R")
 knitr::opts_chunk$set(warning = FALSE)
 ```
 
-Feature engineering is a fancy machine learning way of saying "prepare your data for analysis". But it's also more than just getting your data in the right format. It's about transforming variables to help the model provide more stable predictions; encoding, modeling, or omitting missing data; creating new variables from the available dataset; and otherwise helping improve the model performance through transformations and modifcations to the existing data *before* analysis.
+Feature engineering is a fancy machine learning way of saying "prepare your data for analysis". But it's also more than just getting your data in the right format. It's about transforming variables to help the model provide more stable predictions -- for example, encoding, modeling, or omitting missing data; creating new variables from the available dataset; and otherwise helping improve the model performance through transformations and modifications to the existing data *before* analysis.
 
-One of the biggest challenges with feature engineering is what's referred to as **data leakage**, which is when information from the test dataset leaks into the training dataset. Consider the simple example of normalizing or standardizing a variable (subtracting the variable mean from each value and then dividing by the standard deviation). Normalizing your variables is neccesary for a wide range of predictive models, including any models using regularization methods, principal components analysis, and $k$-nearest neighbor models, among others. But when we normalize the variable, it is critical we do so relative to the training set, *not* relative to the full dataset. If we normalize the numeric variables in our dataset, then divide it into test and training datasets, then information from the test dataset has *leaked* into the training dataset. This seems simple enough - just wait to standardize until after splitting - but it becomes more complicated when we consider *tuning* a model. If we use a process like $k$-fold cross-validation, then we have to normalize *within* each fold to get an accurate representation of out-of-sample predictive accuracy.
+One of the biggest challenges with feature engineering is what's referred to as **data leakage**, which occurs when information from the test dataset leaks into the training dataset. Consider the simple example of normalizing or standardizing a variable (subtracting the variable mean from each value and then dividing by the standard deviation). Normalizing your variables is necessary for a wide range of predictive models, including any model using regularization methods, principal components analysis, and $k$-nearest neighbor models, among others. But when we normalize the variable, it is critical we do so relative to the training set, *not* relative to the full dataset. If we normalize the numeric variables in our full dataset and then divide it into test and training datasets, information from the test dataset has *leaked* into the training dataset. This seems simple enough - just wait to standardize until after splitting - but it becomes more complicated when we consider *tuning* a model. If we use a process like $k$-fold cross-validation, then we have to normalize *within* each fold to get an accurate representation of out-of-sample predictive accuracy.
 
 <!-- In the above, things like k-fold cv will probably have chapters of their own. We should link to them in the text -->
 
-In this chapter, we'll introduce feature engineering using the [{recipes}](https://recipes.tidymodels.org) package from the [{tidymodels}](https://www.tidymodels.org) suite of packages which, as we will see, helps you to be explicit about the decisions you're making, while avoiding potential issues with data leakage.
+In this chapter, we'll introduce feature engineering using the [**{recipes}**](https://recipes.tidymodels.org) package from the [**{tidymodels}**](https://www.tidymodels.org) suite of packages which, as we will see, helps you to be explicit about the decisions you're making, while avoiding potential issues with data leakage.
 
 ## Basics of {recipes}
 
 ![](https://github.com/tidymodels/recipes/raw/master/man/figures/logo.png)
 
-The recipes package is designed to replace the [stats::model.matrix](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html) function that you're probably familiar with. For example, if you fit a model like the below
+The **{recipes}** package is designed to replace the [stats::model.matrix()](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html) function that you might be familiar with. For example, if you fit a model like the one below
 
 ```{r}
 library(palmerpenguins)
@@ -26,11 +26,11 @@ m1 <- lm(bill_length_mm ~ species, data = penguins)
 summary(m1)
 ```
 
-You can see that our `species` column, which has the values `r unique(penguins$species)`, is automatically dummy-coded for us, with the first level in the factor variable set as the reference group.
+You can see that our `species` column, which has the values `r unique(penguins$species)`, is automatically dummy-coded for us, with the first level in the factor variable (Adelie) set as the reference group. The **{recipes}** package forces you to be a bit more explicit in these decisions. But it also has a much wider range of modifications it can make to the data. 
 
-The {recipes} package forces you to be a bit more explicit in these decisions. But it also has a much wider range of modifications it can make to the data. Another piece that is slightly different is that, in the above, you may not have even realized `stats::model.matrix` was doing anything for you because it's wrapped within the `stats::lm` modeling code. But with {recipes}, you make the modifications to your data first, then conduct your analysis.
+Using **{recipes}** also allows you to more easily separate the pre-processing and modeling stages of your data analysis workflow. In the above example, you may not have even realized `stats::model.matrix()` was doing anything for you because it's wrapped within the `stats::lm()` modeling code. But with **{recipes}**, you make the modifications to your data first and *then* conduct your analysis.
 
-The {recipes} package allows you to create a blueprint (or recipe) to apply to a given dataset, without actually applying those operations. We can then use this blueprint iteratively across sets of data (e.g., folds) as well as on new (potentially unseen) data that has the same structure (variables). This process helps avoid data leakage because all operations are carried forward and applied together, and no operations are conducted until explicitly requested.
+How does this separation work? With **{recipes}**, you can create a blueprint (or recipe) to apply to a given dataset, without actually applying those operations. You can then use this blueprint iteratively across sets of data (e.g., folds) as well as on new (potentially unseen) data that has the same structure (variables). This process helps avoid data leakage because all operations are carried forward and applied together, and no operations are conducted until explicitly requested.
 
 ## Creating a recipe
 
@@ -65,15 +65,15 @@ When creating recipes, we can still use the formula interface to define how the 
 rec <- recipe(score ~ ., data = train)
 ```
 
-Notice that I still declare the dataset, even though this is just a blueprint. It uses the dataset I provide to get the names of the columns from the dataset, but it doesn't actually do anything with this dataset (unless we ask it to). Let's look at what this recipe looks like
+Notice that I still declare the dataset (in this case, the *training* data), even though this is just a blueprint. It uses the dataset I provide to get the names of the columns, but it doesn't actually do anything with this dataset (unless we ask it to). Let's look at what this recipe looks like.
 
 ```{r }
 rec
 ```
 
-Notice it just states that this is a data recipe in which we have specified 1 outcome variable and 39 predictors.
+Notice it just states that this is a data recipe in which we have specified `r sum(rec$var_info$role %in% "outcome")` outcome variable and `r sum(rec$var_info$role %in% "predictor")` predictors.
 
-We can `prep` this recipe to learn more
+We can `prep` this recipe to learn more.
 
 ```{r }
 prep(rec)
@@ -81,9 +81,9 @@ prep(rec)
 
 Notice we now get an additional message about how many rows are in the data, and how many of these rows contain missing (incomplete data). So the recipe is the blueprint, and we prep the recipe to get it to actually go into the data and conduct the operations. The dataset it has now, however, is just a placeholder than can be substituted in for any other dataset with an equivalent structure.
 
-But of course modeling score as the outcome with everything else predicting it (as is) is not reasonable for multiple reasons. We have many ID variables, for one, and we also multipe categorical variables. For some methods (like tree-based models) it might be okay to leave these as is, but for others (like any model in the linear regression family) we'll wan to encode them somehow (e.g., dummy code).
+But of course, modeling score as the outcome with everything else predicting it is not a reasonable choice in this case. For example, we have many ID variables, and we also have multiple categorical variables. For some methods (like tree-based models) it might be okay to leave these categorical variables as they are, but for others (like any model in the linear regression family) we'll want to encode them somehow (e.g., dummy code).
 
-We can do these operations by adding *steps* to our recipe. In the first step, we'll update the role of all the ID variables so they are not included among the predictors. In the second, we will dummy code all nominal variables.
+We can address these concerns by adding *steps* to our recipe. In the first step, we'll update the role of all the ID variables so they are not included among the predictors. In the second, we will dummy code all nominal (i.e. categorical) variables.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -93,9 +93,9 @@ rec <- recipe(score ~ ., train) %>%
 
 When updating the roles, we can change the variable label (text passed to the `new_role` argument) to be anything we want, so long as it's not `"predictor"` or `"outcome"`.
 
-Notice in the above I am also using helper functions to apply the operations to all variables of a specific type. There are five main helper functions: `all_predictors()`, `all_outcomes()`, `all_nominal()`, `all_numeric()` and `has_role()`. You can use these together, including with negation (e.g., `-all_outcomes` to specify the operation should **not** apply to the outcome variable(s)) to select any set of variables you want to apply the operation to.
+Notice in the above I am also using helper functions to apply the operations to all variables of a specific type. There are five main helper functions for creating recipes: `all_predictors()`, `all_outcomes()`, `all_nominal()`, `all_numeric()` and `has_role()`. You can use these together, including with negation (e.g., `-all_outcomes()` to specify the operation should **not** apply to the outcome variable(s)) to select any set of variables you want to apply the operation to.
 
-Let's try `prep`ping this recipe
+Let's try to `prep` this updated recipe.
 
 ```{r error = TRUE, warning = FALSE}
 prep(rec)
@@ -103,7 +103,7 @@ prep(rec)
 
 Uh oh! We have an error. Our recipe is trying to dummy code the `lang_cd` variable, but it has only one level. It's kind of hard to dummy-code a constant!
 
-Luckily, we can expand our recipe to first remove any zero-variance predictors, like so
+Luckily, we can expand our recipe to first remove any zero-variance predictors, like so:
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -112,13 +112,13 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal())
 ```
 
-The `zv` part stands for "zero variance" and should take care of this problem. Let's try again.
+The `_zv` part stands for "zero variance" and should take care of this problem. Let's try again.
 
 ```{r warning = FALSE}
 prep(rec)
 ```
 
-Beautiful! Note we do still get a warning here, but I've omitted it in the text (we'll take care of it later). Our recipe says we now have 6 ID variables, 1 outcome, and 33 predictors, with 2841 data points (rows of data). The `calc_admn_cd` and `lang_cd` variables have been removed because they have zero variance, and several variables have been dummy coded, including `gndr` and `ethnic_cd`, among others.
+Beautiful! Note we do still get a warning here, but I've omitted it in the text (we'll come back to this in the section on [Missing data]). Our recipe says we now have 6 ID variables, `r sum(rec$var_info$role %in% "outcome")` outcome, and `r sum(rec$var_info$role %in% "predictor")` predictors, with `r nrow(rec$template)` data points (rows of data). The `calc_admn_cd` and `lang_cd` variables have been removed because they have zero variance, and several variables have been dummy coded, including `gndr` and `ethnic_cd`, among others.
 
 Let's dig just a bit deeper here though. What's going on with these zero-variance variables? Let's look back at the training data.
 
@@ -130,7 +130,7 @@ train %>%
   count(lang_cd)
 ```
 
-So at least in our sample, `calc_admn_cd` really is just fully missing, which means it might as well be dropped because it's providing us exactly nothing. But that's not the case with `lang_cd`. It has two values, `NA` and `S`. This variable represents the language the test was administered in and the `NA` values are actually meaningful here because they are the the "default" administration, meaning English. So rather than dropping these, let's `mutate` them to transform the `NA` values to `"E"` for English. We could reasonably do this inside or outside the recipe, but a good rule of thumb is, if it *can* go in the recipe, put it in the recipe. It can't hurt, and doing operations outside of the recipe risks data leakage.
+So at least in our sample, `calc_admn_cd` really is just fully missing, which means it might as well be dropped because it's providing us exactly nothing. But that's not the case with `lang_cd`. It has two values, `NA` and `"S"` (for "Spanish"). This variable represents the language the test was administered in and the `NA` values are actually meaningful here because they are the the "default" administration, meaning English. So rather than dropping these, let's `mutate` them to transform the `NA` values to `"E"` for English. We could reasonably do this inside or outside the recipe, but a good rule of thumb is, if it *can* go in the recipe, put it in the recipe. It can't hurt, and doing operations outside of the recipe risks data leakage.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -147,7 +147,7 @@ prepped <- prep(rec)
 prepped
 ```
 
-And we see that `lang_cd` is no longer being caught by the zero variance filter. Next we'll `bake` the recipe to actually apply it *to our data*. If we specify `new_data = NULL`, `bake` will apply the operation to the data we specified in the recipe. But we can also pass new data as an additional argument and it will apply the operations to *that* data instead of the data specified in the recipe.
+And we see that `lang_cd` is no longer being caught by the zero variance filter. Next we'll `bake` the prepped recipe to actually *apply* it to our data. If we specify `new_data = NULL`, `bake()` will apply the operation to the data we originally specified in the recipe. But we can also pass new data as an additional argument and it will apply the operations to *that* data instead of the data specified in the recipe.
 
 ```{r }
 bake(prepped, new_data = NULL)
@@ -155,7 +155,7 @@ bake(prepped, new_data = NULL)
 
 And now we can actually *see* the dummy-coded categorical variables, along with the other operations we requested. For example, `calc_admn_cd` is not in the dataset. Notice the ID variables are output though, which makes sense because they are often neccessary for joining with other data sources. But it's important to realize that they are output (i.e., all variables are returned, regardless of role) because if we passed this directly to a model they would be included as predictors. Note that there may be reasons you would want to include a school and/or district level ID variable in your modeling, but you certainly would not want redundant variables.
 
-We do still have one minor issue with this recipe though, which is pretty evident when looking at the column names of our baked dataset. The `tst_dt` variable, which specifies the data the test was taken, was treated as a categorical variable because it read in as a character vector. That means all the dates are being dummy coded! Let's fix this by just transforming it to a date within our `step_mutate`.
+We do still have one minor issue with this recipe though, which is pretty evident when looking at the column names of our baked dataset. The `tst_dt` variable, which specifies the date the test was taken, was treated as a categorical variable because it was read in as a character vector. That means all the dates are being dummy coded! Let's fix this by just transforming it to a date within our `step_mutate`.
 
 ```{r}
 rec <- recipe(score ~ ., train) %>% 
@@ -166,7 +166,7 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal())
 ```
 
-And now when we `prep`/`bake` the dataset it's still a date variable, which is what we probably want (it will modeled as a numeric variable).
+And now when we `prep`/`bake` the dataset it's still a date variable, which is what we probably want (it will be modeled as a numeric variable).
 
 ```{r warning = FALSE}
 rec %>% 
@@ -176,7 +176,7 @@ rec %>%
 
 ### Order matters
 
-It's important to realize that the order of the steps matters. In our recipe, we first declare ID variables as having a different role than predictors or outcomes, we then modify two variables, remove zero-variance predictors, and finally dummy code all categorical (nominal) variables. What happens if we instead dummy code and *then* remove zero-variance predictors?
+It's important to realize that the order of the steps matters. In our recipe, we first declare ID variables as having a different role than predictors or outcomes. We then modify two variables, remove zero-variance predictors, and finally dummy code all categorical (nominal) variables. What happens if we instead dummy code and *then* remove zero-variance predictors?
 
 ```{r warning = FALSE, error = TRUE}
 rec <- recipe(score ~ ., train) %>% 
@@ -186,7 +186,7 @@ rec <- recipe(score ~ ., train) %>%
 prep(rec)
 ```
 
-We end up with the error, whereas we don't if we remove zero variance predictors *and then* dummy code
+We end up with our original error. We don't get this error if we remove zero variance predictors *and then* dummy code.
 
 ```{r warning = FALSE}
 rec <- recipe(score ~ ., train) %>% 
@@ -196,13 +196,13 @@ rec <- recipe(score ~ ., train) %>%
 prep(rec)
 ```
 
-This is true for all steps, and may occasionally lead to you needing to apply the same operation at multiple steps (e.g., a *near* zero variance filter could be applied before and after dummy-coding).
+The fact that order matters may occasionally require that you apply the same operation at multiple steps (e.g., a *near* zero variance filter could be applied before and after dummy-coding).
 
-All of the above serves as a basic introduction to developing a recipe, and the what follows goes into more detail on specific feature engineering pieces. For complete documentation on all possible recipe steps, please see the [documentaion](https://recipes.tidymodels.org/reference/index.html).
+All of the above serves as a basic introduction to developing a recipe, and what follows goes into more detail on specific feature engineering pieces. For complete information on all possible recipe steps, please see the [documentation](https://recipes.tidymodels.org/reference/index.html).
 
 ## Encoding categorical data
 
-For many (but not all) modeling frameworks, categorical data must be transformed somehow. The most common of these is, as we've already seen, dummy coding, which `stats::model.matrix` will do for you automatically using the `stats::contrasts` function. There are also other coding schemes you can use with base R, such as Helmert and polynomial coding (see `?contrasts` and related functions). Dummy coding leaves one group out (the first level of the factor, by default) and creates new columns for all the other groups coded $0$ or $1$ depending on whether the original variable represented that value or not. For example
+For many (but not all) modeling frameworks, categorical data must be transformed somehow. The most common strategy for this is dummy coding, which `stats::model.matrix()` will do for you automatically using the `stats::contrasts()` function. There are also other coding schemes you can use with base R, such as Helmert and polynomial coding (see `?contrasts` and related functions). Dummy coding leaves one group out (the first level of the factor, by default) and creates new columns for all the other groups coded $0$ or $1$ depending on whether the original variable represented that value or not. For example:
 
 ```{r }
 f <- factor(c("red", "red", "blue", "green", "green", "green"))
@@ -211,7 +211,7 @@ contrasts(f)
 
 In the above, `"blue"` has been assigned as the reference category (note that factor levels are assigned in alphabetical order by default), and dummy variables have been created for `"green"` and `"red"`. In a linear regression framework, `"blue"` would become the intercept.
 
-We can recreate this same coding scheme with {recipes}, but we need to first put it in a data frame.
+We can recreate this same coding scheme with **{recipes}**, but we need to first put it in a data frame.
 
 ```{r }
 df <- data.frame(f, score = rnorm(length(f)))
@@ -225,13 +225,13 @@ recipe(score ~ f, data = df) %>%
 
 In the above, we've created the actual columns we need, while in the base example we only created the contrast matrix (although it's relatively straightforward to then create the columns).
 
-The {recipes} version is, admittedly, a fair amount of additional code, but as we saw in the previous section, {recipes} is capable of making a wide range of transformation in a systematic way.
+The **{recipes}** version is, admittedly, a fair amount of additional code, but as we saw in the previous section, **{recipes}** is capable of making a wide range of transformation in a systematic way.
 
 ### Transformations beyond dummy coding
 
 Although less used in inferential statistics, there are a number of additional transformations we can use to encode categorical data. The most straightforward is **one-hot** encoding. One-hot encoding is essentially equivalent to dummy coding except we create the variables for *all* levels in the categorical variable (i.e., we do not leave one out as a reference group). This generally makes them less useful in linear regression frameworks (unless the model intercept is dropped), but they can be highly useful in a number of other frameworks, such as tree-based methods (covered later in the book).
 
-To use one-hot encoding, we pass the additional `one_hot` argument to `step_dummy`.
+To use one-hot encoding, we pass the additional `one_hot` argument to `step_dummy()`.
 
 ```{r}
 recipe(score ~ f, data = df) %>% 
@@ -249,18 +249,18 @@ recipe(score ~ f, data = df) %>%
   bake(new_data = NULL)
 ```
 
-Notice that the syntax is essentially equivalent to the previous dummy-coding example, but we've just swapped out `step_dummy` for `step_integer`. Integer encoding can be useful in natural language processing in particular because words can be encoded as integers, and then the algorithm can search for patterns in the numbers.
+Notice that the syntax is essentially equivalent to the previous dummy-coding example, but we've just swapped out `step_dummy()` for `step_integer()`. Integer encoding can be useful in natural language processing in particular because words can be encoded as integers, and then the algorithm can search for patterns in the numbers.
 
 ### Handling new levels
 
-One other very common problem with encoding categorical data is how to handle new, unseen levels. For example, if we create a recipe as follows
+One other very common problem with encoding categorical data is how to handle new, unseen levels. For example, let's take a look at the recipe below:
 
 ```{r }
 rec <- recipe(score ~ f, data = df) %>% 
   step_dummy(f)
 ```
 
-we will have no problem creating dummy variables as long as the levels of $f$ are within those contained in `df$f` (or, more mathematically, where $f \in F$). But what if, in a new sample, $f =$ "purple" or $f =$ "gray"? Let's try and see what happens
+We will have no problem creating dummy variables within this recipe as long as the levels of $f$ are within those contained in `df$f` (or, more mathematically, where $f \in F$). But what if, in a new sample, $f =$ "purple" or $f =$ "gray"? Let's try and see what happens.
 
 ```{r }
 df2 <- data.frame(f = factor(c("blue", "green", "purple", "gray")),
@@ -270,7 +270,7 @@ rec %>%
   bake(new_data = df2)
 ```
 
-We end up propagating missing data, which is obviously less than ideal. Luckily, the solution is pretty straightforward. We just add a new step to our recipe to handle *novel* (or new) categories, lumping them all in their own level.
+We end up propagating missing data, which is obviously less than ideal. Luckily, the solution is pretty straightforward. We just add a new step to our recipe to handle *novel* (or new) categories, lumping them all in their own level (labeled with the suffix `_new`).
 
 ```{r }
 rec <- recipe(score ~ f, data = df) %>% 
@@ -284,11 +284,11 @@ rec %>%
 
 This is not perfect, because `"purple"` and `"orange"` may be highly different, and we're modeling them as a single category. But at least we're able to move forward with our model without introducing new missing data. As an aside, this is a small example of why having good training data is so important. If you don't have all the levels of a categorical variable represented, you may end up essentially collapsing levels when there is meaningful variance that could be parsed out.
 
-You can also use a similar approach with `step_other` if you have a categorical variable with lots of levels (and a small-ish $n$ by comparison). Using `step_other`, you specify a threshold below which levels should be collapsed into a single "other" category. The threshold can be passed as a proportion or a frequency.
+You can also use a similar approach with `step_other()` if you have a categorical variable with lots of levels (and a small-ish $n$ by comparison). Using `step_other()`, you specify a threshold below which levels should be collapsed into a single "other" category. The threshold can be passed as a proportion or a frequency.
 
 ### Final thoughts on encoding categorical data
 
-There are, of course, many other ways you can encode categorical data. One important consideration is whether or not the variable is *ordered* (e.g., low, medium, high) in which case it may make sense to have a corresponding ordered numeric variable (e.g., $0$, $1$, $2$). Of course, the method of coding these ordered values will relate to assumptions of your modeling process (in the previous example, that there is a *linear*, constant change across categories). In our experience, however, the combination of dummy coding (with potentially a one-hot alternative used), integer coding, or simply leaving the categorical variables as they are (for specific frameworks, like tree-based methods) is sufficient most (but not all) of the time. For a more complete discussion of encoding categorical data for predictive modeling frameworks, we recommend [Chapter 5](http://www.feat.engineering/encoding-categorical-predictors.html) of Kuhn & Johnson (2019).
+There are, of course, many other ways you can encode categorical data. One important consideration is whether or not the variable is *ordered* (e.g., low, medium, high) in which case it may make sense to have a corresponding ordered numeric variable (e.g., $0$, $1$, $2$). Of course, the method of coding these ordered values will relate to assumptions of your modeling process. For example, in the previous example, we assumed that there is a *linear*, constant change across categories. In our experience, however, the combination of dummy coding (with potentially a one-hot alternative used), integer coding, or simply leaving the categorical variables as they are (for specific frameworks, like tree-based methods) is sufficient most (but not all) of the time. For a more complete discussion of encoding categorical data for predictive modeling frameworks, we recommend [Chapter 5](http://www.feat.engineering/encoding-categorical-predictors.html) of Kuhn & Johnson (2019).
 
 <!-- Need to get a bibliography going -->
 
@@ -296,7 +296,7 @@ There are, of course, many other ways you can encode categorical data. One impor
 
 Occasionally you have (or can create) variables that are highly imbalanced. A common example might include a gender variable that takes on the values "male", "female", "non-binary", "other", and "refused to answer". Once you dummy-code a variable like this, it is possible that one or more of the categories may be so infrequent that it makes modeling that category difficult. This is not to say that these categories are not important, particularly when considering the representation of your training dataset to real-world applications (and any demographic variable is going to be associated with issues of ethics). Ignoring this variation may lead to systematic biases in model predictions. However, you also regularly have to make compromises to get models to work and be useful. One of those compromises often includes (with many types of variables, not just demographics) dropping highly imbalanced predictors.
 
-Let's look back at our statewide testing data. Let's `bake` the final recipe from our [Creating a recipe] section on the training data (that we fed to the recipe) and look at the dummy variables that are created.
+Let's look back at our statewide testing data. Let's `bake` the final recipe from our [Creating a recipe] section on the training data and look at the dummy variables that are created.
 
 ```{r warning = FALSE}
 rec <- recipe(score ~ ., train) %>% 
@@ -348,7 +348,7 @@ So how is `step_nzv` working and how can we adjust it to be not quite so aggress
 -   Have very few unique values, and
 -   The frequency ratio for the most common value to the second most common value is large
 
-These criteria are implemented in `step_nzv` through the `unique_cut` and `freq_cut` arguments, respectively. The former is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent), while the latter is estimated by the most common level frequency divided by the second most common level frequency. The default for `unique_cut` is 10, while the default for `freq_cut` is $95/5 = 19$. For a column to be "caught" by a near-zero variance filter, and removed from the training set, it must be *below* the specified `unique_cut` and *above* the specified `freq_cut`.
+These criteria are implemented in `step_nzv` through the `unique_cut` and `freq_cut` arguments, respectively. `unique_cut` is estimated as the number of unique values divided by the total number of samples (length of the column) times 100 (i.e., it is a percent). `freq_cut` is estimated by dividing the most common level frequency by the second most common level frequency. The default for `unique_cut` is $10$, while the default for `freq_cut` is $95/5 = 19$. For a column to be "caught" by a near-zero variance filter, and removed from the training set, it must be *below* the specified `unique_cut` and *above* the specified `freq_cut`.
 
 In the case of `ethnic_cd_B`, we see that there are two unique values, $0$ and $1$ (because it's a dummy-coded variable). There are `r nrow(baked)` rows, so the `unique_cut` value is $(2 / 2841) \times 100 = 0.07$. The frequency ratio is $2786/55 = 50.65$. It therefore meets both of the default criteria (below `unique_cut` and above `freq_cut`) and is removed.
 
@@ -367,11 +367,11 @@ removed_columns2 <- names(baked)[!(names(baked) %in% names(baked_rm_nzv2))]
 removed_columns2
 ```
 
-Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the `unique_cut` criteria. But it can be achieved by fiddling with the `freq_cut` variable and, actually, could be considered part of your model tuning process. In this case, we've set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you'll end up with variables that have such low frequency that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.
+Removing near-zero variance dummy variables can be a bit tricky because they will essentially always meet the `unique_cut` criteria. But it can be achieved by fiddling with the `freq_cut` variable and, actually, could be considered part of your model tuning process. In this case, we've set it so variables will be removed if greater than 99 out of every 100 cases is the same. This led to only 13 variables being flagged and removed. But we could continue on even further specifying, for example, that 499 out of every 500 must be the same for the variable to be flagged. At some point, however, you'll end up with variables that have such low variance that model estimation becomes difficult, which is the purpose of applying the near-zero variance filter in the first place.
 
 ## Missing data
 
-If we look closely at our statewide testing data, we will see that there is a considerable amount of missingness. In fact, every row of the data frame has at least one value that is missing. The amount to which missing data impacts your work varies by field, but in most fields you're likely to run into situations where you have to handle missing data in some way. The purpose of this section is to discuss a few approaches (as implemented through the {recipes} package) to handling missingness for predictive modeling purposes. Note that this is **not** a comprehensive discussion on the topic (for which, we recommend [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563)), but is instead an applied discussion of what you *can* do. As with many aspects of data analysis, generally, there is no single approach that will always work best, and it's worth trying a few different approaches in your model development to see how different choices impact your model performance.
+If we look closely at our statewide testing data, we will see that there is a considerable amount of missingness. In fact, every row of the data frame has at least one value that is missing. The amount to which missing data impacts your work varies by field, but in most fields you're likely to run into situations where you have to handle missing data in some way. The purpose of this section is to discuss a few approaches using **{recipes}** to handle missingness for predictive modeling purposes. Note that this is not a comprehensive discussion on the topic (for which, we recommend [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563)), but is instead an applied discussion of what you *can* do. As with many aspects of data analysis, generally, there is no single approach that will always work best, and it's worth trying a few different approaches in your model development to see how different choices impact your model performance.
 
 There are three basic ways of handling missing data:
 
@@ -379,13 +379,11 @@ There are three basic ways of handling missing data:
 -   **Encode** or **Impute** the missing data
 -   **Ignore** the missing data and estimate from the available data
 
-The last option is not always feasible and will depend the modeling framework you're working within. Some estimation procedures can also lend themselves to efficient handling of missing data (for example, imputation via the posterior distribution with Bayesian estimation). In this section, we'll mostly focus on the first three. Additionally, we will only really be concerned with missingness on the predictor variables here, rather than the outcome. Generally, missing data on the predictors is a much more difficult problem than missingness on the outcome, because most models assume you have complete data across your predictors.
+The last option is not always feasible and will depend the modeling framework you're working within. Some estimation procedures can also lend themselves to efficient handling of missing data (for example, imputation via the posterior distribution with Bayesian estimation). In this section, we'll mostly focus on the first two approaches. Additionally, we will only really be concerned with missingness on the predictor variables here, rather than the outcome. Generally, missing data in the predictors is a much more difficult problem than missingness in the outcome, because most models assume you have complete data across your predictors. This is not to say that missingness on your outcome is not challenging (it can be highly challenging, and can make model performance evaluation more difficult). However, without handling missing data on your predictors, you generally cannot even *fit* the model. So we'll mostly focus there.
 
-### Missing data via {recipes}
+### Omission
 
-#### Omission
-
-We can **omit** missing data with `step_naomit`. This will remove any row that has any missing data. Let's see how this impacts our data, working with our same recipe we finished up with in the [Creating a recipe] section. I've placed the recipe here again so we don't have to go back to remind ourselves what we did previously.
+We can **omit** missing data with `step_naomit()`. This will remove any row that has any missing data. Let's see how this impacts our data, working with our same recipe we finished up with in the [Creating a recipe] section. I've placed the recipe here again so we don't have to go back to remind ourselves what we did previously.
 
 ```{r warning = FALSE}
 rec <- recipe(score ~ ., train) %>% 
@@ -403,13 +401,13 @@ na_omit_data <- rec %>%
 nrow(na_omit_data)
 ```
 
-As can be seen above, when we omit any row with missing data we end up with only `r nrow(na_omit_data)` rows out of the original `r nrow(train)` rows in the training data (or approximately `r round((nrow(na_omit_data)/nrow(train))*100)`% of the original data). This level of data omission is highly likely to introduce systematic biases into your model prediction. Generally, `step_naomit` should only be used when developing preliminary models, where you're just trying to get code to run. When you get to the point where you're actually trying to improve performance, you should consider alternative means
+As can be seen above, when we omit any row with missing data we end up with only `r nrow(na_omit_data)` rows out of the original `r nrow(train)` rows in the training data (or approximately `r round((nrow(na_omit_data)/nrow(train))*100)`% of the original data). This level of data omission is highly likely to introduce systematic biases into your model prediction. Generally, `step_naomit()` should only be used when developing preliminary models, where you're just trying to get code to run. When you get to the point where you're actually trying to improve performance, you should consider alternative approaches.
 
-#### Encoding and simple imputation
+### Encoding and simple imputation
 
-Encoding missing data is similar to imputation. In imputation, we replace the missing value with something we thing could have reasonably been the real value, if it were observed. When we encode missing data we are creating values that will be included in the modeling process. For example, with categorical variables, we could replace the missingess with a "missing" level, which would then get its own dummy code (if we were using dummy coding to encode the categorical variables).
+Encoding missing data is similar to imputation. In imputation, we replace the missing value with something we think could have reasonably been the real value, if it were observed. When we encode missing data we are creating values that will be included in the modeling process. For example, with categorical variables, we could replace the missingess with a "missing" level, which would then get its own dummy code (if we were using dummy coding to encode the categorical variables).
 
-I mentioned in the [Creating a recipe] section that we were getting warnings but I was omitting them in the text. The reason is because some of these columns have missing data. If we want to avoid this warning, we have to add an additional step to our recipe to encode the missing data in the categorical variables. This step is called `step_unknown` and it replaces missing values with `"unknown"`. Let's do this for all categorical variables, and omit any rows that are missing on numeric columns.
+I mentioned in the [Creating a recipe] section that we were getting warnings but I was omitting them in the text. The reason for these warnings is that some of these columns have missing data. If we want to avoid this warning, we have to add an additional step to our recipe to encode the missing data in the categorical variables. This step is called `step_unknown()`, and it replaces missing values with `"unknown"`. Let's do this for all categorical variables and omit any rows that are missing on numeric columns.
 
 ```{r }
 na_encode_data <- rec %>% 
@@ -422,9 +420,9 @@ na_encode_data <- rec %>%
 nrow(na_encode_data)
 ```
 
-Notice in the above that when I call `step_naomit` I state that it should be applied to `all_predictors` because I've already encoded the nominal predictors in the previous step. This approach allows us to capture `r round((nrow(na_encode_data)/nrow(train))*100)`% of the original data. And as a bonus, we've removed ourselves of the warnings (note - we might also want to apply `step_novel` for any future data that had levels outside of our training data - see [Handling new levels]).
+Notice in the above that when I call `step_naomit()` I state that it should be applied to `all_predictors()` because I've already encoded the nominal predictors in the previous step. This approach allows us to capture `r round((nrow(na_encode_data)/nrow(train))*100)`% of the original data. And as a bonus, we've removed the warnings. (*Note:* we might also want to apply `step_novel()` for any future data that had levels outside of our training data - see [Handling new levels]).
 
-Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I've found median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let's switch datasets so we can see what's happening more directly.
+Just a slight step up in complexity from omission of rows with missing data is to impute them with sample descriptive statistics, such as the mean or the median. Generally, I've found that median imputation works better than mean imputation, but that could be related to the types of data I work with most frequently. Let's switch datasets so we can see what's happening more directly.
 
 Let's look at the [airquality](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/airquality.html) dataset, which ships with R.
 
@@ -439,7 +437,7 @@ mean(airquality$Solar.R, na.rm = TRUE)
 median(airquality$Solar.R, na.rm = TRUE)
 ```
 
-If we use mean or median imputation, we just replace the missing values with these sample statistics. Let's do this with {recipes}, assuming we'll be fitting a model where `Ozone` is the outcome, predicted by all other variables in the dataset.
+If we use mean or median imputation, we just replace the missing values with these sample statistics. Let's do this in a new recipe, assuming we'll be fitting a model where `Ozone` is the outcome, predicted by all other variables in the dataset.
 
 ```{r }
 recipe(Ozone ~ ., data = airquality) %>% 
@@ -461,11 +459,11 @@ recipe(Ozone ~ ., data = airquality) %>%
 
 And as we would expect, the missingness has now been replaced with values of $205$.
 
-Sometimes you have time series data, or there is a date variable in the dataset that accounts for a meaningful proportion of the variance. In these cases, you might consider `step_rollimpute`, which provides a conditional median imputation based on time, and you can set the size of the window from which to calculate the median. In still other cases it may make sense to just impute with the lowest observed value (i.e., assume a very small amount of the predictor), which can be accomplished with `step_lowerimpute`.
+Sometimes you have time series data, or there is a date variable in the dataset that accounts for a meaningful proportion of the variance. In these cases, you might consider `step_rollimpute()`, which provides a conditional median imputation based on time, and you can set the size of the window from which to calculate the median. In still other cases it may make sense to just impute with the lowest observed value (i.e., assume a very small amount of the predictor), which can be accomplished with `step_lowerimpute()`.
 
 These simple imputation techniques are fine to use when developing models. However, it's an area that may be worth returning to as you start to refine your model to see if you can improve performance.
 
-#### Modeling the missingness
+### Modeling the missingness
 
 Another alternative for imputation is to fit a statistical model with the column you want to impute modeled as the outcome, with all other columns (minus the actual outcome) predicting it. We then use that model for the imputation. Let's first consider a linear regression model. We'll fit the same model we specified in our recipe, using the airquality data.
 
@@ -474,9 +472,9 @@ m <- lm(Solar.R ~ ., data = airquality[ ,-1])
 summary(m)
 ```
 
-Notice that I've dropped the first column here, which is `Ozone`, our actual outcome. The model above has been fit using the equivalent of `step_naomit`, otherwise known as *listwise deletion*, where any row with any missing data is removed.
+Notice that I've dropped the first column here, which is `Ozone`, our actual outcome. The model above has been fit using the equivalent of `step_naomit()`, otherwise known as *listwise deletion*, where any row with any missing data is removed.
 
-We can now use the coefficients from this model to impute the missing values in `Solar.R`. For example, row 6 in the dataset had a missing value on `Solar.R` and following values for all other variables
+We can now use the coefficients from this model to impute the missing values in `Solar.R`. For example, row 6 in the dataset had a missing value on `Solar.R` and the following values for all other variables:
 
 ```{r }
 row6 <- data.frame(Wind = 14.9, 
@@ -491,7 +489,7 @@ Using our model, we would predict the following score for this missing value
 predict(m, newdata = row6)
 ```
 
-Let's try this using {recipes}.
+Let's try this using **{recipes}**.
 
 ```{r }
 recipe(Ozone ~ ., data = airquality) %>% 
@@ -502,14 +500,16 @@ recipe(Ozone ~ ., data = airquality) %>%
 
 And we see two important things here. First, row 6 for `Solar.R` is indeed as we expected it to be (albeit, in integer form). Second, the imputed values for rows 5 and 6 are now *different*, which is the first time we've seen this via imputation.
 
-The same basic approach can be used for essentially any statistical model. The {recipes} package has currently implemented linear imputation (as above), $k$-nearest neighbor imputation, and bagged imputation (via bagged trees). Let's see how rows 5 and 6 differ with these approaches.
+The same basic approach can be used for essentially any statistical model. The **{recipes}** package has currently implemented linear imputation (as above), $k$-nearest neighbor imputation, and bagged imputation (via bagged trees). Let's see how rows 5 and 6 differ with these approaches.
 
 ```{r }
+# k-nearest neighbor imputation
 recipe(Ozone ~ ., data = airquality) %>% 
   step_knnimpute(all_predictors()) %>% 
   prep() %>% 
   bake(new_data = NULL)
 
+# bagged imputation
 recipe(Ozone ~ ., data = airquality) %>% 
   step_bagimpute(all_predictors()) %>% 
   prep() %>% 
@@ -520,13 +520,13 @@ These models are quite a bit more flexible than linear regression, and can poten
 
 ### A few words of caution
 
-Missing data is a highly complex topic. This section was meant to provide a basic overview of some of the options you can choose from when building a predictive model. **None** of these approaches, however, will "fix" data that are missing not at random (MNAR). Unfortunately, it is usually impossible to know if your data are MNAR, and we therefore assume that that are MAR, or missing at random conditional on the observed data. For example, if boys were more likely to have missing data on the outcome than girls, we could account for this by including a gender variable in the model, and the resulting data would be MAR.
+Missing data is a highly complex topic. This section was meant to provide a basic overview of some of the options you can choose from when building a predictive model. **None** of these approaches, however, will "fix" data that are missing not at random (MNAR). Unfortunately, it is usually impossible to know if your data are MNAR, and we therefore assume that data are missing at random (MAR), or missing at random conditional on the observed data. For example, if boys were more likely to have missing data on the outcome than girls, we could account for this by including a gender variable in the model, and the resulting data would be MAR.
 
 If you have significant missing data, this section is surely incomplete. We recommended [Little and Rubin (2002)](https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563) previously, and there are a number of other good resources, including [a chapter](http://www.feat.engineering/handling-missing-data.html) in Kuhn and Johnson (2019).
 
 ## Transformations
 
-In standard inferential statistics, we are often concerned with the distribution of the outcome. Linear regression, for example, assumes the outcome is at least reasonably normally distributed. If this is not the case, the standard errors (in particular) can be misrepresented. We therefore generally inspect the outcome before modeling it and, if it is not approximately normally distributed, we either transform it to make it more closely approximate a normal distribution, or we use an analysis technique that does not assume normality in the outcome.
+In standard inferential statistics, we are often concerned with the distribution of the outcome. Linear regression, for example, assumes the outcome is at least reasonably normally distributed. If this is not the case, the standard errors (in particular) can be misrepresented. We therefore generally inspect the outcome before modeling it, and, if it is not approximately normally distributed, we either transform it to make it more closely approximate a normal distribution, or we use an analysis technique that does not assume normality in the outcome.
 
 In predictive modeling, transformations of the predictors or the outcome(s) (or both) can sometimes help improve model performance. For example, let's quickly simulate some data.
 
@@ -555,7 +555,7 @@ sim %>%
   reactable()
 ```
 
-As you can see from the above, we have simulated the data according to $\log x$, but in our data frame only has $x$. This is a common situation where we don't *know* the true functional form. But of course, if we fit a linear regression model to these data, we'll end up with high bias, particularly in the lower tail (and issues with heteroscedasticity).
+As you can see from the above, we have simulated the data according to $\log x$, but our data frame only has $x$. This is a common situation where we don't *know* the true functional form. But of course, if we fit a linear regression model to these data, we'll end up with high bias, particularly in the lower tail (and issues with heteroscedasticity).
 
 ```{r }
 ggplot(sim, aes(x, y)) +
@@ -591,7 +591,7 @@ sim %>%
               formula = y ~ log(x))
 ```
 
-So in this case, a log transformation to the x variable works perfect (as we would expect, given that we simulated the data to be this way). But how do we know *how* to transform variables?
+So in this case, a log transformation to the x variable works perfectly (as we would expect, given that we simulated the data to be this way). But how do we know *how* to transform variables?
 
 ### Box-Cox and similar transformations
 
@@ -605,25 +605,25 @@ $$
        \log\left(x\right), & \text{if}\ \lambda = 0
     \end{cases}
 \end{equation}
-$$ where $x$ represents the variable in its raw units, and $x^*$ represents the transformed variable. The Box-Cox transformation is a *power* transformation, where the intent is to estimate $\lambda$. Note that if $\lambda$ is estimated as zero, the power transformation is the same as a log transformation, otherwise the top portion of the equation is used. Helpfully, specific values of $\lambda$ map to common transformations.
+$$ where $x$ represents the variable in its raw units, and $x^*$ represents the transformed variable. The Box-Cox transformation is a *power* transformation, where the intent is to estimate $\lambda$. Note that if $\lambda$ is estimated as zero, the power transformation is the same as a log transformation; otherwise the top portion of the equation is used. Fortunately, specific values of $\lambda$ map to common transformations.
 
 -   $\lambda = 1$: No transformation
 -   $\lambda = 0.5$: square root transformation
 -   $\lambda = 0$: log transformation
 -   $\lambda = -1$: inverse
 
-Given the above, we would expect that $\lambda$ would be estimated close to zero with our simulated data. Let's try using {recipes}. To access the actual $\lambda$ value, we'll need to take a brief foray into tidying recipes.
+Given the above, we would expect that $\lambda$ would be estimated close to zero with our simulated data. Let's try using **{recipes}**. To access the actual $\lambda$ value, we'll need to take a brief foray into tidying recipes.
 
 #### Tidying recipes
 
-Let's first specify the recipe with a Box-Cox transformation to our x variable
+Let's first specify the recipe with a Box-Cox transformation to our $x$ variable.
 
 ```{r }
 rec <- recipe(y ~ x, data = sim) %>% 
   step_BoxCox(all_predictors())
 ```
 
-Now we can tidy the recipe
+Now we can tidy the recipe.
 
 ```{r }
 tidy(rec)
@@ -651,7 +651,7 @@ Now we have four steps. We can look at any one step by declaring the step number
 tidy(rec, n = 1)
 ```
 
-Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to `prep` the recipe if we want it to actually do any work. Let's prep the recipe and try again.
+Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to `prep()` the recipe if we want it to actually do any work. Let's prep the recipe and try again.
 
 ```{r }
 lm_imputation <- rec %>% 
@@ -679,7 +679,7 @@ rec %>%
   tidy(n = 3)
 ```
 
-And without any further work we can see that we estimated $\lambda = 0.72$, which is pretty much directly between a square-root transformation and no transformation. Why did it not estimate a $log$ transformation as most appropriate? Because the log transformation is only ideal when view *relative* to $y$. Put differently, the Box-Cox transformation is an *unsupervised* approach that attempts to make each variable approximate a univariate normal distribution. As we'll see in the next section, there are other methods that can be used to help with issues of non-linearity.
+And without any further work we can see that we estimated $\lambda = 0.72$, which is pretty much directly between a square-root transformation and no transformation. Why did it not estimate a $log$ transformation as most appropriate? Because the log transformation is only ideal when viewing $x$ *relative* to $y$. Put differently, the Box-Cox transformation is an *unsupervised* approach that attempts to make each variable approximate a univariate normal distribution. As we'll see in the next section, there are other methods that can be used to help with issues of non-linearity.
 
 For completeness, let's see if the transformation helped us. We'll use $\lambda = 0.72$ to manually transform $x$, then plot the result.
 
@@ -705,7 +705,7 @@ As we can see, it's better than the raw data, but still insufficient.
 
 ### An applied example
 
-Let's look at an applied example. We'll use the `violence` data (see the full data dictionary [here](http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized#)), and see if we can predict the neighborhoods where the number of murders are greater than zero, using the percentage of people living in poverty and the percentage of people living in dense housing units (more than one person per room) as predictors. Let's start with a basic plot.
+Let's look at an applied example. We'll use the `violence` data (see the full data dictionary [here](http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized#)) and see if we can predict the neighborhoods where the number of murders are greater than zero, using the percentage of people living in poverty and the percentage of people living in dense housing units (more than one person per room) as predictors. Let's start with a basic plot.
 
 ```{r }
 violence <- read_csv(here::here("data", "violence.csv"))
@@ -789,9 +789,9 @@ ggplot(sim, aes(x, y)) +
   geom_point()
 ```
 
-If we just looked at a plot of these data, we'd probably think to ourselves "that looks a whole lot like a log function!", but let's pretend for a moment that we're not quite as brilliant as we actually are and we, say, didn't plot the data first ([always plot the data first!](https://www.autodesk.com/research/publications/same-stats-different-graphs)). Or maybe we're just not all that familiar with the log function and we didn't realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.
+If we just looked at a plot of these data, we'd probably think to ourselves "that looks a whole lot like a log function!". But let's pretend for a moment that we're not quite as brilliant as we actually are and we, say, didn't plot the data first ([always plot the data first!](https://www.autodesk.com/research/publications/same-stats-different-graphs)). Or maybe we're just not all that familiar with the log function, and we didn't realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.
 
-There are many different options for modeling curvilinnear relations, but we'll focus on two: [basis expansion](https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226) via polynomial transformations or natural splines.
+There are many different options for modeling curvilinnear relations, but we'll focus on two: [basis expansion](https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226) via polynomial transformations and natural splines.
 
 Basis expansion is defined, mathematically, as
 
@@ -801,7 +801,7 @@ $$ where $h_m$ is the $m$th transformation of $X$. Once the transformations are 
 
 ### Polynomial transformations
 
-Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming $X$ into $X$, $X^2$, and $X^3$, and estimating coefficients for each. Let's do this manually with the `sim` data
+Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming $X$ into $X$, $X^2$, and $X^3$, and estimating coefficients for each. Let's do this manually with the `sim` data from above.
 
 ```{r }
 # remove variables from previous example
@@ -817,7 +817,7 @@ sim <- sim %>%
 head(sim)
 ```
 
-Now let's fit a model to the data, using the polynomial expansion, and plot the result.
+Now let's fit a model to the data using the polynomial expansion, and plot the result.
 
 ```{r }
 poly_m <- lm(y ~ ., data = sim)
@@ -832,7 +832,7 @@ ggplot(sim, aes(x, y)) +
 
 Not bad!
 
-Now let's replicate it using {recipes}.
+Now let's replicate it using **{recipes}**.
 
 ```{r }
 sim <- sim %>% 
@@ -848,7 +848,7 @@ poly_d <- poly_rec %>%
 poly_d
 ```
 
-Notice that these values look quite a bot different than the ones we had before because these are [*orthogonal* polynomials](https://en.wikipedia.org/wiki/Orthogonal_polynomials). Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below
+Notice that these values look quite a bit different than the ones we had before because these are [*orthogonal* polynomials](https://en.wikipedia.org/wiki/Orthogonal_polynomials). Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below.
 
 ```{r }
 poly_m2 <- lm(y ~ ., data = poly_d)
@@ -871,6 +871,7 @@ all(
 This shows that, to seven decimal places, the results are identical (note, the only reason I had to round at all was because of [floating point hell](https://floating-point-gui.de/basic/)).
 
 ### Splines
+
 When thinking about splines, we find it most helpful to first think about *discontinuous* splines. Splines divide up the "x" region of the predictor into bins, and fits a model within each bin. Let's first look at a very simple model, where we divide our `sim` dataset into lower and upper portions.
 
 ```{r }
@@ -947,9 +948,9 @@ ggplot(sim, aes(x, y)) +
   geom_line(data = data.frame(x = 1:100, y = predict(ns_mod)))
 ```
 
-And now we have our single curve! The purpose of our discussion here is to build conceptual understandings of splines, and we will therefore not go into the mathematics behind the constraints leading to a single curve. However, for those interested, we recommend [Hastie, Tibshirani, and Friedman](https://web.stanford.edu/~hastie/ElemStatLearn/). 
+And now we have our single curve! The purpose of our discussion here is to build conceptual understandings of splines, and we will therefore not go into the mathematics behind the constraints leading to a single curve. However, for those interested, we recommend [Hastie, Tibshirani, and Friedman](https://web.stanford.edu/~hastie/ElemStatLearn/).
 
-One of the drawbacks of polynomial regression is that they can be wild in the tails. Natural splines avoid this problem by constraining the tails of the curve to be linear. Sometimes, however, this property may not be desirable, and that's when we instead use a B-spline. 
+One of the drawbacks of polynomial regression is that they can be wild in the tails. Natural splines avoid this problem by constraining the tails of the curve to be linear. Sometimes, however, this property may not be desirable, and that's when we instead use a B-spline.
 
 ```{r }
 bs_mod <- lm(y ~ bs(x, 8), sim)
@@ -979,20 +980,21 @@ ggplot(rbind(ns_d, bs_d), aes(x, y)) +
   facet_wrap(~method)
 ```
 
-Both are quite close, but you can see the natural spline does not dip quite as close to the true value for zero as the B-spline. It's also a tiny bit more wiggly in the upper tail (because it's not constrained to be linear). The number of knots is also likely a bit too high here and was chosen fairly randomly. 
+Both are quite close, but you can see the natural spline does not dip quite as close to the true value for zero as the B-spline. It's also a tiny bit more wiggly in the upper tail (because it's not constrained to be linear). The number of knots is also likely a bit too high here and was chosen fairly randomly.
 
 #### Basis expansion with {recipes}
-Basis expansion via recipes proceeds in much the same way as we've seen before. We just specify a step specifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).
+
+Basis expansion via recipes proceeds in much the same way as we've seen before. We just specify a step identifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).
 
 Let's try building a dataset using basis expansion with a B-Spline
 
 ```{r }
-bs_d_rec <- recipe(y ~ x, data = sim) %>% 
+bs_d <- recipe(y ~ x, data = sim) %>% 
   step_bs(x, deg_free = 8) %>% 
   prep() %>% 
   bake(new_data = NULL)
 
-bs_d_rec
+bs_d
 ```
 
 And as you can see, we get similar output to polynomial regression, but we're just using a spline for our basis expansion now instead of polynomials. Note that the degrees of freedom can also be set to `tune()` and trained withing `tune::tune_grid()`. In other words, the amount of basis expansion (degree of "wiggliness") can be treated as a hyperparamter to be tuned.
@@ -1000,23 +1002,23 @@ And as you can see, we get similar output to polynomial regression, but we're ju
 Once the basis expansion is conducted, we can model it just like any other linear model.
 
 ```{r }
-bs_mod_rec <- lm(y ~ x_bs_1 + x_bs_2 + x_bs_3 +
+bs_mod_2 <- lm(y ~ x_bs_1 + x_bs_2 + x_bs_3 +
                      x_bs_4 + x_bs_5 + x_bs_6 +
                      x_bs_7 + x_bs_8,
-                 data = bs_d_rec)
+                 data = bs_d)
 ```
 
-And this will give us the same results we got before
+And this will give us the same results we got before.
 
 ```{r }
 all(
-  round(predict(bs_mod), 7) == round(predict(bs_mod_rec), 7)
+  round(predict(bs_mod), 7) == round(predict(bs_mod_2), 7)
 )
 ```
 
-To use polynomial transformations or natural splines instead, we would just use `step_poly` or `step_ns`, respectively. 
+To use polynomial transformations or natural splines instead, we would just use `step_poly()` or `step_ns()`, respectively.
 
-One rather important note on tuning splines, you will probably want to avoid using code like 
+One rather important note on tuning splines, you will probably want to avoid using code like
 
 ```{r }
 recipe(murders ~ ., data = violence) %>% 
@@ -1034,7 +1036,8 @@ recipe(murders ~ ., data = violence) %>%
 Of course, the more splines you are tuning, the more computationally expensive it will become, so you'll need to balance this with your expected return in model improvement (i.e., you likely can't tune every predictor in your dataset).
 
 ## Interactions
-An interaction occurs when the slope, or relation, between one variable and the outcome *depends upon* a second variable. This is also often referred to as *moderation* or a *moderating variable*. For example, consider data that look like this
+
+An interaction occurs when the slope, or relation, between one variable and the outcome *depends upon* a second variable. This is also often referred to as *moderation* or a *moderating variable*. For example, consider data that look like this:
 
 ```{r }
 benchmarks <- read_csv(here::here("data", "benchmarks.csv"))
@@ -1042,26 +1045,27 @@ benchmarks <- read_csv(here::here("data", "benchmarks.csv"))
 ggplot(benchmarks, aes(rdg_fall, rdg_spr)) +
   geom_point(color = "gray70") +
   geom_smooth(aes(color = ell),
-              method = "lm")
+                  method = "lm")
 
 ```
 
-where *ell* stands for *English language learner*. The plot above shows the relation between students scores on a reading assessment administered in the fall and the spring by ELL status. Notice that the slope for *Non-ELL* is markedly steeper than the other two groups. ELL status thus moderates the relation between the fall and spring assessment scores. If we're fitting a model within a linear regression framework, we'll want to make sure that we model the slopes separately for each of these groups (otherwise we would be leaving out important structure in the data, and our model performance would suffer). Interactions are powerful and important to consider, particularly if there is strong theory (or empirical evidence) suggesting that an interaction exists. However, they are not needed in many frameworks and can be derived from the data directly (e.g., tree-based methods, where the degree of possible interaction is determined by the depth of the tree). In this section, we therefore focus on interactions within a linear regression framework.
+where `ell` stands for *"English language learner"*. The plot above shows the relation between students scores on a reading assessment administered in the fall and the spring by `ell` status. Notice that the slope for *Non-ELL* is markedly steeper than the other two groups. `ell` status thus moderates the relation between the fall and spring assessment scores. If we're fitting a model within a linear regression framework, we'll want to make sure that we model the slopes separately for each of these groups. Otherwise, we would be leaving out important structure in the data, and our model performance would suffer. Interactions are powerful and important to consider, particularly if there is strong theory (or empirical evidence) suggesting that an interaction exists. However, they are not needed in many frameworks and can be derived from the data directly (e.g., tree-based methods, where the degree of possible interaction is determined by the depth of the tree). In this section, we therefore focus on interactions within a linear regression framework.
 
 ### Creating interactions "by hand"
+
 Even with base R, modeling interactions is pretty straightforward. In the above, we would just specify something like
 
 ```{r eval = FALSE}
 lm(rdg_spr ~ rdg_fall*ell, data = benchmarks)
 ```
 
-or equivalently
+or equivalently,
 
 ```{r eval = FALSE}
 lm(rdg_spr ~ rdg_fall + ell + rdg_fall:ell, data = benchmarks)
 ```
 
-However, this is doing some work under the hood for you which might go unnoticed. First, it's dummy-coding `ell`, then it's creating, in this case, two new variables that are equal to $ELL_{Monitor} \times Rdg_{fall}$ and $ELL_{Non-ELL} \times Rdg_{fall}$ (with $ELL_{Active}$ set as the reference group by default). 
+However, this is doing some work under the hood for you which might go unnoticed. First, it's dummy-coding `ell`, then it's creating, in this case, two new variables that are equal to $ELL_{Monitor} \times Rdg_{fall}$ and $ELL_{Non-ELL} \times Rdg_{fall}$ (with $ELL_{Active}$ set as the reference group by default).
 
 Let's try doing this manually. First we need to dummy code `ell`. To make things a bit more clear, I'll only select the variables here that we're using in our modeling.
 
@@ -1100,7 +1104,8 @@ summary(
 ```
 
 ### Creating interactions with {recipes}
-Specifying interactions in a recipe is similar to other steps, with one small exception, which is that the use of the tilde, `~`, is required. Note that, once again, order does matter, and you should always do your dummy coding *before* specifying interactions with categorical variables. In the example before, this would correspond to
+
+Specifying interactions in a recipe is similar to other steps, with one small exception, which is that the use of the tilde, `~`, is required. Note that, once again, order does matter, and you should always do your dummy coding *before* specifying interactions with categorical variables. In the example before, this would correspond to:
 
 ```{r }
 recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>% 
@@ -1110,10 +1115,9 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
   bake(new_data = NULL)
 ```
 
-There are a few things to mention here. First, the data do look identical (minus the column names) to what we created by hand, so that's good news. However, we also used `starts_with` here, rather than just specifying something like `step_interact(~rdg_fall:ell)`. This is because after dummy coding, the column names change (as you can see in the above). By specifying `starts_with`, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.
+There are a few things to mention here. First, the data look identical (minus the column names) to what we created by hand, so that's good news. However, we also used `starts_with()` here, rather than just specifying something like `step_interact(~rdg_fall:ell)`. This is because after dummy coding, the column names change (as you can see in the above). By specifying `starts_with()`, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.
 
-
-```{r }
+```{r warning=TRUE}
 recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>% 
   step_dummy(all_nominal()) %>% 
   step_interact(~rdg_fall:ell) %>% 
@@ -1121,16 +1125,18 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
   bake(new_data = NULL)
 ```
 
-This is because its trying to find a column called `ell` to multiply with `rdg_fall`, but no such variable exists after dummy coding.
+This warning occurs because R is trying to find a column called `ell` to multiply with `rdg_fall`, but no such variable exists after dummy coding.
 
 ## PCA
-For some sets of models (such as linear regression) highly correlated variables may cause model instability or, perhaps more importantly, lead to wider confidence intervals around model predictions (i.e., how confident we are about our prediction). In these cases, it may help to collapse these variables, while still accounting for the majority of the variance. This is the basic idea behind Principal Components Analysis (PCA). You use PCA to collapse sets of variables into principal components, reducing the dimensionality of your data while maintainingg $X$ percent of the original variation in the data. Reducing the dimensionality generally has an associated cost of higher model bias. However, it will also nearly always reduce model variability. The proportion of the original variability to maintain can thus be considered a tuning parameter, balancing bias with variance.
+
+For some sets of models (such as linear regression), highly correlated variables may cause model instability or, perhaps more importantly, lead to wider confidence intervals around model predictions (i.e., how confident we are about our prediction). In these cases, it may help to collapse these variables, while still accounting for the majority of the variance. This is the basic idea behind Principal Components Analysis (PCA). You use PCA to collapse sets of variables into principal components, reducing the dimensionality of your data while maintaining $X$ percent of the original variation in the data. Reducing the dimensionality generally has an associated cost of higher model bias. However, it will also nearly always reduce model variability. The proportion of the original variability to maintain can thus be considered a tuning parameter, balancing bias with variance.
 
 Probably my favorite discussion of PCA comes from a [discussion on CrossValidated](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues) on how to make sense of PCA. The opening poster asked how you would explain PCA to a layman and why it's needed. The entire thread is worth reading through, and there's a particularly nice example from [JD Long](https://twitter.com/CMastication) comparing the first principal component to the line of best fit in linear regression.
 
 For our purposes, we're primarily interested in what proportion of the total variability in the independent variables we should maintain. That is, can we improve our model performance by collapsing groups of (correlated) columns into a smaller set of principal components?
 
 ### PCA with {recipes}
+
 Let's move back to our full dataset. Our final recipe looked like this.
 
 ```{r }
@@ -1144,11 +1150,11 @@ rec <- recipe(score ~ ., train) %>%
 
 To conduct PCA we need to make sure that
 
-1. All variables are numeric
-2. All variables are on the same scale
-3. No missing data
+1.  All variables are numeric
+2.  All variables are on the same scale
+3.  There is no missing data
 
-Our recipe above ensures all variables are numeric, but it doesn't handle missing data, and there is no standardization of variables. Let's redo this recipe to make sure it's ready for PCA.
+Our recipe above ensures all variables are numeric, but it doesn't handle missing data, and there is no standardization of variables. Let's update this recipe to make sure it's ready for PCA.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -1161,9 +1167,9 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal(), -has_role("id vars"))
 ```
 
-The above is not a whole lot more complex than our original recipe. It just assigns an `"unknown"` level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables (center/scales) and dummy codes the nominal variables. 
+The above is not a whole lot more complex than our original recipe. It just assigns an `"unknown"` level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables and dummy codes the nominal variables.
 
-This recipe gives us a data frame with many columns. Specifically
+This recipe gives us a data frame with many columns. Specifically:
 
 ```{r }
 rec %>% 
@@ -1189,7 +1195,7 @@ rec_80 %>%
   ncol()
 ```
 
-We've dramatically reduced the dimensionality in the data, while still retaining 80% of the total variability. 
+We've dramatically reduced the dimensionality in the data, while still retaining 80% of the total variability.
 
 An alternative method is to specify the number of components we want. For example, let's extract only the first five components.
 
@@ -1199,7 +1205,7 @@ rec_5 <- rec %>%
            num_comp = 5)
 ```
 
-I generally prefer the former because, if we're thinking about PCA through a predictive modeling framework, we're probably less concerned with the number of components and more concerned with the variation they represent. 
+I generally prefer the former because, if we're thinking about PCA through a predictive modeling framework, we're probably less concerned with the number of components and more concerned with the variation they represent.
 
 So how do we know how much of the variabilty we should retain? This is a difficult question, but sometimes plots of the principal components can help. Let's look at the five components we just extracted. If we prep the recipe, you'll see there's some extra information we can access.
 
@@ -1214,13 +1220,13 @@ If we access the steps we can get additional information. The PCA step is the se
 names(prepped_pca$steps[[7]])
 ```
 
-Let's look into `res`
+Let's look into `res`.    
 
 ```{r }
 names(prepped_pca$steps[[7]]$res)
 ```
 
-And now we get what we've been (perhaps unknowingly to you, dear reader) looking for, the `sdev` object, which lists the standard deviation of each principal component. We can look at how much variance each component accounts for as follows
+And now we get what we've been (perhaps unknowingly to you, dear reader) looking for, the `sdev` object, which lists the standard deviation of each principal component. We can look at how much variance each component accounts for, as follows:
 
 ```{r }
 vars <- prepped_pca$steps[[7]]$res$sdev^2
@@ -1241,12 +1247,13 @@ ggplot(pcs, aes(pc, percent_var)) +
   scale_y_continuous(expand = c(0, 0)) # move this to a book theme for plots
 ```
 
-A few things are of note here. First, it appears the majority of the variance is accounted for by our first few components, which is not altogether surprising given that we already new the first 10 components accounted for approximately 85% of the total variability. However, you might also wonder *why there are so many freaking components shown?! I thought we only asked for five!?* That is true. But the model actually estimates all the components, and then just pulls out whatever we ask, based on either the `threshold` or the `num_comp` arguments. For example, let's `bake` the five component recipe on the full training data.
+A few things are of note here. First, it appears the majority of the variance is accounted for by our first few components, which is not altogether surprising given that we already new the first 10 components accounted for approximately 85% of the total variability. However, you might also wonder *why there are so many freaking components shown?! I thought we only asked for five!?* That is true. But the model actually estimates all the components, and then just pulls out whatever we ask, based on either the `threshold` or the `num_comp` arguments. For example, let's `bake` the five component recipe on the full training data and print the resulting variables.
 
 ```{r }
 rec_5 %>% 
   prep() %>% 
-  bake(new_data = NULL)
+  bake(new_data = NULL) %>% 
+  names()
 ```
 
 And as expected, we get only the five components we requested.
@@ -1255,7 +1262,7 @@ PCA reduces the dimensionality in the data, which can help guard against overfit
 
 ## Wrapping up
 
-Feature engineering is a *gigantic* topic. The purpose of this chapter was to provide a basic introduction. We illustrated creating a *recipe* or *blueprint* for your feature engineering, which can be applied iteratively to slices of the data (as in a *k*-fold cross-validation approach) or to new data with the same structure. This process helps guard against **data leakage**, where information from the test set leaks into the training set. Let's look at a quick example of this by using PCA to retain 95% of the total variation in the data. We'll use $k$-fold cross-validation and see how many components we retain in each fold. First, we'll create the recipe, which is essentially equivalent to what we saw in the previous chapter
+Feature engineering is a *gigantic* topic. The purpose of this chapter was to provide a basic introduction. We illustrated creating a *recipe* or *blueprint* for your feature engineering, which can be applied iteratively to slices of the data (as in a *k*-fold cross-validation approach) or to new data with the same structure. This process helps guard against **data leakage**, where information from the test set leaks into the training set. Let's look at a quick example of this by using PCA to retain 95% of the total variation in the data. We'll use $k$-fold cross-validation and see how many components we retain in each fold. First, we'll create the recipe, which is essentially equivalent to what we saw in the previous chapter.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -1278,14 +1285,14 @@ cv <- vfold_cv(train)
 cv
 ```
 
-Now we'll loop through each split and pull out the data we will build our model on, for that fold
+Now we'll loop through each split and pull out the data we will build our model on, for that fold.
 
 ```{r }
 cv %>% 
   mutate(assessment_data = map(splits, assessment))
 ```
 
-And finally, apply the recipe to each dataset
+And finally, we'll apply the recipe to each dataset.
 
 ```{r }
 cv %>% 
@@ -1293,7 +1300,7 @@ cv %>%
          baked_data = map(assessment_data, ~prep(rec) %>%  bake(.x)))
 ```
 
-Let's see how many principal components are in each data fold
+Let's see how many principal components are in each data fold.
 
 ```{r }
 cv %>% 
@@ -1302,6 +1309,6 @@ cv %>%
          n_components = map_int(baked_data, ~sum(grepl("^PC", names(.x)))))
 ```
 
-In this case, the *number* of components is the same across all folds, but the representation of those components is likely slightly different. This is because the recipe has been applied to each fold, independent of the other folds.
+In this case, the *number* of components is the same across all folds, but the representation of those components is likely slightly different. Why? Because the recipe has been applied to each fold, independent of the other folds.
 
-Feature engineering can also regularly feel overwhelming. There are *so many* possible options that you could do to potentially increase model performance. This chapter just scratched the surface. The sheer number of decisions is why many believe that feature engineering is the most "art" part of machine learning. Strong domain knowledge will absolutely help, as will practice. For those looking to go further with feature engineering, we suggest [Kuhn and Johnson](http://www.feat.engineering), who wrote an entire book on the topic. It provides practical advice in an accessible way without skimping on important details. 
+Feature engineering can also regularly feel overwhelming. There are *so many* possible options that you could do to potentially increase model performance. This chapter just scratched the surface. The sheer number of decisions is why many believe that feature engineering is the most "art" part of machine learning. Strong domain knowledge will absolutely help, as will practice. For those looking to go further with feature engineering, we suggest [Kuhn and Johnson](http://www.feat.engineering), who wrote an entire book on the topic. It provides practical advice in an accessible way without skimping on important details.

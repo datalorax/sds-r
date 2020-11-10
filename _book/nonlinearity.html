@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-06" />
+<meta name="date" content="2020-11-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,6 +35,7 @@
   
 <link rel="prev" href="transformations.html"/>
 <link rel="next" href="interactions.html"/>
+<script src="assets/header-attrs-2.4/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -63,18 +64,17 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -94,7 +94,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,44 +142,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
 <li class="chapter" data-level="2" data-path="welcome.html"><a href="welcome.html"><i class="fa fa-check"></i><b>2</b> Welcome</a></li>
-<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a><ul>
+<li class="chapter" data-level="3" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i><b>3</b> Feature Engineering</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="basics-of-recipes.html"><a href="basics-of-recipes.html"><i class="fa fa-check"></i><b>3.1</b> Basics of {recipes}</a></li>
-<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a><ul>
+<li class="chapter" data-level="3.2" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html"><i class="fa fa-check"></i><b>3.2</b> Creating a recipe</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="creating-a-recipe.html"><a href="creating-a-recipe.html#order-matters"><i class="fa fa-check"></i><b>3.2.1</b> Order matters</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a><ul>
+<li class="chapter" data-level="3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>3.3</b> Encoding categorical data</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#transformations-beyond-dummy-coding"><i class="fa fa-check"></i><b>3.3.1</b> Transformations beyond dummy coding</a></li>
 <li class="chapter" data-level="3.3.2" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#handling-new-levels"><i class="fa fa-check"></i><b>3.3.2</b> Handling new levels</a></li>
 <li class="chapter" data-level="3.3.3" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html#final-thoughts-on-encoding-categorical-data"><i class="fa fa-check"></i><b>3.3.3</b> Final thoughts on encoding categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="dealing-with-low-variance-predictors.html"><a href="dealing-with-low-variance-predictors.html"><i class="fa fa-check"></i><b>3.4</b> Dealing with low variance predictors</a></li>
-<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a><ul>
-<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#missing-data-via-recipes"><i class="fa fa-check"></i><b>3.5.1</b> Missing data via {recipes}</a></li>
-<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.2</b> A few words of caution</a></li>
+<li class="chapter" data-level="3.5" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>3.5</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="missing-data.html"><a href="missing-data.html#omission"><i class="fa fa-check"></i><b>3.5.1</b> Omission</a></li>
+<li class="chapter" data-level="3.5.2" data-path="missing-data.html"><a href="missing-data.html#encoding-and-simple-imputation"><i class="fa fa-check"></i><b>3.5.2</b> Encoding and simple imputation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="missing-data.html"><a href="missing-data.html#modeling-the-missingness"><i class="fa fa-check"></i><b>3.5.3</b> Modeling the missingness</a></li>
+<li class="chapter" data-level="3.5.4" data-path="missing-data.html"><a href="missing-data.html#a-few-words-of-caution"><i class="fa fa-check"></i><b>3.5.4</b> A few words of caution</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a><ul>
+<li class="chapter" data-level="3.6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.6</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="3.6.1" data-path="transformations.html"><a href="transformations.html#box-cox-and-similar-transformations"><i class="fa fa-check"></i><b>3.6.1</b> Box-Cox and similar transformations</a></li>
 <li class="chapter" data-level="3.6.2" data-path="transformations.html"><a href="transformations.html#an-applied-example"><i class="fa fa-check"></i><b>3.6.2</b> An applied example</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a><ul>
+<li class="chapter" data-level="3.7" data-path="nonlinearity.html"><a href="nonlinearity.html"><i class="fa fa-check"></i><b>3.7</b> Nonlinearity</a>
+<ul>
 <li class="chapter" data-level="3.7.1" data-path="nonlinearity.html"><a href="nonlinearity.html#polynomial-transformations"><i class="fa fa-check"></i><b>3.7.1</b> Polynomial transformations</a></li>
 <li class="chapter" data-level="3.7.2" data-path="nonlinearity.html"><a href="nonlinearity.html#splines"><i class="fa fa-check"></i><b>3.7.2</b> Splines</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a><ul>
+<li class="chapter" data-level="3.8" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>3.8</b> Interactions</a>
+<ul>
 <li class="chapter" data-level="3.8.1" data-path="interactions.html"><a href="interactions.html#creating-interactions-by-hand"><i class="fa fa-check"></i><b>3.8.1</b> Creating interactions “by hand”</a></li>
 <li class="chapter" data-level="3.8.2" data-path="interactions.html"><a href="interactions.html#creating-interactions-with-recipes"><i class="fa fa-check"></i><b>3.8.2</b> Creating interactions with {recipes}</a></li>
 </ul></li>
-<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a><ul>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3.9</b> PCA</a>
+<ul>
 <li class="chapter" data-level="3.9.1" data-path="pca.html"><a href="pca.html#pca-with-recipes"><i class="fa fa-check"></i><b>3.9.1</b> PCA with {recipes}</a></li>
 </ul></li>
 <li class="chapter" data-level="3.10" data-path="wrapping-up.html"><a href="wrapping-up.html"><i class="fa fa-check"></i><b>3.10</b> Wrapping up</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a><ul>
+<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a>
+<ul>
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a></li>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
+<li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
+<li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
 </ul>
@@ -199,21 +218,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="nonlinearity" class="section level2">
+<div id="nonlinearity" class="section level2" number="3.7">
 <h2><span class="header-section-number">3.7</span> Nonlinearity</h2>
 <p>Very regularly, predictor variables will have a nonlinear relation with the outcome. In the previous section, we simulated data to follow a log-linear trend, which is linear on the log scale and curvilinear on the raw scale. As a reminder, the data looked like this</p>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="nonlinearity.html#cb106-1"></a><span class="kw">ggplot</span>(sim, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
 <span id="cb106-2"><a href="nonlinearity.html#cb106-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
-<p>If we just looked at a plot of these data, we’d probably think to ourselves “that looks a whole lot like a log function!”, but let’s pretend for a moment that we’re not quite as brilliant as we actually are and we, say, didn’t plot the data first (<a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">always plot the data first!</a>). Or maybe we’re just not all that familiar with the log function and we didn’t realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.</p>
-<p>There are many different options for modeling curvilinnear relations, but we’ll focus on two: <a href="https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226">basis expansion</a> via polynomial transformations or natural splines.</p>
+<p>If we just looked at a plot of these data, we’d probably think to ourselves “that looks a whole lot like a log function!”. But let’s pretend for a moment that we’re not quite as brilliant as we actually are and we, say, didn’t plot the data first (<a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">always plot the data first!</a>). Or maybe we’re just not all that familiar with the log function, and we didn’t realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.</p>
+<p>There are many different options for modeling curvilinnear relations, but we’ll focus on two: <a href="https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226">basis expansion</a> via polynomial transformations and natural splines.</p>
 <p>Basis expansion is defined, mathematically, as</p>
 <p><span class="math display">\[
 f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 \]</span> where <span class="math inline">\(h_m\)</span> is the <span class="math inline">\(m\)</span>th transformation of <span class="math inline">\(X\)</span>. Once the transformations are defined, multiple coefficients (<span class="math inline">\(\beta\)</span>) are estimated to represent each transformation, which sum to form the non-linear trend. However, the model is itself still linear. We illustrate below.</p>
-<div id="polynomial-transformations" class="section level3">
+<div id="polynomial-transformations" class="section level3" number="3.7.1">
 <h3><span class="header-section-number">3.7.1</span> Polynomial transformations</h3>
-<p>Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming <span class="math inline">\(X\)</span> into <span class="math inline">\(X\)</span>, <span class="math inline">\(X^2\)</span>, and <span class="math inline">\(X^3\)</span>, and estimating coefficients for each. Let’s do this manually with the <code>sim</code> data</p>
+<p>Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming <span class="math inline">\(X\)</span> into <span class="math inline">\(X\)</span>, <span class="math inline">\(X^2\)</span>, and <span class="math inline">\(X^3\)</span>, and estimating coefficients for each. Let’s do this manually with the <code>sim</code> data from above.</p>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="nonlinearity.html#cb107-1"></a><span class="co"># remove variables from previous example</span></span>
 <span id="cb107-2"><a href="nonlinearity.html#cb107-2"></a><span class="co"># keep only `x` and `y`</span></span>
 <span id="cb107-3"><a href="nonlinearity.html#cb107-3"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -232,7 +251,7 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 ## 4 4 16  64 16.009766
 ## 5 5 25 125 18.203816
 ## 6 6 36 216 18.982897</code></pre>
-<p>Now let’s fit a model to the data, using the polynomial expansion, and plot the result.</p>
+<p>Now let’s fit a model to the data using the polynomial expansion, and plot the result.</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="nonlinearity.html#cb109-1"></a>poly_m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> sim)</span>
 <span id="cb109-2"><a href="nonlinearity.html#cb109-2"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb109-3"><a href="nonlinearity.html#cb109-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">poly_pred =</span> <span class="kw">predict</span>(poly_m))</span>
@@ -249,7 +268,7 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 <span id="cb111-3"><a href="nonlinearity.html#cb111-3"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> poly_pred))</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
 <p>Not bad!</p>
-<p>Now let’s replicate it using {recipes}.</p>
+<p>Now let’s replicate it using <strong>{recipes}</strong>.</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="nonlinearity.html#cb112-1"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb112-2"><a href="nonlinearity.html#cb112-2"></a><span class="st">  </span><span class="kw">select</span>(x, y)</span>
 <span id="cb112-3"><a href="nonlinearity.html#cb112-3"></a></span>
@@ -275,7 +294,7 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 ##  9 20.0    -0.144    0.119  -0.0489
 ## 10 22.5    -0.140    0.108  -0.0302
 ## # … with 90 more rows</code></pre>
-<p>Notice that these values look quite a bot different than the ones we had before because these are <a href="https://en.wikipedia.org/wiki/Orthogonal_polynomials"><em>orthogonal</em> polynomials</a>. Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below</p>
+<p>Notice that these values look quite a bit different than the ones we had before because these are <a href="https://en.wikipedia.org/wiki/Orthogonal_polynomials"><em>orthogonal</em> polynomials</a>. Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below.</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="nonlinearity.html#cb114-1"></a>poly_m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> poly_d)</span>
 <span id="cb114-2"><a href="nonlinearity.html#cb114-2"></a>sim &lt;-<span class="st"> </span>sim <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb114-3"><a href="nonlinearity.html#cb114-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">poly_pred2 =</span> <span class="kw">predict</span>(poly_m2))</span>
@@ -291,7 +310,7 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 <pre><code>## [1] TRUE</code></pre>
 <p>This shows that, to seven decimal places, the results are identical (note, the only reason I had to round at all was because of <a href="https://floating-point-gui.de/basic/">floating point hell</a>).</p>
 </div>
-<div id="splines" class="section level3">
+<div id="splines" class="section level3" number="3.7.2">
 <h3><span class="header-section-number">3.7.2</span> Splines</h3>
 <p>When thinking about splines, we find it most helpful to first think about <em>discontinuous</em> splines. Splines divide up the “x” region of the predictor into bins, and fits a model within each bin. Let’s first look at a very simple model, where we divide our <code>sim</code> dataset into lower and upper portions.</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="nonlinearity.html#cb117-1"></a><span class="co"># get only x and y back</span></span>
@@ -381,16 +400,16 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 <span id="cb122-15"><a href="nonlinearity.html#cb122-15"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>method)</span></code></pre></div>
 <p><img src="_main_files/figure-html/label,%20options-1.png" width="672" /></p>
 <p>Both are quite close, but you can see the natural spline does not dip quite as close to the true value for zero as the B-spline. It’s also a tiny bit more wiggly in the upper tail (because it’s not constrained to be linear). The number of knots is also likely a bit too high here and was chosen fairly randomly.</p>
-<div id="basis-expansion-with-recipes" class="section level4">
+<div id="basis-expansion-with-recipes" class="section level4" number="3.7.2.1">
 <h4><span class="header-section-number">3.7.2.1</span> Basis expansion with {recipes}</h4>
-<p>Basis expansion via recipes proceeds in much the same way as we’ve seen before. We just specify a step specifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).</p>
+<p>Basis expansion via recipes proceeds in much the same way as we’ve seen before. We just specify a step identifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).</p>
 <p>Let’s try building a dataset using basis expansion with a B-Spline</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="nonlinearity.html#cb123-1"></a>bs_d_rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> sim) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="nonlinearity.html#cb123-1"></a>bs_d &lt;-<span class="st"> </span><span class="kw">recipe</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> sim) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb123-2"><a href="nonlinearity.html#cb123-2"></a><span class="st">  </span><span class="kw">step_bs</span>(x, <span class="dt">deg_free =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb123-3"><a href="nonlinearity.html#cb123-3"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb123-4"><a href="nonlinearity.html#cb123-4"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
 <span id="cb123-5"><a href="nonlinearity.html#cb123-5"></a></span>
-<span id="cb123-6"><a href="nonlinearity.html#cb123-6"></a>bs_d_rec</span></code></pre></div>
+<span id="cb123-6"><a href="nonlinearity.html#cb123-6"></a>bs_d</span></code></pre></div>
 <pre><code>## # A tibble: 100 x 9
 ##        y x_bs_1  x_bs_2    x_bs_3 x_bs_4 x_bs_5 x_bs_6 x_bs_7 x_bs_8
 ##    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -407,16 +426,16 @@ f(X) = \sum_{m = 1}^M\beta_mh_m(X)
 ## # … with 90 more rows</code></pre>
 <p>And as you can see, we get similar output to polynomial regression, but we’re just using a spline for our basis expansion now instead of polynomials. Note that the degrees of freedom can also be set to <code>tune()</code> and trained withing <code>tune::tune_grid()</code>. In other words, the amount of basis expansion (degree of “wiggliness”) can be treated as a hyperparamter to be tuned.</p>
 <p>Once the basis expansion is conducted, we can model it just like any other linear model.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="nonlinearity.html#cb125-1"></a>bs_mod_rec &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x_bs_<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">3</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="nonlinearity.html#cb125-1"></a>bs_mod_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x_bs_<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">3</span> <span class="op">+</span></span>
 <span id="cb125-2"><a href="nonlinearity.html#cb125-2"></a><span class="st">                     </span>x_bs_<span class="dv">4</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">5</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">6</span> <span class="op">+</span></span>
 <span id="cb125-3"><a href="nonlinearity.html#cb125-3"></a><span class="st">                     </span>x_bs_<span class="dv">7</span> <span class="op">+</span><span class="st"> </span>x_bs_<span class="dv">8</span>,</span>
-<span id="cb125-4"><a href="nonlinearity.html#cb125-4"></a>                 <span class="dt">data =</span> bs_d_rec)</span></code></pre></div>
-<p>And this will give us the same results we got before</p>
+<span id="cb125-4"><a href="nonlinearity.html#cb125-4"></a>                 <span class="dt">data =</span> bs_d)</span></code></pre></div>
+<p>And this will give us the same results we got before.</p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="nonlinearity.html#cb126-1"></a><span class="kw">all</span>(</span>
-<span id="cb126-2"><a href="nonlinearity.html#cb126-2"></a>  <span class="kw">round</span>(<span class="kw">predict</span>(bs_mod), <span class="dv">7</span>) <span class="op">==</span><span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(bs_mod_rec), <span class="dv">7</span>)</span>
+<span id="cb126-2"><a href="nonlinearity.html#cb126-2"></a>  <span class="kw">round</span>(<span class="kw">predict</span>(bs_mod), <span class="dv">7</span>) <span class="op">==</span><span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(bs_mod_<span class="dv">2</span>), <span class="dv">7</span>)</span>
 <span id="cb126-3"><a href="nonlinearity.html#cb126-3"></a>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>To use polynomial transformations or natural splines instead, we would just use <code>step_poly</code> or <code>step_ns</code>, respectively.</p>
+<p>To use polynomial transformations or natural splines instead, we would just use <code>step_poly()</code> or <code>step_ns()</code>, respectively.</p>
 <p>One rather important note on tuning splines, you will probably want to avoid using code like</p>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="nonlinearity.html#cb128-1"></a><span class="kw">recipe</span>(murders <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> violence) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb128-2"><a href="nonlinearity.html#cb128-2"></a><span class="st">  </span><span class="kw">step_ns</span>(<span class="kw">all_predictors</span>(), <span class="dt">deg_free =</span> <span class="kw">tune</span>())</span></code></pre></div>

@@ -10,7 +10,6 @@ handling-new-levels
 final-thoughts-on-encoding-categorical-data
 dealing-with-low-variance-predictors
 missing-data
-missing-data-via-recipes
 omission
 encoding-and-simple-imputation
 modeling-the-missingness
@@ -35,9 +34,9 @@ a-simple-decision-tree
 determining-optimal-splits
 visualizing-decision-trees
 fitting-a-decision-tree
-tuning-decision-trees
-introduction-to-r
 load-the-data
+tuning-decision-trees
 decision-tree-hyperparamters
 conducting-the-grid-search
 finalizing-our-model-fit
+introduction-to-r
