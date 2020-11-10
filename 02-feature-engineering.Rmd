@@ -1037,7 +1037,7 @@ Of course, the more splines you are tuning, the more computationally expensive i
 
 ## Interactions
 
-An interaction occurs when the slope, or relation, between one variable and the outcome *depends upon* a second variable. This is also often referred to as *moderation* or a *moderating variable*. For example, consider data that look like this
+An interaction occurs when the slope, or relation, between one variable and the outcome *depends upon* a second variable. This is also often referred to as *moderation* or a *moderating variable*. For example, consider data that look like this:
 
 ```{r }
 benchmarks <- read_csv(here::here("data", "benchmarks.csv"))
@@ -1045,11 +1045,11 @@ benchmarks <- read_csv(here::here("data", "benchmarks.csv"))
 ggplot(benchmarks, aes(rdg_fall, rdg_spr)) +
   geom_point(color = "gray70") +
   geom_smooth(aes(color = ell),
-              method = "lm")
+                  method = "lm")
 
 ```
 
-where *ell* stands for *English language learner*. The plot above shows the relation between students scores on a reading assessment administered in the fall and the spring by ELL status. Notice that the slope for *Non-ELL* is markedly steeper than the other two groups. ELL status thus moderates the relation between the fall and spring assessment scores. If we're fitting a model within a linear regression framework, we'll want to make sure that we model the slopes separately for each of these groups (otherwise we would be leaving out important structure in the data, and our model performance would suffer). Interactions are powerful and important to consider, particularly if there is strong theory (or empirical evidence) suggesting that an interaction exists. However, they are not needed in many frameworks and can be derived from the data directly (e.g., tree-based methods, where the degree of possible interaction is determined by the depth of the tree). In this section, we therefore focus on interactions within a linear regression framework.
+where `ell` stands for *"English language learner"*. The plot above shows the relation between students scores on a reading assessment administered in the fall and the spring by `ell` status. Notice that the slope for *Non-ELL* is markedly steeper than the other two groups. `ell` status thus moderates the relation between the fall and spring assessment scores. If we're fitting a model within a linear regression framework, we'll want to make sure that we model the slopes separately for each of these groups. Otherwise, we would be leaving out important structure in the data, and our model performance would suffer. Interactions are powerful and important to consider, particularly if there is strong theory (or empirical evidence) suggesting that an interaction exists. However, they are not needed in many frameworks and can be derived from the data directly (e.g., tree-based methods, where the degree of possible interaction is determined by the depth of the tree). In this section, we therefore focus on interactions within a linear regression framework.
 
 ### Creating interactions "by hand"
 
@@ -1059,7 +1059,7 @@ Even with base R, modeling interactions is pretty straightforward. In the above,
 lm(rdg_spr ~ rdg_fall*ell, data = benchmarks)
 ```
 
-or equivalently
+or equivalently,
 
 ```{r eval = FALSE}
 lm(rdg_spr ~ rdg_fall + ell + rdg_fall:ell, data = benchmarks)
@@ -1105,7 +1105,7 @@ summary(
 
 ### Creating interactions with {recipes}
 
-Specifying interactions in a recipe is similar to other steps, with one small exception, which is that the use of the tilde, `~`, is required. Note that, once again, order does matter, and you should always do your dummy coding *before* specifying interactions with categorical variables. In the example before, this would correspond to
+Specifying interactions in a recipe is similar to other steps, with one small exception, which is that the use of the tilde, `~`, is required. Note that, once again, order does matter, and you should always do your dummy coding *before* specifying interactions with categorical variables. In the example before, this would correspond to:
 
 ```{r }
 recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>% 
@@ -1115,7 +1115,7 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
   bake(new_data = NULL)
 ```
 
-There are a few things to mention here. First, the data do look identical (minus the column names) to what we created by hand, so that's good news. However, we also used `starts_with` here, rather than just specifying something like `step_interact(~rdg_fall:ell)`. This is because after dummy coding, the column names change (as you can see in the above). By specifying `starts_with`, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.
+There are a few things to mention here. First, the data look identical (minus the column names) to what we created by hand, so that's good news. However, we also used `starts_with()` here, rather than just specifying something like `step_interact(~rdg_fall:ell)`. This is because after dummy coding, the column names change (as you can see in the above). By specifying `starts_with()`, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.
 
 ```{r }
 recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>% 
@@ -1125,7 +1125,7 @@ recipe(rdg_spr ~ rdg_fall + ell, benchmarks) %>%
   bake(new_data = NULL)
 ```
 
-This is because its trying to find a column called `ell` to multiply with `rdg_fall`, but no such variable exists after dummy coding.
+This warning occurs because R is trying to find a column called `ell` to multiply with `rdg_fall`, but no such variable exists after dummy coding.
 
 ## PCA
 
