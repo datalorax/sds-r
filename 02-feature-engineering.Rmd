@@ -1129,7 +1129,7 @@ This warning occurs because R is trying to find a column called `ell` to multipl
 
 ## PCA
 
-For some sets of models (such as linear regression) highly correlated variables may cause model instability or, perhaps more importantly, lead to wider confidence intervals around model predictions (i.e., how confident we are about our prediction). In these cases, it may help to collapse these variables, while still accounting for the majority of the variance. This is the basic idea behind Principal Components Analysis (PCA). You use PCA to collapse sets of variables into principal components, reducing the dimensionality of your data while maintainingg $X$ percent of the original variation in the data. Reducing the dimensionality generally has an associated cost of higher model bias. However, it will also nearly always reduce model variability. The proportion of the original variability to maintain can thus be considered a tuning parameter, balancing bias with variance.
+For some sets of models (such as linear regression), highly correlated variables may cause model instability or, perhaps more importantly, lead to wider confidence intervals around model predictions (i.e., how confident we are about our prediction). In these cases, it may help to collapse these variables, while still accounting for the majority of the variance. This is the basic idea behind Principal Components Analysis (PCA). You use PCA to collapse sets of variables into principal components, reducing the dimensionality of your data while maintaining $X$ percent of the original variation in the data. Reducing the dimensionality generally has an associated cost of higher model bias. However, it will also nearly always reduce model variability. The proportion of the original variability to maintain can thus be considered a tuning parameter, balancing bias with variance.
 
 Probably my favorite discussion of PCA comes from a [discussion on CrossValidated](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues) on how to make sense of PCA. The opening poster asked how you would explain PCA to a layman and why it's needed. The entire thread is worth reading through, and there's a particularly nice example from [JD Long](https://twitter.com/CMastication) comparing the first principal component to the line of best fit in linear regression.
 
@@ -1152,9 +1152,9 @@ To conduct PCA we need to make sure that
 
 1.  All variables are numeric
 2.  All variables are on the same scale
-3.  No missing data
+3.  There is no missing data
 
-Our recipe above ensures all variables are numeric, but it doesn't handle missing data, and there is no standardization of variables. Let's redo this recipe to make sure it's ready for PCA.
+Our recipe above ensures all variables are numeric, but it doesn't handle missing data, and there is no standardization of variables. Let's update this recipe to make sure it's ready for PCA.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -1167,9 +1167,9 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal(), -has_role("id vars"))
 ```
 
-The above is not a whole lot more complex than our original recipe. It just assigns an `"unknown"` level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables (center/scales) and dummy codes the nominal variables.
+The above is not a whole lot more complex than our original recipe. It just assigns an `"unknown"` level to the nominal variables and imputes the remaining numeric variables with the median of that variable. It then normalizes all variables and dummy codes the nominal variables.
 
-This recipe gives us a data frame with many columns. Specifically
+This recipe gives us a data frame with many columns. Specifically:
 
 ```{r }
 rec %>% 
@@ -1220,13 +1220,13 @@ If we access the steps we can get additional information. The PCA step is the se
 names(prepped_pca$steps[[7]])
 ```
 
-Let's look into `res`
+Let's look into `res`.    
 
 ```{r }
 names(prepped_pca$steps[[7]]$res)
 ```
 
-And now we get what we've been (perhaps unknowingly to you, dear reader) looking for, the `sdev` object, which lists the standard deviation of each principal component. We can look at how much variance each component accounts for as follows
+And now we get what we've been (perhaps unknowingly to you, dear reader) looking for, the `sdev` object, which lists the standard deviation of each principal component. We can look at how much variance each component accounts for, as follows:
 
 ```{r }
 vars <- prepped_pca$steps[[7]]$res$sdev^2
@@ -1247,12 +1247,13 @@ ggplot(pcs, aes(pc, percent_var)) +
   scale_y_continuous(expand = c(0, 0)) # move this to a book theme for plots
 ```
 
-A few things are of note here. First, it appears the majority of the variance is accounted for by our first few components, which is not altogether surprising given that we already new the first 10 components accounted for approximately 85% of the total variability. However, you might also wonder *why there are so many freaking components shown?! I thought we only asked for five!?* That is true. But the model actually estimates all the components, and then just pulls out whatever we ask, based on either the `threshold` or the `num_comp` arguments. For example, let's `bake` the five component recipe on the full training data.
+A few things are of note here. First, it appears the majority of the variance is accounted for by our first few components, which is not altogether surprising given that we already new the first 10 components accounted for approximately 85% of the total variability. However, you might also wonder *why there are so many freaking components shown?! I thought we only asked for five!?* That is true. But the model actually estimates all the components, and then just pulls out whatever we ask, based on either the `threshold` or the `num_comp` arguments. For example, let's `bake` the five component recipe on the full training data and print the resulting variables.
 
 ```{r }
 rec_5 %>% 
   prep() %>% 
-  bake(new_data = NULL)
+  bake(new_data = NULL) %>% 
+  names()
 ```
 
 And as expected, we get only the five components we requested.
