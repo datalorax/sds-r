@@ -65,15 +65,15 @@ When creating recipes, we can still use the formula interface to define how the 
 rec <- recipe(score ~ ., data = train)
 ```
 
-Notice that I still declare the dataset, even though this is just a blueprint. It uses the dataset I provide to get the names of the columns from the dataset, but it doesn't actually do anything with this dataset (unless we ask it to). Let's look at what this recipe looks like
+Notice that I still declare the dataset (in this case, the *training* data), even though this is just a blueprint. It uses the dataset I provide to get the names of the columns, but it doesn't actually do anything with this dataset (unless we ask it to). Let's look at what this recipe looks like.
 
 ```{r }
 rec
 ```
 
-Notice it just states that this is a data recipe in which we have specified 1 outcome variable and 39 predictors.
+Notice it just states that this is a data recipe in which we have specified `r sum(rec$var_info$role %in% "outcome")` outcome variable and `r sum(rec$var_info$role %in% "predictor")` predictors.
 
-We can `prep` this recipe to learn more
+We can `prep` this recipe to learn more.
 
 ```{r }
 prep(rec)
@@ -81,9 +81,9 @@ prep(rec)
 
 Notice we now get an additional message about how many rows are in the data, and how many of these rows contain missing (incomplete data). So the recipe is the blueprint, and we prep the recipe to get it to actually go into the data and conduct the operations. The dataset it has now, however, is just a placeholder than can be substituted in for any other dataset with an equivalent structure.
 
-But of course modeling score as the outcome with everything else predicting it (as is) is not reasonable for multiple reasons. We have many ID variables, for one, and we also multipe categorical variables. For some methods (like tree-based models) it might be okay to leave these as is, but for others (like any model in the linear regression family) we'll wan to encode them somehow (e.g., dummy code).
+But of course, modeling score as the outcome with everything else predicting it is not a reasonable choice in this case. For example, we have many ID variables, and we also have multiple categorical variables. For some methods (like tree-based models) it might be okay to leave these categorical variables as they are, but for others (like any model in the linear regression family) we'll want to encode them somehow (e.g., dummy code).
 
-We can do these operations by adding *steps* to our recipe. In the first step, we'll update the role of all the ID variables so they are not included among the predictors. In the second, we will dummy code all nominal variables.
+We can address these concerns by adding *steps* to our recipe. In the first step, we'll update the role of all the ID variables so they are not included among the predictors. In the second, we will dummy code all nominal (i.e. categorical) variables.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -93,9 +93,9 @@ rec <- recipe(score ~ ., train) %>%
 
 When updating the roles, we can change the variable label (text passed to the `new_role` argument) to be anything we want, so long as it's not `"predictor"` or `"outcome"`.
 
-Notice in the above I am also using helper functions to apply the operations to all variables of a specific type. There are five main helper functions: `all_predictors()`, `all_outcomes()`, `all_nominal()`, `all_numeric()` and `has_role()`. You can use these together, including with negation (e.g., `-all_outcomes` to specify the operation should **not** apply to the outcome variable(s)) to select any set of variables you want to apply the operation to.
+Notice in the above I am also using helper functions to apply the operations to all variables of a specific type. There are five main helper functions for creating recipes: `all_predictors()`, `all_outcomes()`, `all_nominal()`, `all_numeric()` and `has_role()`. You can use these together, including with negation (e.g., `-all_outcomes()` to specify the operation should **not** apply to the outcome variable(s)) to select any set of variables you want to apply the operation to.
 
-Let's try `prep`ping this recipe
+Let's try to `prep` this updated recipe.
 
 ```{r error = TRUE, warning = FALSE}
 prep(rec)
@@ -103,7 +103,7 @@ prep(rec)
 
 Uh oh! We have an error. Our recipe is trying to dummy code the `lang_cd` variable, but it has only one level. It's kind of hard to dummy-code a constant!
 
-Luckily, we can expand our recipe to first remove any zero-variance predictors, like so
+Luckily, we can expand our recipe to first remove any zero-variance predictors, like so:
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -112,13 +112,13 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal())
 ```
 
-The `zv` part stands for "zero variance" and should take care of this problem. Let's try again.
+The `_zv` part stands for "zero variance" and should take care of this problem. Let's try again.
 
 ```{r warning = FALSE}
 prep(rec)
 ```
 
-Beautiful! Note we do still get a warning here, but I've omitted it in the text (we'll take care of it later). Our recipe says we now have 6 ID variables, 1 outcome, and 33 predictors, with 2841 data points (rows of data). The `calc_admn_cd` and `lang_cd` variables have been removed because they have zero variance, and several variables have been dummy coded, including `gndr` and `ethnic_cd`, among others.
+Beautiful! Note we do still get a warning here, but I've omitted it in the text (we'll come back to this in the section on [Missing data]). Our recipe says we now have 6 ID variables, `r sum(rec$var_info$role %in% "outcome")` outcome, and `r sum(rec$var_info$role %in% "predictor")` predictors, with `r nrow(rec$template)` data points (rows of data). The `calc_admn_cd` and `lang_cd` variables have been removed because they have zero variance, and several variables have been dummy coded, including `gndr` and `ethnic_cd`, among others.
 
 Let's dig just a bit deeper here though. What's going on with these zero-variance variables? Let's look back at the training data.
 
@@ -130,7 +130,7 @@ train %>%
   count(lang_cd)
 ```
 
-So at least in our sample, `calc_admn_cd` really is just fully missing, which means it might as well be dropped because it's providing us exactly nothing. But that's not the case with `lang_cd`. It has two values, `NA` and `S`. This variable represents the language the test was administered in and the `NA` values are actually meaningful here because they are the the "default" administration, meaning English. So rather than dropping these, let's `mutate` them to transform the `NA` values to `"E"` for English. We could reasonably do this inside or outside the recipe, but a good rule of thumb is, if it *can* go in the recipe, put it in the recipe. It can't hurt, and doing operations outside of the recipe risks data leakage.
+So at least in our sample, `calc_admn_cd` really is just fully missing, which means it might as well be dropped because it's providing us exactly nothing. But that's not the case with `lang_cd`. It has two values, `NA` and `"S"` (for "Spanish"). This variable represents the language the test was administered in and the `NA` values are actually meaningful here because they are the the "default" administration, meaning English. So rather than dropping these, let's `mutate` them to transform the `NA` values to `"E"` for English. We could reasonably do this inside or outside the recipe, but a good rule of thumb is, if it *can* go in the recipe, put it in the recipe. It can't hurt, and doing operations outside of the recipe risks data leakage.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -147,7 +147,7 @@ prepped <- prep(rec)
 prepped
 ```
 
-And we see that `lang_cd` is no longer being caught by the zero variance filter. Next we'll `bake` the recipe to actually apply it *to our data*. If we specify `new_data = NULL`, `bake` will apply the operation to the data we specified in the recipe. But we can also pass new data as an additional argument and it will apply the operations to *that* data instead of the data specified in the recipe.
+And we see that `lang_cd` is no longer being caught by the zero variance filter. Next we'll `bake` the prepped recipe to actually *apply* it to our data. If we specify `new_data = NULL`, `bake()` will apply the operation to the data we originally specified in the recipe. But we can also pass new data as an additional argument and it will apply the operations to *that* data instead of the data specified in the recipe.
 
 ```{r }
 bake(prepped, new_data = NULL)
@@ -155,7 +155,7 @@ bake(prepped, new_data = NULL)
 
 And now we can actually *see* the dummy-coded categorical variables, along with the other operations we requested. For example, `calc_admn_cd` is not in the dataset. Notice the ID variables are output though, which makes sense because they are often neccessary for joining with other data sources. But it's important to realize that they are output (i.e., all variables are returned, regardless of role) because if we passed this directly to a model they would be included as predictors. Note that there may be reasons you would want to include a school and/or district level ID variable in your modeling, but you certainly would not want redundant variables.
 
-We do still have one minor issue with this recipe though, which is pretty evident when looking at the column names of our baked dataset. The `tst_dt` variable, which specifies the data the test was taken, was treated as a categorical variable because it read in as a character vector. That means all the dates are being dummy coded! Let's fix this by just transforming it to a date within our `step_mutate`.
+We do still have one minor issue with this recipe though, which is pretty evident when looking at the column names of our baked dataset. The `tst_dt` variable, which specifies the date the test was taken, was treated as a categorical variable because it was read in as a character vector. That means all the dates are being dummy coded! Let's fix this by just transforming it to a date within our `step_mutate`.
 
 ```{r}
 rec <- recipe(score ~ ., train) %>% 
@@ -166,7 +166,7 @@ rec <- recipe(score ~ ., train) %>%
   step_dummy(all_nominal())
 ```
 
-And now when we `prep`/`bake` the dataset it's still a date variable, which is what we probably want (it will modeled as a numeric variable).
+And now when we `prep`/`bake` the dataset it's still a date variable, which is what we probably want (it will be modeled as a numeric variable).
 
 ```{r warning = FALSE}
 rec %>% 
@@ -176,7 +176,7 @@ rec %>%
 
 ### Order matters
 
-It's important to realize that the order of the steps matters. In our recipe, we first declare ID variables as having a different role than predictors or outcomes, we then modify two variables, remove zero-variance predictors, and finally dummy code all categorical (nominal) variables. What happens if we instead dummy code and *then* remove zero-variance predictors?
+It's important to realize that the order of the steps matters. In our recipe, we first declare ID variables as having a different role than predictors or outcomes. We then modify two variables, remove zero-variance predictors, and finally dummy code all categorical (nominal) variables. What happens if we instead dummy code and *then* remove zero-variance predictors?
 
 ```{r warning = FALSE, error = TRUE}
 rec <- recipe(score ~ ., train) %>% 
@@ -186,7 +186,7 @@ rec <- recipe(score ~ ., train) %>%
 prep(rec)
 ```
 
-We end up with the error, whereas we don't if we remove zero variance predictors *and then* dummy code
+We end up with our original error. We don't get this error if we remove zero variance predictors *and then* dummy code.
 
 ```{r warning = FALSE}
 rec <- recipe(score ~ ., train) %>% 
@@ -196,9 +196,9 @@ rec <- recipe(score ~ ., train) %>%
 prep(rec)
 ```
 
-This is true for all steps, and may occasionally lead to you needing to apply the same operation at multiple steps (e.g., a *near* zero variance filter could be applied before and after dummy-coding).
+The fact that order matters may occasionally require that you apply the same operation at multiple steps (e.g., a *near* zero variance filter could be applied before and after dummy-coding).
 
-All of the above serves as a basic introduction to developing a recipe, and the what follows goes into more detail on specific feature engineering pieces. For complete documentation on all possible recipe steps, please see the [documentaion](https://recipes.tidymodels.org/reference/index.html).
+All of the above serves as a basic introduction to developing a recipe, and what follows goes into more detail on specific feature engineering pieces. For complete information on all possible recipe steps, please see the [documentation](https://recipes.tidymodels.org/reference/index.html).
 
 ## Encoding categorical data
 
