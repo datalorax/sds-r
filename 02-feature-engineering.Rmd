@@ -526,7 +526,7 @@ If you have significant missing data, this section is surely incomplete. We reco
 
 ## Transformations
 
-In standard inferential statistics, we are often concerned with the distribution of the outcome. Linear regression, for example, assumes the outcome is at least reasonably normally distributed. If this is not the case, the standard errors (in particular) can be misrepresented. We therefore generally inspect the outcome before modeling it and, if it is not approximately normally distributed, we either transform it to make it more closely approximate a normal distribution, or we use an analysis technique that does not assume normality in the outcome.
+In standard inferential statistics, we are often concerned with the distribution of the outcome. Linear regression, for example, assumes the outcome is at least reasonably normally distributed. If this is not the case, the standard errors (in particular) can be misrepresented. We therefore generally inspect the outcome before modeling it, and, if it is not approximately normally distributed, we either transform it to make it more closely approximate a normal distribution, or we use an analysis technique that does not assume normality in the outcome.
 
 In predictive modeling, transformations of the predictors or the outcome(s) (or both) can sometimes help improve model performance. For example, let's quickly simulate some data.
 
@@ -555,7 +555,7 @@ sim %>%
   reactable()
 ```
 
-As you can see from the above, we have simulated the data according to $\log x$, but in our data frame only has $x$. This is a common situation where we don't *know* the true functional form. But of course, if we fit a linear regression model to these data, we'll end up with high bias, particularly in the lower tail (and issues with heteroscedasticity).
+As you can see from the above, we have simulated the data according to $\log x$, but our data frame only has $x$. This is a common situation where we don't *know* the true functional form. But of course, if we fit a linear regression model to these data, we'll end up with high bias, particularly in the lower tail (and issues with heteroscedasticity).
 
 ```{r }
 ggplot(sim, aes(x, y)) +
@@ -591,7 +591,7 @@ sim %>%
               formula = y ~ log(x))
 ```
 
-So in this case, a log transformation to the x variable works perfect (as we would expect, given that we simulated the data to be this way). But how do we know *how* to transform variables?
+So in this case, a log transformation to the x variable works perfectly (as we would expect, given that we simulated the data to be this way). But how do we know *how* to transform variables?
 
 ### Box-Cox and similar transformations
 
@@ -605,25 +605,25 @@ $$
        \log\left(x\right), & \text{if}\ \lambda = 0
     \end{cases}
 \end{equation}
-$$ where $x$ represents the variable in its raw units, and $x^*$ represents the transformed variable. The Box-Cox transformation is a *power* transformation, where the intent is to estimate $\lambda$. Note that if $\lambda$ is estimated as zero, the power transformation is the same as a log transformation, otherwise the top portion of the equation is used. Helpfully, specific values of $\lambda$ map to common transformations.
+$$ where $x$ represents the variable in its raw units, and $x^*$ represents the transformed variable. The Box-Cox transformation is a *power* transformation, where the intent is to estimate $\lambda$. Note that if $\lambda$ is estimated as zero, the power transformation is the same as a log transformation; otherwise the top portion of the equation is used. Fortunately, specific values of $\lambda$ map to common transformations.
 
 -   $\lambda = 1$: No transformation
 -   $\lambda = 0.5$: square root transformation
 -   $\lambda = 0$: log transformation
 -   $\lambda = -1$: inverse
 
-Given the above, we would expect that $\lambda$ would be estimated close to zero with our simulated data. Let's try using {recipes}. To access the actual $\lambda$ value, we'll need to take a brief foray into tidying recipes.
+Given the above, we would expect that $\lambda$ would be estimated close to zero with our simulated data. Let's try using **{recipes}**. To access the actual $\lambda$ value, we'll need to take a brief foray into tidying recipes.
 
 #### Tidying recipes
 
-Let's first specify the recipe with a Box-Cox transformation to our x variable
+Let's first specify the recipe with a Box-Cox transformation to our $x$ variable.
 
 ```{r }
 rec <- recipe(y ~ x, data = sim) %>% 
   step_BoxCox(all_predictors())
 ```
 
-Now we can tidy the recipe
+Now we can tidy the recipe.
 
 ```{r }
 tidy(rec)
@@ -651,7 +651,7 @@ Now we have four steps. We can look at any one step by declaring the step number
 tidy(rec, n = 1)
 ```
 
-Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to `prep` the recipe if we want it to actually do any work. Let's prep the recipe and try again.
+Notice there's nothing there, because at this point the recipe is still just a blueprint. We have to prep the recipe if we want it to actually do any work. Let's prep the recipe and try again.
 
 ```{r }
 lm_imputation <- rec %>% 
@@ -679,7 +679,7 @@ rec %>%
   tidy(n = 3)
 ```
 
-And without any further work we can see that we estimated $\lambda = 0.72$, which is pretty much directly between a square-root transformation and no transformation. Why did it not estimate a $log$ transformation as most appropriate? Because the log transformation is only ideal when view *relative* to $y$. Put differently, the Box-Cox transformation is an *unsupervised* approach that attempts to make each variable approximate a univariate normal distribution. As we'll see in the next section, there are other methods that can be used to help with issues of non-linearity.
+And without any further work we can see that we estimated $\lambda = 0.72$, which is pretty much directly between a square-root transformation and no transformation. Why did it not estimate a $log$ transformation as most appropriate? Because the log transformation is only ideal when viewing $x$ *relative* to $y$. Put differently, the Box-Cox transformation is an *unsupervised* approach that attempts to make each variable approximate a univariate normal distribution. As we'll see in the next section, there are other methods that can be used to help with issues of non-linearity.
 
 For completeness, let's see if the transformation helped us. We'll use $\lambda = 0.72$ to manually transform $x$, then plot the result.
 
@@ -705,7 +705,7 @@ As we can see, it's better than the raw data, but still insufficient.
 
 ### An applied example
 
-Let's look at an applied example. We'll use the `violence` data (see the full data dictionary [here](http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized#)), and see if we can predict the neighborhoods where the number of murders are greater than zero, using the percentage of people living in poverty and the percentage of people living in dense housing units (more than one person per room) as predictors. Let's start with a basic plot.
+Let's look at an applied example. We'll use the `violence` data (see the full data dictionary [here](http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized#)) and see if we can predict the neighborhoods where the number of murders are greater than zero, using the percentage of people living in poverty and the percentage of people living in dense housing units (more than one person per room) as predictors. Let's start with a basic plot.
 
 ```{r }
 violence <- read_csv(here::here("data", "violence.csv"))
