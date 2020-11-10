@@ -1262,7 +1262,7 @@ PCA reduces the dimensionality in the data, which can help guard against overfit
 
 ## Wrapping up
 
-Feature engineering is a *gigantic* topic. The purpose of this chapter was to provide a basic introduction. We illustrated creating a *recipe* or *blueprint* for your feature engineering, which can be applied iteratively to slices of the data (as in a *k*-fold cross-validation approach) or to new data with the same structure. This process helps guard against **data leakage**, where information from the test set leaks into the training set. Let's look at a quick example of this by using PCA to retain 95% of the total variation in the data. We'll use $k$-fold cross-validation and see how many components we retain in each fold. First, we'll create the recipe, which is essentially equivalent to what we saw in the previous chapter
+Feature engineering is a *gigantic* topic. The purpose of this chapter was to provide a basic introduction. We illustrated creating a *recipe* or *blueprint* for your feature engineering, which can be applied iteratively to slices of the data (as in a *k*-fold cross-validation approach) or to new data with the same structure. This process helps guard against **data leakage**, where information from the test set leaks into the training set. Let's look at a quick example of this by using PCA to retain 95% of the total variation in the data. We'll use $k$-fold cross-validation and see how many components we retain in each fold. First, we'll create the recipe, which is essentially equivalent to what we saw in the previous chapter.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -1285,14 +1285,14 @@ cv <- vfold_cv(train)
 cv
 ```
 
-Now we'll loop through each split and pull out the data we will build our model on, for that fold
+Now we'll loop through each split and pull out the data we will build our model on, for that fold.
 
 ```{r }
 cv %>% 
   mutate(assessment_data = map(splits, assessment))
 ```
 
-And finally, apply the recipe to each dataset
+And finally, we'll apply the recipe to each dataset.
 
 ```{r }
 cv %>% 
@@ -1300,7 +1300,7 @@ cv %>%
          baked_data = map(assessment_data, ~prep(rec) %>%  bake(.x)))
 ```
 
-Let's see how many principal components are in each data fold
+Let's see how many principal components are in each data fold.
 
 ```{r }
 cv %>% 
@@ -1309,6 +1309,6 @@ cv %>%
          n_components = map_int(baked_data, ~sum(grepl("^PC", names(.x)))))
 ```
 
-In this case, the *number* of components is the same across all folds, but the representation of those components is likely slightly different. This is because the recipe has been applied to each fold, independent of the other folds.
+In this case, the *number* of components is the same across all folds, but the representation of those components is likely slightly different. Why? Because the recipe has been applied to each fold, independent of the other folds.
 
 Feature engineering can also regularly feel overwhelming. There are *so many* possible options that you could do to potentially increase model performance. This chapter just scratched the surface. The sheer number of decisions is why many believe that feature engineering is the most "art" part of machine learning. Strong domain knowledge will absolutely help, as will practice. For those looking to go further with feature engineering, we suggest [Kuhn and Johnson](http://www.feat.engineering), who wrote an entire book on the topic. It provides practical advice in an accessible way without skimping on important details.
