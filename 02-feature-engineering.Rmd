@@ -789,9 +789,9 @@ ggplot(sim, aes(x, y)) +
   geom_point()
 ```
 
-If we just looked at a plot of these data, we'd probably think to ourselves "that looks a whole lot like a log function!", but let's pretend for a moment that we're not quite as brilliant as we actually are and we, say, didn't plot the data first ([always plot the data first!](https://www.autodesk.com/research/publications/same-stats-different-graphs)). Or maybe we're just not all that familiar with the log function and we didn't realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.
+If we just looked at a plot of these data, we'd probably think to ourselves "that looks a whole lot like a log function!". But let's pretend for a moment that we're not quite as brilliant as we actually are and we, say, didn't plot the data first ([always plot the data first!](https://www.autodesk.com/research/publications/same-stats-different-graphs)). Or maybe we're just not all that familiar with the log function, and we didn't realize that a simple transformation could cure all our woes. How would we go about modeling this? Clearly a linear relation would be insufficient.
 
-There are many different options for modeling curvilinnear relations, but we'll focus on two: [basis expansion](https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226) via polynomial transformations or natural splines.
+There are many different options for modeling curvilinnear relations, but we'll focus on two: [basis expansion](https://towardsdatascience.com/non-linear-regression-basis-expansion-polynomials-splines-2d7adb2cc226) via polynomial transformations and natural splines.
 
 Basis expansion is defined, mathematically, as
 
@@ -801,7 +801,7 @@ $$ where $h_m$ is the $m$th transformation of $X$. Once the transformations are 
 
 ### Polynomial transformations
 
-Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming $X$ into $X$, $X^2$, and $X^3$, and estimating coefficients for each. Let's do this manually with the `sim` data
+Polynomial transformations include the variable in its raw units, plus additional (basis expansion) units raised to a given power. For example, a cubic trend could be fit by transforming $X$ into $X$, $X^2$, and $X^3$, and estimating coefficients for each. Let's do this manually with the `sim` data from above.
 
 ```{r }
 # remove variables from previous example
@@ -817,7 +817,7 @@ sim <- sim %>%
 head(sim)
 ```
 
-Now let's fit a model to the data, using the polynomial expansion, and plot the result.
+Now let's fit a model to the data using the polynomial expansion, and plot the result.
 
 ```{r }
 poly_m <- lm(y ~ ., data = sim)
@@ -832,7 +832,7 @@ ggplot(sim, aes(x, y)) +
 
 Not bad!
 
-Now let's replicate it using {recipes}.
+Now let's replicate it using **{recipes}**.
 
 ```{r }
 sim <- sim %>% 
@@ -848,7 +848,7 @@ poly_d <- poly_rec %>%
 poly_d
 ```
 
-Notice that these values look quite a bot different than the ones we had before because these are [*orthogonal* polynomials](https://en.wikipedia.org/wiki/Orthogonal_polynomials). Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below
+Notice that these values look quite a bit different than the ones we had before because these are [*orthogonal* polynomials](https://en.wikipedia.org/wiki/Orthogonal_polynomials). Orthogonal polynomials have some advantages over raw polynomials, including that, in a standard linear regression modeling framework, each higher-order term can be directly evaluated for its contribution to the model. This is mostly because non-orthogonal polynomials are highly correlated. However, the fitted values remain the same, as we can see below.
 
 ```{r }
 poly_m2 <- lm(y ~ ., data = poly_d)
@@ -984,17 +984,17 @@ Both are quite close, but you can see the natural spline does not dip quite as c
 
 #### Basis expansion with {recipes}
 
-Basis expansion via recipes proceeds in much the same way as we've seen before. We just specify a step specifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).
+Basis expansion via recipes proceeds in much the same way as we've seen before. We just specify a step identifying the the type of basis expansion we want to conduct, along with any additional arguments like the degrees of freedom (number of knots).
 
 Let's try building a dataset using basis expansion with a B-Spline
 
 ```{r }
-bs_d_rec <- recipe(y ~ x, data = sim) %>% 
+bs_d <- recipe(y ~ x, data = sim) %>% 
   step_bs(x, deg_free = 8) %>% 
   prep() %>% 
   bake(new_data = NULL)
 
-bs_d_rec
+bs_d
 ```
 
 And as you can see, we get similar output to polynomial regression, but we're just using a spline for our basis expansion now instead of polynomials. Note that the degrees of freedom can also be set to `tune()` and trained withing `tune::tune_grid()`. In other words, the amount of basis expansion (degree of "wiggliness") can be treated as a hyperparamter to be tuned.
@@ -1002,21 +1002,21 @@ And as you can see, we get similar output to polynomial regression, but we're ju
 Once the basis expansion is conducted, we can model it just like any other linear model.
 
 ```{r }
-bs_mod_rec <- lm(y ~ x_bs_1 + x_bs_2 + x_bs_3 +
+bs_mod_2 <- lm(y ~ x_bs_1 + x_bs_2 + x_bs_3 +
                      x_bs_4 + x_bs_5 + x_bs_6 +
                      x_bs_7 + x_bs_8,
-                 data = bs_d_rec)
+                 data = bs_d)
 ```
 
-And this will give us the same results we got before
+And this will give us the same results we got before.
 
 ```{r }
 all(
-  round(predict(bs_mod), 7) == round(predict(bs_mod_rec), 7)
+  round(predict(bs_mod), 7) == round(predict(bs_mod_2), 7)
 )
 ```
 
-To use polynomial transformations or natural splines instead, we would just use `step_poly` or `step_ns`, respectively.
+To use polynomial transformations or natural splines instead, we would just use `step_poly()` or `step_ns()`, respectively.
 
 One rather important note on tuning splines, you will probably want to avoid using code like
 
