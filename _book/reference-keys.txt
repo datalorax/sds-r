@@ -39,4 +39,14 @@ tuning-decision-trees
 decision-tree-hyperparamters
 conducting-the-grid-search
 finalizing-our-model-fit
+bagging-and-random-forests
+bagging-by-hand
+bagged-trees
+working-with-out-of-bag-samples
+tuning-with-oob-samples
+random-forests
+fitting-random-forests
+a-classification-example
+a-regression-example
+feature-and-model-interpretation
 introduction-to-r

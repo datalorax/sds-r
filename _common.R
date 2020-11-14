@@ -2,7 +2,8 @@ library(reactable)
 library(ggplot2)
 
 knitr::opts_chunk$set(message = FALSE,
-                      dev.args = list(bg="transparent"))
+                      dev.args = list(bg="transparent"),
+                      cache.lazy = FALSE)
 
 # Make the fonts the same as the book
 # Also consider making a couple different themes for different types of plots

@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-10" />
+<meta name="date" content="2020-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,18 +189,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a>
-<ul>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a>
-<ul>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a><ul>
 <li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
 <li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
 <li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.0.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5.1" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.1</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.1.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.1.2</b> Tuning with OOB samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.2</b> Random Forests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-forests.html"><a href="random-forests.html#fitting-random-forests"><i class="fa fa-check"></i><b>5.2.1</b> Fitting random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="feature-and-model-interpretation.html"><a href="feature-and-model-interpretation.html"><i class="fa fa-check"></i><b>5.3</b> Feature and model interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -221,10 +230,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="basics-of-recipes" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Basics of {recipes}</h2>
 <p><img src="https://github.com/tidymodels/recipes/raw/master/man/figures/logo.png" /></p>
-<p>The <strong>{recipes}</strong> package is designed to replace the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html">stats::model.matrix()</a> function that you might be familiar with. For example, if you fit a model like the one below</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="basics-of-recipes.html#cb1-1"></a><span class="kw">library</span>(palmerpenguins)</span>
-<span id="cb1-2"><a href="basics-of-recipes.html#cb1-2"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(bill_length_mm <span class="op">~</span><span class="st"> </span>species, <span class="dt">data =</span> penguins)</span>
-<span id="cb1-3"><a href="basics-of-recipes.html#cb1-3"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<p>The recipes package is designed to replace the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html">stats::model.matrix</a> function that you’re probably familiar with. For example, if you fit a model like the below</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="basics-of-recipes.html#cb8-1"></a><span class="kw">library</span>(palmerpenguins)</span>
+<span id="cb8-2"><a href="basics-of-recipes.html#cb8-2"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(bill_length_mm <span class="op">~</span><span class="st"> </span>species, <span class="dt">data =</span> penguins)</span>
+<span id="cb8-3"><a href="basics-of-recipes.html#cb8-3"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = bill_length_mm ~ species, data = penguins)

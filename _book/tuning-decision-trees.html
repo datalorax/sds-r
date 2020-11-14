@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-09" />
+<meta name="date" content="2020-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,8 +34,7 @@
   
   
 <link rel="prev" href="fitting-a-decision-tree.html"/>
-<link rel="next" href="introduction-to-r.html"/>
-<script src="assets/header-attrs-2.4/header-attrs.js"></script>
+<link rel="next" href="bagging-and-random-forests.html"/>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -200,7 +199,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.0.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5.1" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.1</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.1.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.1.2</b> Tuning with OOB samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.2</b> Random Forests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-forests.html"><a href="random-forests.html#fitting-random-forests"><i class="fa fa-check"></i><b>5.2.1</b> Fitting random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="feature-and-model-interpretation.html"><a href="feature-and-model-interpretation.html"><i class="fa fa-check"></i><b>5.3</b> Feature and model interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -290,24 +300,24 @@ SSE + \alpha |T|
 <span id="cb206-6"><a href="tuning-decision-trees.html#cb206-6"></a>  <span class="dt">grid =</span> dt_grid</span>
 <span id="cb206-7"><a href="tuning-decision-trees.html#cb206-7"></a>)</span>
 <span id="cb206-8"><a href="tuning-decision-trees.html#cb206-8"></a><span class="kw">toc</span>()</span></code></pre></div>
-<pre><code>## 204.41 sec elapsed</code></pre>
+<pre><code>## 681.656 sec elapsed</code></pre>
 <p>First let’s look at our results by hyperparameter. We can use <code>collect_metrics</code> to get a summary (mean) of the metrics we set (which we didn’t, so we’ll get the defaults, which in this case are <a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a> and <a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy</a>) across folds. You can optionally get te results by fold (no summarizing) by specifying <code>summarize = FALSE</code>.</p>
 <div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="tuning-decision-trees.html#cb208-1"></a>dt_tune_metrics &lt;-<span class="st"> </span><span class="kw">collect_metrics</span>(dt_tune_fit)</span>
 <span id="cb208-2"><a href="tuning-decision-trees.html#cb208-2"></a>dt_tune_metrics</span></code></pre></div>
 <pre><code>## # A tibble: 100 x 8
-##    cost_complexity min_n .metric  .estimator  mean     n std_err .config
-##              &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-##  1    0.0000000001     2 accuracy multiclass 0.631    10 0.0104  Model01
-##  2    0.0000000001     2 roc_auc  hand_till  0.718    10 0.00915 Model01
-##  3    0.000000001      2 accuracy multiclass 0.631    10 0.0104  Model02
-##  4    0.000000001      2 roc_auc  hand_till  0.718    10 0.00915 Model02
-##  5    0.00000001       2 accuracy multiclass 0.631    10 0.0104  Model03
-##  6    0.00000001       2 roc_auc  hand_till  0.718    10 0.00915 Model03
-##  7    0.0000001        2 accuracy multiclass 0.631    10 0.0104  Model04
-##  8    0.0000001        2 roc_auc  hand_till  0.718    10 0.00915 Model04
-##  9    0.000001         2 accuracy multiclass 0.631    10 0.0104  Model05
-## 10    0.000001         2 roc_auc  hand_till  0.718    10 0.00915 Model05
-## # … with 90 more rows</code></pre>
+##    cost_complexity min_n .metric .estimator  mean     n std_err
+##              &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+##  1    0.0000000001     2 accura… multiclass 0.631    10 0.0104 
+##  2    0.0000000001     2 roc_auc hand_till  0.718    10 0.00915
+##  3    0.000000001      2 accura… multiclass 0.631    10 0.0104 
+##  4    0.000000001      2 roc_auc hand_till  0.718    10 0.00915
+##  5    0.00000001       2 accura… multiclass 0.631    10 0.0104 
+##  6    0.00000001       2 roc_auc hand_till  0.718    10 0.00915
+##  7    0.0000001        2 accura… multiclass 0.631    10 0.0104 
+##  8    0.0000001        2 roc_auc hand_till  0.718    10 0.00915
+##  9    0.000001         2 accura… multiclass 0.631    10 0.0104 
+## 10    0.000001         2 roc_auc hand_till  0.718    10 0.00915
+## # … with 90 more rows, and 1 more variable: .config &lt;chr&gt;</code></pre>
 <p>To get an idea of how things are performing, let’s look at our two hyperparameters with <code>roc_auc</code> as our metric. This is a metric we want to maximize, with a value of 1.0 indicating perfect predictions.</p>
 <div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="tuning-decision-trees.html#cb210-1"></a>dt_tune_metrics <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb210-2"><a href="tuning-decision-trees.html#cb210-2"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;roc_auc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -318,26 +328,28 @@ SSE + \alpha |T|
 <p>So generally it’s looking like lower values of of cost complexity are leading to better performing models, and the minimum sample size for a terminal node is looking best at 21 or 30. Let’s look at our best models in a more tabular form. This time we’ll use <code>show_best</code> to show our best hyperparameter combinations.</p>
 <div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="tuning-decision-trees.html#cb211-1"></a><span class="kw">show_best</span>(dt_tune_fit, <span class="dt">metric =</span> <span class="st">&quot;roc_auc&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 8
-##   cost_complexity min_n .metric .estimator  mean     n std_err .config
-##             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-## 1    0.001           21 roc_auc hand_till  0.831    10 0.00485 Model28
-## 2    0.001            2 roc_auc hand_till  0.830    10 0.00905 Model08
-## 3    0.001           11 roc_auc hand_till  0.829    10 0.00714 Model18
-## 4    0.0001          30 roc_auc hand_till  0.828    10 0.00361 Model37
-## 5    0.0000000001    30 roc_auc hand_till  0.827    10 0.00365 Model31</code></pre>
+##   cost_complexity min_n .metric .estimator  mean     n std_err
+##             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1    0.001           21 roc_auc hand_till  0.831    10 0.00485
+## 2    0.001            2 roc_auc hand_till  0.830    10 0.00905
+## 3    0.001           11 roc_auc hand_till  0.829    10 0.00714
+## 4    0.0001          30 roc_auc hand_till  0.828    10 0.00361
+## 5    0.0000000001    30 roc_auc hand_till  0.827    10 0.00365
+## # … with 1 more variable: .config &lt;chr&gt;</code></pre>
 <p>And we see a little bit different picture here. Our best model has a minimum <span class="math inline">\(n\)</span> of 11 with a relatively higher cost complexity. But the amount this model is “better” is trivial and could easily be due to sampling variability. All of the rest of the best models have the same minimum <span class="math inline">\(n\)</span>, with the cost complexity playing essentially no role. This may lead us to consider <em>not</em> pruning by the cost complexity parameter at all. Let’s use all the results again to look at the minimum <span class="math inline">\(n\)</span> a little closer. We’ll filter for a very low cost complexity.</p>
 <div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="tuning-decision-trees.html#cb213-1"></a>dt_tune_metrics <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb213-2"><a href="tuning-decision-trees.html#cb213-2"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;roc_auc&quot;</span> <span class="op">&amp;</span></span>
 <span id="cb213-3"><a href="tuning-decision-trees.html#cb213-3"></a><span class="st">           </span>cost_complexity <span class="op">==</span><span class="st"> </span><span class="fl">0.0000000001</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb213-4"><a href="tuning-decision-trees.html#cb213-4"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(mean))</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 8
-##   cost_complexity min_n .metric .estimator  mean     n std_err .config
-##             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-## 1    0.0000000001    30 roc_auc hand_till  0.827    10 0.00365 Model31
-## 2    0.0000000001    21 roc_auc hand_till  0.825    10 0.00459 Model21
-## 3    0.0000000001    40 roc_auc hand_till  0.822    10 0.00469 Model41
-## 4    0.0000000001    11 roc_auc hand_till  0.812    10 0.00682 Model11
-## 5    0.0000000001     2 roc_auc hand_till  0.718    10 0.00915 Model01</code></pre>
+##   cost_complexity min_n .metric .estimator  mean     n std_err
+##             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1    0.0000000001    30 roc_auc hand_till  0.827    10 0.00365
+## 2    0.0000000001    21 roc_auc hand_till  0.825    10 0.00459
+## 3    0.0000000001    40 roc_auc hand_till  0.822    10 0.00469
+## 4    0.0000000001    11 roc_auc hand_till  0.812    10 0.00682
+## 5    0.0000000001     2 roc_auc hand_till  0.718    10 0.00915
+## # … with 1 more variable: .config &lt;chr&gt;</code></pre>
 <p>Unsurprisingly, 30 is looking best for our minimum <span class="math inline">\(n\)</span>. To be sure we’ve got this right though, let’s set cost_complexity and tune <em>just</em> on the minimum <span class="math inline">\(n\)</span>. We know that values of 21 and 40 are both worst than 30, but let’s see if there’s any more room for optimization around there. This shouldn’t take quite as long as our previous grid search.</p>
 <div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="tuning-decision-trees.html#cb215-1"></a>grid_min_n &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">min_n =</span> <span class="dv">23</span><span class="op">:</span><span class="dv">37</span>)</span>
 <span id="cb215-2"><a href="tuning-decision-trees.html#cb215-2"></a></span>
@@ -352,7 +364,7 @@ SSE + \alpha |T|
 <span id="cb215-11"><a href="tuning-decision-trees.html#cb215-11"></a>  <span class="dt">grid =</span> grid_min_n</span>
 <span id="cb215-12"><a href="tuning-decision-trees.html#cb215-12"></a>)</span>
 <span id="cb215-13"><a href="tuning-decision-trees.html#cb215-13"></a><span class="kw">toc</span>()</span></code></pre></div>
-<pre><code>## 63.838 sec elapsed</code></pre>
+<pre><code>## 201.407 sec elapsed</code></pre>
 <p>Let’s look at our best metrics now and see if we’ve made any improvements.</p>
 <div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="tuning-decision-trees.html#cb217-1"></a><span class="kw">show_best</span>(dt_tune_fit2, <span class="dt">metric =</span> <span class="st">&quot;roc_auc&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 7
@@ -388,9 +400,9 @@ SSE + \alpha |T|
 <pre><code>## # Resampling results
 ## # Monte Carlo cross-validation (0.75/0.25) with 1 resamples  
 ## # A tibble: 1 x 6
-##   splits             id             .metrics        .notes         .predictions        .workflow
-##   &lt;list&gt;             &lt;chr&gt;          &lt;list&gt;          &lt;list&gt;         &lt;list&gt;              &lt;list&gt;   
-## 1 &lt;split [37.5K/12.… train/test sp… &lt;tibble [2 × 3… &lt;tibble [0 × … &lt;tibble [12,500 × … &lt;workflo…</code></pre>
+##   splits     id       .metrics   .notes   .predictions   .workflow
+##   &lt;list&gt;     &lt;chr&gt;    &lt;list&gt;     &lt;list&gt;   &lt;list&gt;         &lt;list&gt;   
+## 1 &lt;split [3… train/t… &lt;tibble [… &lt;tibble… &lt;tibble [12,5… &lt;workflo…</code></pre>
 <p>What we get output doesn’t look terrifically helpful, but it is. It’s basically everything we need. For example, let’s look at our metrics.</p>
 <div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="tuning-decision-trees.html#cb223-1"></a>dt_finalized<span class="op">$</span>.metrics[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 3
@@ -402,19 +414,20 @@ SSE + \alpha |T|
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="tuning-decision-trees.html#cb225-1"></a>predictions &lt;-<span class="st"> </span>dt_finalized<span class="op">$</span>.predictions[[<span class="dv">1</span>]]</span>
 <span id="cb225-2"><a href="tuning-decision-trees.html#cb225-2"></a>predictions</span></code></pre></div>
 <pre><code>## # A tibble: 12,500 x 7
-##    .pred_0 .pred_1 .pred_2 .pred_3  .row .pred_class accuracy_group
-##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;fct&gt;       &lt;fct&gt;         
-##  1  0.235        0  0.0294  0.735      1 3           &lt;NA&gt;          
-##  2  0.235        0  0.0294  0.735      4 3           &lt;NA&gt;          
-##  3  0.357        0  0.143   0.5        6 3           &lt;NA&gt;          
-##  4  0.357        0  0.143   0.5        9 3           &lt;NA&gt;          
-##  5  0.154        0  0.385   0.462     22 3           &lt;NA&gt;          
-##  6  0.542        0  0.375   0.0833    28 0           &lt;NA&gt;          
-##  7  0.542        0  0.375   0.0833    32 0           &lt;NA&gt;          
-##  8  0.0588       0  0.294   0.647     33 3           &lt;NA&gt;          
-##  9  0.111        0  0.222   0.667     36 3           &lt;NA&gt;          
-## 10  0.111        0  0.222   0.667     37 3           &lt;NA&gt;          
-## # … with 12,490 more rows</code></pre>
+##    .pred_0 .pred_1 .pred_2 .pred_3  .row .pred_class
+##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;fct&gt;      
+##  1  0.235        0  0.0294  0.735      1 3          
+##  2  0.235        0  0.0294  0.735      4 3          
+##  3  0.357        0  0.143   0.5        6 3          
+##  4  0.357        0  0.143   0.5        9 3          
+##  5  0.154        0  0.385   0.462     22 3          
+##  6  0.542        0  0.375   0.0833    28 0          
+##  7  0.542        0  0.375   0.0833    32 0          
+##  8  0.0588       0  0.294   0.647     33 3          
+##  9  0.111        0  0.222   0.667     36 3          
+## 10  0.111        0  0.222   0.667     37 3          
+## # … with 12,490 more rows, and 1 more variable:
+## #   accuracy_group &lt;fct&gt;</code></pre>
 <p>This shows us the predicted probability that each case would be in each class, along with a “hard” prediction into a class, and their observed class (<code>accuracy_group</code>). We can use this for further visualizations and to better understand how our model makes predictions and where it is wrong. For example, let’s look at a quick heat map of the predicted class versus the observed.</p>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="tuning-decision-trees.html#cb227-1"></a>counts &lt;-<span class="st"> </span>predictions <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb227-2"><a href="tuning-decision-trees.html#cb227-2"></a><span class="st">  </span><span class="kw">count</span>(.pred_class, accuracy_group) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -443,7 +456,7 @@ SSE + \alpha |T|
         </div>
       </div>
 <a href="fitting-a-decision-tree.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="introduction-to-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bagging-and-random-forests.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="assets/gitbook-2.6.7/js/app.min.js"></script>
