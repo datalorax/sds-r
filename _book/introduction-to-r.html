@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5 Introduction to R | Social Data Science with R</title>
+  <title>6 Introduction to R | Social Data Science with R</title>
   <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5 Introduction to R | Social Data Science with R" />
+  <meta property="og:title" content="6 Introduction to R | Social Data Science with R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5 Introduction to R | Social Data Science with R" />
+  <meta name="twitter:title" content="6 Introduction to R | Social Data Science with R" />
   
   <meta name="twitter:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   
@@ -26,14 +26,14 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-06" />
+<meta name="date" content="2020-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="tuning-decision-trees.html"/>
+<link rel="prev" href="feature-and-model-interpretation.html"/>
 
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -178,10 +178,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a></li>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
+<li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
+<li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.0.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5.1" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.1</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.1.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.1.2</b> Tuning with OOB samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.2</b> Random Forests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-forests.html"><a href="random-forests.html#fitting-random-forests"><i class="fa fa-check"></i><b>5.2.1</b> Fitting random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="feature-and-model-interpretation.html"><a href="feature-and-model-interpretation.html"><i class="fa fa-check"></i><b>5.3</b> Feature and model interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -200,7 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="introduction-to-r" class="section level1">
-<h1><span class="header-section-number">5</span> Introduction to R</h1>
+<h1><span class="header-section-number">6</span> Introduction to R</h1>
 <p>##Transitioning to R
 Moving to R from other statistical software generally requires a fundamental shift in the way we think about and interact with data. Aside from this shift in thinking, there is also a substantial amount of code to learn, which can be both frustrating and intimidating. The primary goal for this chapter is to make this shift less intimidating and the learning curve less steep.</p>
 <p>We will focus primarily on three components: data processing (munging/manipulating/wrangling), data visualization, and reproducible workflows. We will be oriented around the philosophy of tidy data and, as such, primarily rely on tools within the tidyverse for manipulating and visualizing data. The tidyverse is a suite of packages developed by RStudio, generally led by <a href="http://hadley.nz/">Hadley Wickham</a>, which are all optimized for tidy data. The focus of this course is on working with R, as opposed to the specifics of any given analysis. Statistical models will be used for illustrative examples throughout the chapter, but high-level statistical knowledge (e.g., multilevel modeling or structural equation modeling) is not a prerequisite.</p>
@@ -212,16 +229,16 @@ Once both installed, open RStudio, go to File &gt; New File &gt; R Markdown to c
 OK, let’s get started! First you need to <em>import</em> your data into R using the import function from the rio package, so make sure you install rio and call the library rio. Wait! What does all this mean? Great question. Before we get to how you import data, let’s clarify some key concepts in order to speak the same language.</p>
 <p><strong>Functions</strong> are a simple <code>If Then</code> code. When you set your alarm, you are basically using the function: <code>If DD/MM/YYYY HH:MM:SS = X Then Play Song Y</code>. <strong>Packages</strong> are primarily a collections of R functions. In addition to functions, packages can also contain data and some other details, all compiled in a well-defined format, created to add specific functionality. There are 10,000+ user contributed packages and growing. <strong>Library</strong> is the directory where the packages are installed. Does that mean installing R is nothing without its libraries and packages? Not really, there are a set of standard (or base) packages which are considered part of the R source code and automatically available as part of your R installation. Think of R as a scientific calculator, the base functions as the +, - operations, the base packages as the mean or standard deviation calculations, the additional packages as installed programs to conduct specific regressions like fixed effects or a Poisson model. One other important about libraries is the difference between installing and loading libraries. Think of a library as book. Installing it is like buying a book and putting it on your shelf. Each time you want to reach the book you still need to get the book off the shelf, that’s what calling a library is.</p>
 <p>Let’s install then call our first <code>library</code> rio. This is often the library used for data <em>import</em> and <em>export</em>.</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="introduction-to-r.html#cb189-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;rio&quot;</span>)  <span class="co">#Installing rio. You only need to do this step once</span></span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="introduction-to-r.html#cb314-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;rio&quot;</span>)  <span class="co">#Installing rio. You only need to do this step once</span></span></code></pre></div>
 <pre><code>## Installing rio [0.5.16] ...
 ##  OK [linked cache]</code></pre>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="introduction-to-r.html#cb191-1"></a><span class="kw">library</span>(rio) <span class="co">#Calling rio. You need to do this each time you create a new R Markdown file. </span></span></code></pre></div>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="introduction-to-r.html#cb316-1"></a><span class="kw">library</span>(rio) <span class="co">#Calling rio. You need to do this each time you create a new R Markdown file. </span></span></code></pre></div>
 <p>In writing code, you would probably have your first code chunk that calls all the libraries you will be using and install the ones that are not installed yet. I realize we did not talk about code chunks. It is basically the part of editor section that contains your code. All code chunks start and end with ``` – three backticks or graves. But you can also just insert it clicking on the Insert button you see in the middle of your editor.</p>
 <p>Finally, we will now import data. There are many ways you can this, but I personally prefer importing from the same folder what my R Markdown is saved. This helps me avoid any confusion with working directories. I usually never run into problems using this method. Basically, for every project create a folder, put all your data in that folder, and save your .rmd file in it (.rmd is the extension of an R Markdown file). If you this you should be able to see your datasets if you click on Files on the lower right section of the interface. Using this method, all you need to do when importing or reading your data files is to write the data name.</p>
 <p>Here, I am importing an spss dataset (.sav) called ‘sesame13’. I then store the data imported in an object called sesame13.</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="introduction-to-r.html#cb192-1"></a>sesame13 &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/sesame13.sav&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="introduction-to-r.html#cb317-1"></a>sesame13 &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="st">&#39;data/sesame13.sav&#39;</span>)</span></code></pre></div>
 <p>The next thing we want to do is take a look at the data but without loading all of it. We use the function <code>head</code> to look at the first 6 lines. You can also use <code>tail</code> to look at the bottom 6 lines.</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="introduction-to-r.html#cb193-1"></a><span class="kw">head</span>(sesame13)</span></code></pre></div>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="introduction-to-r.html#cb318-1"></a><span class="kw">head</span>(sesame13)</span></code></pre></div>
 <pre><code>##   id site sex age viewing setting treatmen prebody prelet preform
 ## 1  1    1   1  66       1       1        1      16     23      12
 ## 2  2    1   2  67       3       1        1      30     26       9
@@ -229,25 +246,25 @@ OK, let’s get started! First you need to <em>import</em> your data into R usin
 ## 4  4    1   1  49       1       1        0      23     11      10
 ## 5  5    1   1  69       4       1        0      32     47      15
 ## 6  6    1   2  54       3       1        0      29     26      10
-##   prenumb prerelat preclass postbody postlet postform postnumb postrel
-## 1      40       14       20       18      30       14       44      14
-## 2      39       16       22       30      37       17       39      14
-## 3       9        9        8       21      46       15       40       9
-## 4      14        9       13       21      14       13       19       8
-## 5      51       17       22       32      53       18       54      14
-## 6      33       14       14       27      36       14       39      16
-##   postclas ppvt
-## 1       23   62
-## 2       22   80
-## 3       19   32
-## 4       15   27
-## 5       21   71
-## 6       24   32</code></pre>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="introduction-to-r.html#cb195-1"></a><span class="co">#tail (sesame13)  #You can use the symbol # to comment your code to avoid executing it. You can also use it to add comments and notes for you and your collaborators. </span></span></code></pre></div>
+##   prenumb prerelat preclass postbody postlet postform postnumb
+## 1      40       14       20       18      30       14       44
+## 2      39       16       22       30      37       17       39
+## 3       9        9        8       21      46       15       40
+## 4      14        9       13       21      14       13       19
+## 5      51       17       22       32      53       18       54
+## 6      33       14       14       27      36       14       39
+##   postrel postclas ppvt
+## 1      14       23   62
+## 2      14       22   80
+## 3       9       19   32
+## 4       8       15   27
+## 5      14       21   71
+## 6      16       24   32</code></pre>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="introduction-to-r.html#cb320-1"></a><span class="co">#tail (sesame13)  #You can use the symbol # to comment your code to avoid executing it. You can also use it to add comments and notes for you and your collaborators. </span></span></code></pre></div>
 <p>##Data cleaning and processing
 We will now move to cleaning our data starting with variable names. Often variable names have capital letters or spaces which are not ideal for our limited cognitive ability so it is easier to make all variables lower capital and no spaces. That’s what <code>clean_names()</code> does. This function is part of the <code>janitor</code> library so we will need to call it.</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="introduction-to-r.html#cb196-1"></a><span class="kw">library</span>(janitor)</span>
-<span id="cb196-2"><a href="introduction-to-r.html#cb196-2"></a>sesame13 &lt;-<span class="st"> </span><span class="kw">clean_names</span>(sesame13)</span></code></pre></div>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="introduction-to-r.html#cb321-1"></a><span class="kw">library</span>(janitor)</span>
+<span id="cb321-2"><a href="introduction-to-r.html#cb321-2"></a>sesame13 &lt;-<span class="st"> </span><span class="kw">clean_names</span>(sesame13)</span></code></pre></div>
 
 </div>
             </section>
@@ -255,7 +272,7 @@ We will now move to cleaning our data starting with variable names. Often variab
           </div>
         </div>
       </div>
-<a href="tuning-decision-trees.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="feature-and-model-interpretation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

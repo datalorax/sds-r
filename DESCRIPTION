@@ -33,7 +33,11 @@ Imports:
     rpart.plot,
     parttree,
     tictoc,
-    baguette
+    baguette,
+    vip,
+    pdp,
+    maps,
+    mapproj
 Depends: 
     tidyverse,
     tidymodels

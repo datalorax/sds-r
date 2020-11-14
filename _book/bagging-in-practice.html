@@ -26,15 +26,15 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-09" />
+<meta name="date" content="2020-11-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="bagging-and-bagged-trees.html"/>
-<link rel="next" href="bagging-via-baguette.html"/>
+<link rel="prev" href="bagging-and-random-forests.html"/>
+<link rel="next" href="bagged-trees.html"/>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,6 +53,12 @@
 
 
 <script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="assets/core-js-2.5.3/shim.min.js"></script>
+<script src="assets/react-16.12.0/react.min.js"></script>
+<script src="assets/react-16.12.0/react-dom.min.js"></script>
+<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
+<script src="assets/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="assets/reactable-binding-0.2.0/reactable.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
 
 
@@ -181,14 +187,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bagging-and-bagged-trees.html"><a href="bagging-and-bagged-trees.html"><i class="fa fa-check"></i><b>5</b> Bagging and Bagged Trees</a><ul>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
 <li class="chapter" data-level="5.1" data-path="bagging-in-practice.html"><a href="bagging-in-practice.html"><i class="fa fa-check"></i><b>5.1</b> Bagging in practice</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="bagging-in-practice.html"><a href="bagging-in-practice.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.1.1</b> Bagging “by hand”</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="bagging-via-baguette.html"><a href="bagging-via-baguette.html"><i class="fa fa-check"></i><b>5.2</b> Bagging via {baguette}</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="bagging-via-baguette.html"><a href="bagging-via-baguette.html#bagged-trees"><i class="fa fa-check"></i><b>5.2.1</b> Bagged trees</a></li>
-<li class="chapter" data-level="5.2.2" data-path="bagging-via-baguette.html"><a href="bagging-via-baguette.html#general-bagging"><i class="fa fa-check"></i><b>5.2.2</b> General bagging</a></li>
+<li class="chapter" data-level="5.2" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.2</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.2.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.2.2</b> Tuning with OOB samples</a></li>
 </ul></li>
+<li class="chapter" data-level="5.3" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.3</b> Random Forests</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
@@ -221,9 +228,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="bagging-by-hand" class="section level3">
 <h3><span class="header-section-number">5.1.1</span> Bagging “by hand”</h3>
 <p>To understand bagging we first have to be clear about what bootstrap resampling implies. When we take bootstrap resamples from our dataset, we sample <span class="math inline">\(n\)</span> rows of our dataset <em>with replacement</em>, where <span class="math inline">\(n\)</span> represents the total number of rows in our data. For example, suppose we had a dataset that had the first five letters of the alphabet, each with an associated score.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="bagging-in-practice.html#cb1-1"></a>lets &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">letters =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>),</span>
-<span id="cb1-2"><a href="bagging-in-practice.html#cb1-2"></a>                   <span class="dt">score =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">9</span>))</span>
-<span id="cb1-3"><a href="bagging-in-practice.html#cb1-3"></a>lets</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="bagging-in-practice.html#cb228-1"></a>lets &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">letters =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>),</span>
+<span id="cb228-2"><a href="bagging-in-practice.html#cb228-2"></a>                   <span class="dt">score =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">9</span>))</span>
+<span id="cb228-3"><a href="bagging-in-practice.html#cb228-3"></a>lets</span></code></pre></div>
 <pre><code>##   letters score
 ## 1       a     5
 ## 2       b     7
@@ -231,15 +238,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4       d     4
 ## 5       e     9</code></pre>
 <p>Bootstrap resampling would imply sampling five rows from the above dataset with replacement. This means some rows may be represented multiple times, and others not at all. Let’s do this and see what the first three datasets look like.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="bagging-in-practice.html#cb3-1"></a><span class="co"># set seed for reproducibility</span></span>
-<span id="cb3-2"><a href="bagging-in-practice.html#cb3-2"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb3-3"><a href="bagging-in-practice.html#cb3-3"></a></span>
-<span id="cb3-4"><a href="bagging-in-practice.html#cb3-4"></a><span class="co"># specify the number of bootstrap resamples</span></span>
-<span id="cb3-5"><a href="bagging-in-practice.html#cb3-5"></a>b &lt;-<span class="st"> </span><span class="dv">3</span></span>
-<span id="cb3-6"><a href="bagging-in-practice.html#cb3-6"></a>resamples &lt;-<span class="st"> </span><span class="kw">replicate</span>(b, </span>
-<span id="cb3-7"><a href="bagging-in-practice.html#cb3-7"></a>                       lets[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), ],</span>
-<span id="cb3-8"><a href="bagging-in-practice.html#cb3-8"></a>                       <span class="dt">simplify =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb3-9"><a href="bagging-in-practice.html#cb3-9"></a>resamples</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="bagging-in-practice.html#cb230-1"></a><span class="co"># set seed for reproducibility</span></span>
+<span id="cb230-2"><a href="bagging-in-practice.html#cb230-2"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb230-3"><a href="bagging-in-practice.html#cb230-3"></a></span>
+<span id="cb230-4"><a href="bagging-in-practice.html#cb230-4"></a><span class="co"># specify the number of bootstrap resamples</span></span>
+<span id="cb230-5"><a href="bagging-in-practice.html#cb230-5"></a>b &lt;-<span class="st"> </span><span class="dv">3</span></span>
+<span id="cb230-6"><a href="bagging-in-practice.html#cb230-6"></a>resamples &lt;-<span class="st"> </span><span class="kw">replicate</span>(b, </span>
+<span id="cb230-7"><a href="bagging-in-practice.html#cb230-7"></a>                       lets[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), ],</span>
+<span id="cb230-8"><a href="bagging-in-practice.html#cb230-8"></a>                       <span class="dt">simplify =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb230-9"><a href="bagging-in-practice.html#cb230-9"></a>resamples</span></code></pre></div>
 <pre><code>## [[1]]
 ##     letters score
 ## 1         a     5
@@ -265,15 +272,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2.1       b     7</code></pre>
 <p>Notice that in the first bootstrap resample, <code>a</code> is represented three times, <code>b</code> once, <code>c</code> and <code>d</code> not at all, and <code>e</code> once. Similar patterns, with different distributional frequencies, are represented in the second and third datasets.</p>
 <p>Why is this useful? It turns out that if we do this enough times, we develop a <a href="https://en.wikipedia.org/wiki/Sampling_distribution">sampling distribution</a>. Fitting the model to all of these different samples then gives us an idea of the variability of the model, which we can reduce by averaging across all samples. Bootstrap resampling is useful in all sorts of different ways in statistics. In the above, our observed mean across the letters is 5.4. We can compute the standard error of this mean analytically by <span class="math inline">\(\sigma/\sqrt{n}\)</span>, or <code>sd(lets$score)/sqrt(5)</code>, which is equal to 1.2083046. We can also approximate this same standard error by computing the mean of many bootstrap resamples, and estimating the standard deviation among these means. For example</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="bagging-in-practice.html#cb5-1"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb5-2"><a href="bagging-in-practice.html#cb5-2"></a></span>
-<span id="cb5-3"><a href="bagging-in-practice.html#cb5-3"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb5-4"><a href="bagging-in-practice.html#cb5-4"></a>b &lt;-<span class="st"> </span><span class="dv">5000</span></span>
-<span id="cb5-5"><a href="bagging-in-practice.html#cb5-5"></a>resamples &lt;-<span class="st"> </span><span class="kw">replicate</span>(b, </span>
-<span id="cb5-6"><a href="bagging-in-practice.html#cb5-6"></a>                       lets[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), ],</span>
-<span id="cb5-7"><a href="bagging-in-practice.html#cb5-7"></a>                       <span class="dt">simplify =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb5-8"><a href="bagging-in-practice.html#cb5-8"></a>means &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(resamples, <span class="op">~</span><span class="kw">mean</span>(.x<span class="op">$</span>score))</span>
-<span id="cb5-9"><a href="bagging-in-practice.html#cb5-9"></a><span class="kw">sd</span>(means)</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="bagging-in-practice.html#cb232-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb232-2"><a href="bagging-in-practice.html#cb232-2"></a></span>
+<span id="cb232-3"><a href="bagging-in-practice.html#cb232-3"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb232-4"><a href="bagging-in-practice.html#cb232-4"></a>b &lt;-<span class="st"> </span><span class="dv">5000</span></span>
+<span id="cb232-5"><a href="bagging-in-practice.html#cb232-5"></a>resamples &lt;-<span class="st"> </span><span class="kw">replicate</span>(b, </span>
+<span id="cb232-6"><a href="bagging-in-practice.html#cb232-6"></a>                       lets[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), ],</span>
+<span id="cb232-7"><a href="bagging-in-practice.html#cb232-7"></a>                       <span class="dt">simplify =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb232-8"><a href="bagging-in-practice.html#cb232-8"></a>means &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(resamples, <span class="op">~</span><span class="kw">mean</span>(.x<span class="op">$</span>score))</span>
+<span id="cb232-9"><a href="bagging-in-practice.html#cb232-9"></a><span class="kw">sd</span>(means)</span></code></pre></div>
 <pre><code>## [1] 1.10894</code></pre>
 <p>In this case, the difference between the analytic standard error and the bootstrap estimate is greater than typical because the sample size is so small.</p>
 <p>The process of bagging is essentially equivalent to the above, except instead of computing the mean with each bootstrap resample, we fit a full model. We then compute the predictions from all of these models and either average the resulting predictions, or take the mode of the classifications.</p>
@@ -284,8 +291,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="bagging-and-bagged-trees.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="bagging-via-baguette.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bagging-and-random-forests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bagged-trees.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="assets/gitbook-2.6.7/js/app.min.js"></script>

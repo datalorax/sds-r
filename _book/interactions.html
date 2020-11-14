@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-06" />
+<meta name="date" content="2020-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -178,10 +178,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.0.1" data-path="decision-trees.html"><a href="decision-trees.html#a-simple-decision-tree"><i class="fa fa-check"></i><b>4.0.1</b> A simple decision tree</a></li>
 <li class="chapter" data-level="4.1" data-path="determining-optimal-splits.html"><a href="determining-optimal-splits.html"><i class="fa fa-check"></i><b>4.1</b> Determining optimal splits</a></li>
 <li class="chapter" data-level="4.2" data-path="visualizing-decision-trees.html"><a href="visualizing-decision-trees.html"><i class="fa fa-check"></i><b>4.2</b> Visualizing decision trees</a></li>
-<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a></li>
-<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a></li>
+<li class="chapter" data-level="4.3" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html"><i class="fa fa-check"></i><b>4.3</b> Fitting a decision tree</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="fitting-a-decision-tree.html"><a href="fitting-a-decision-tree.html#load-the-data"><i class="fa fa-check"></i><b>4.3.1</b> Load the data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
+<li class="chapter" data-level="4.4" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html"><i class="fa fa-check"></i><b>4.4</b> Tuning decision trees</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#decision-tree-hyperparamters"><i class="fa fa-check"></i><b>4.4.1</b> Decision tree hyperparamters</a></li>
+<li class="chapter" data-level="4.4.2" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#conducting-the-grid-search"><i class="fa fa-check"></i><b>4.4.2</b> Conducting the grid search</a></li>
+<li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.0.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5.1" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.1</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.1.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.1.2</b> Tuning with OOB samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.2</b> Random Forests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-forests.html"><a href="random-forests.html#fitting-random-forests"><i class="fa fa-check"></i><b>5.2.1</b> Fitting random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="feature-and-model-interpretation.html"><a href="feature-and-model-interpretation.html"><i class="fa fa-check"></i><b>5.3</b> Feature and model interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -202,27 +219,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="interactions" class="section level2">
 <h2><span class="header-section-number">3.8</span> Interactions</h2>
 <p>An interaction occurs when the slope, or relation, between one variable and the outcome <em>depends upon</em> a second variable. This is also often referred to as <em>moderation</em> or a <em>moderating variable</em>. For example, consider data that look like this</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="interactions.html#cb132-1"></a>benchmarks &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;benchmarks.csv&quot;</span>))</span>
-<span id="cb132-2"><a href="interactions.html#cb132-2"></a></span>
-<span id="cb132-3"><a href="interactions.html#cb132-3"></a><span class="kw">ggplot</span>(benchmarks, <span class="kw">aes</span>(rdg_fall, rdg_spr)) <span class="op">+</span></span>
-<span id="cb132-4"><a href="interactions.html#cb132-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="op">+</span></span>
-<span id="cb132-5"><a href="interactions.html#cb132-5"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(<span class="dt">color =</span> ell),</span>
-<span id="cb132-6"><a href="interactions.html#cb132-6"></a>              <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="interactions.html#cb139-1"></a>benchmarks &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;benchmarks.csv&quot;</span>))</span>
+<span id="cb139-2"><a href="interactions.html#cb139-2"></a></span>
+<span id="cb139-3"><a href="interactions.html#cb139-3"></a><span class="kw">ggplot</span>(benchmarks, <span class="kw">aes</span>(rdg_fall, rdg_spr)) <span class="op">+</span></span>
+<span id="cb139-4"><a href="interactions.html#cb139-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="op">+</span></span>
+<span id="cb139-5"><a href="interactions.html#cb139-5"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(<span class="dt">color =</span> ell),</span>
+<span id="cb139-6"><a href="interactions.html#cb139-6"></a>              <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
 <p>where <em>ell</em> stands for <em>English language learner</em>. The plot above shows the relation between students scores on a reading assessment administered in the fall and the spring by ELL status. Notice that the slope for <em>Non-ELL</em> is markedly steeper than the other two groups. ELL status thus moderates the relation between the fall and spring assessment scores. If we’re fitting a model within a linear regression framework, we’ll want to make sure that we model the slopes separately for each of these groups (otherwise we would be leaving out important structure in the data, and our model performance would suffer). Interactions are powerful and important to consider, particularly if there is strong theory (or empirical evidence) suggesting that an interaction exists. However, they are not needed in many frameworks and can be derived from the data directly (e.g., tree-based methods, where the degree of possible interaction is determined by the depth of the tree). In this section, we therefore focus on interactions within a linear regression framework.</p>
 <div id="creating-interactions-by-hand" class="section level3">
 <h3><span class="header-section-number">3.8.1</span> Creating interactions “by hand”</h3>
 <p>Even with base R, modeling interactions is pretty straightforward. In the above, we would just specify something like</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="interactions.html#cb133-1"></a><span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall<span class="op">*</span>ell, <span class="dt">data =</span> benchmarks)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="interactions.html#cb140-1"></a><span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall<span class="op">*</span>ell, <span class="dt">data =</span> benchmarks)</span></code></pre></div>
 <p>or equivalently</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="interactions.html#cb134-1"></a><span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell <span class="op">+</span><span class="st"> </span>rdg_fall<span class="op">:</span>ell, <span class="dt">data =</span> benchmarks)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="interactions.html#cb141-1"></a><span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell <span class="op">+</span><span class="st"> </span>rdg_fall<span class="op">:</span>ell, <span class="dt">data =</span> benchmarks)</span></code></pre></div>
 <p>However, this is doing some work under the hood for you which might go unnoticed. First, it’s dummy-coding <code>ell</code>, then it’s creating, in this case, two new variables that are equal to <span class="math inline">\(ELL_{Monitor} \times Rdg_{fall}\)</span> and <span class="math inline">\(ELL_{Non-ELL} \times Rdg_{fall}\)</span> (with <span class="math inline">\(ELL_{Active}\)</span> set as the reference group by default).</p>
 <p>Let’s try doing this manually. First we need to dummy code <code>ell</code>. To make things a bit more clear, I’ll only select the variables here that we’re using in our modeling.</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="interactions.html#cb135-1"></a>dummies &lt;-<span class="st"> </span>benchmarks <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb135-2"><a href="interactions.html#cb135-2"></a><span class="st">  </span><span class="kw">select</span>(rdg_fall, ell, rdg_spr) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb135-3"><a href="interactions.html#cb135-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ell_monitor =</span> <span class="kw">ifelse</span>(ell <span class="op">==</span><span class="st"> &quot;Monitor&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb135-4"><a href="interactions.html#cb135-4"></a>         <span class="dt">ell_non =</span> <span class="kw">ifelse</span>(ell <span class="op">==</span><span class="st"> &quot;Non-ELL&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),)</span>
-<span id="cb135-5"><a href="interactions.html#cb135-5"></a>dummies</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="interactions.html#cb142-1"></a>dummies &lt;-<span class="st"> </span>benchmarks <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb142-2"><a href="interactions.html#cb142-2"></a><span class="st">  </span><span class="kw">select</span>(rdg_fall, ell, rdg_spr) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb142-3"><a href="interactions.html#cb142-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ell_monitor =</span> <span class="kw">ifelse</span>(ell <span class="op">==</span><span class="st"> &quot;Monitor&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb142-4"><a href="interactions.html#cb142-4"></a>         <span class="dt">ell_non =</span> <span class="kw">ifelse</span>(ell <span class="op">==</span><span class="st"> &quot;Non-ELL&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),)</span>
+<span id="cb142-5"><a href="interactions.html#cb142-5"></a>dummies</span></code></pre></div>
 <pre><code>## # A tibble: 174 x 5
 ##    rdg_fall ell     rdg_spr ell_monitor ell_non
 ##       &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;
@@ -238,29 +255,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 10      170 Active      185           0       0
 ## # … with 164 more rows</code></pre>
 <p>Next, we’ll multiply each of these dummy variables by <code>rdg_fall</code>.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="interactions.html#cb137-1"></a>interactions &lt;-<span class="st"> </span>dummies <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb137-2"><a href="interactions.html#cb137-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">fall_monitor =</span> rdg_fall <span class="op">*</span><span class="st"> </span>ell_monitor,</span>
-<span id="cb137-3"><a href="interactions.html#cb137-3"></a>         <span class="dt">fall_non =</span> rdg_fall <span class="op">*</span><span class="st"> </span>ell_non)</span>
-<span id="cb137-4"><a href="interactions.html#cb137-4"></a>interactions</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="interactions.html#cb144-1"></a>interactions &lt;-<span class="st"> </span>dummies <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb144-2"><a href="interactions.html#cb144-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">fall_monitor =</span> rdg_fall <span class="op">*</span><span class="st"> </span>ell_monitor,</span>
+<span id="cb144-3"><a href="interactions.html#cb144-3"></a>         <span class="dt">fall_non =</span> rdg_fall <span class="op">*</span><span class="st"> </span>ell_non)</span>
+<span id="cb144-4"><a href="interactions.html#cb144-4"></a>interactions</span></code></pre></div>
 <pre><code>## # A tibble: 174 x 7
-##    rdg_fall ell     rdg_spr ell_monitor ell_non fall_monitor fall_non
-##       &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;
-##  1      181 Active      194           0       0            0        0
-##  2      166 Non-ELL     159           0       1            0      166
-##  3      216 Non-ELL     198           0       1            0      216
-##  4      203 Non-ELL     204           0       1            0      203
-##  5      198 Active      173           0       0            0        0
-##  6      188 Active      173           0       0            0        0
-##  7      202 Monitor     200           1       0          202        0
-##  8      182 Active      206           0       0            0        0
-##  9      194 Non-ELL     191           0       1            0      194
-## 10      170 Active      185           0       0            0        0
-## # … with 164 more rows</code></pre>
+##    rdg_fall ell   rdg_spr ell_monitor ell_non fall_monitor
+##       &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;
+##  1      181 Acti…     194           0       0            0
+##  2      166 Non-…     159           0       1            0
+##  3      216 Non-…     198           0       1            0
+##  4      203 Non-…     204           0       1            0
+##  5      198 Acti…     173           0       0            0
+##  6      188 Acti…     173           0       0            0
+##  7      202 Moni…     200           1       0          202
+##  8      182 Acti…     206           0       0            0
+##  9      194 Non-…     191           0       1            0
+## 10      170 Acti…     185           0       0            0
+## # … with 164 more rows, and 1 more variable: fall_non &lt;dbl&gt;</code></pre>
 <p>As would be expected, these values are zero if they are not for the corresponding group, and are otherwise equal to <code>rdg_fall</code>. If we enter all these variables in our model, then our model intercept will represent the intercept for the active group, with the corresponding slope estimated by <code>rdg_fall</code>. The <code>ell_monitor</code> and <code>ell_non</code> terms represent the intercepts for the monitor and non-ELL groups, respectively, and each of these slopes are estimated by the corresponding interaction. Let’s try.</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="interactions.html#cb139-1"></a>m_byhand &lt;-<span class="st"> </span><span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell_monitor <span class="op">+</span><span class="st"> </span>ell_non <span class="op">+</span><span class="st"> </span></span>
-<span id="cb139-2"><a href="interactions.html#cb139-2"></a><span class="st">                         </span>fall_monitor <span class="op">+</span><span class="st"> </span>fall_non,</span>
-<span id="cb139-3"><a href="interactions.html#cb139-3"></a>               <span class="dt">data =</span> interactions)</span>
-<span id="cb139-4"><a href="interactions.html#cb139-4"></a><span class="kw">summary</span>(m_byhand)</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="interactions.html#cb146-1"></a>m_byhand &lt;-<span class="st"> </span><span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell_monitor <span class="op">+</span><span class="st"> </span>ell_non <span class="op">+</span><span class="st"> </span></span>
+<span id="cb146-2"><a href="interactions.html#cb146-2"></a><span class="st">                         </span>fall_monitor <span class="op">+</span><span class="st"> </span>fall_non,</span>
+<span id="cb146-3"><a href="interactions.html#cb146-3"></a>               <span class="dt">data =</span> interactions)</span>
+<span id="cb146-4"><a href="interactions.html#cb146-4"></a><span class="kw">summary</span>(m_byhand)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = rdg_spr ~ rdg_fall + ell_monitor + ell_non + fall_monitor + 
@@ -285,9 +302,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.2652, Adjusted R-squared:  0.2433 
 ## F-statistic: 12.13 on 5 and 168 DF,  p-value: 4.874e-10</code></pre>
 <p>And we can verify that this does, indeed, get us the same results that we would have obtained with the shortcut syntax with base R.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="interactions.html#cb141-1"></a><span class="kw">summary</span>(</span>
-<span id="cb141-2"><a href="interactions.html#cb141-2"></a>  <span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall<span class="op">*</span>ell, <span class="dt">data =</span> benchmarks)</span>
-<span id="cb141-3"><a href="interactions.html#cb141-3"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="interactions.html#cb148-1"></a><span class="kw">summary</span>(</span>
+<span id="cb148-2"><a href="interactions.html#cb148-2"></a>  <span class="kw">lm</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall<span class="op">*</span>ell, <span class="dt">data =</span> benchmarks)</span>
+<span id="cb148-3"><a href="interactions.html#cb148-3"></a>)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = rdg_spr ~ rdg_fall * ell, data = benchmarks)
@@ -314,31 +331,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="creating-interactions-with-recipes" class="section level3">
 <h3><span class="header-section-number">3.8.2</span> Creating interactions with {recipes}</h3>
 <p>Specifying interactions in a recipe is similar to other steps, with one small exception, which is that the use of the tilde, <code>~</code>, is required. Note that, once again, order does matter, and you should always do your dummy coding <em>before</em> specifying interactions with categorical variables. In the example before, this would correspond to</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="interactions.html#cb143-1"></a><span class="kw">recipe</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell, benchmarks) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb143-2"><a href="interactions.html#cb143-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb143-3"><a href="interactions.html#cb143-3"></a><span class="st">  </span><span class="kw">step_interact</span>(<span class="op">~</span>rdg_fall<span class="op">:</span><span class="kw">starts_with</span>(<span class="st">&quot;ell&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb143-4"><a href="interactions.html#cb143-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb143-5"><a href="interactions.html#cb143-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="interactions.html#cb150-1"></a><span class="kw">recipe</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell, benchmarks) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb150-2"><a href="interactions.html#cb150-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb150-3"><a href="interactions.html#cb150-3"></a><span class="st">  </span><span class="kw">step_interact</span>(<span class="op">~</span>rdg_fall<span class="op">:</span><span class="kw">starts_with</span>(<span class="st">&quot;ell&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb150-4"><a href="interactions.html#cb150-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb150-5"><a href="interactions.html#cb150-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 174 x 6
-##    rdg_fall rdg_spr ell_Monitor ell_Non.ELL rdg_fall_x_ell_Mo… rdg_fall_x_ell_N…
-##       &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;
-##  1      181     194           0           0                  0                 0
-##  2      166     159           0           1                  0               166
-##  3      216     198           0           1                  0               216
-##  4      203     204           0           1                  0               203
-##  5      198     173           0           0                  0                 0
-##  6      188     173           0           0                  0                 0
-##  7      202     200           1           0                202                 0
-##  8      182     206           0           0                  0                 0
-##  9      194     191           0           1                  0               194
-## 10      170     185           0           0                  0                 0
-## # … with 164 more rows</code></pre>
+##    rdg_fall rdg_spr ell_Monitor ell_Non.ELL rdg_fall_x_ell_…
+##       &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;
+##  1      181     194           0           0                0
+##  2      166     159           0           1                0
+##  3      216     198           0           1                0
+##  4      203     204           0           1                0
+##  5      198     173           0           0                0
+##  6      188     173           0           0                0
+##  7      202     200           1           0              202
+##  8      182     206           0           0                0
+##  9      194     191           0           1                0
+## 10      170     185           0           0                0
+## # … with 164 more rows, and 1 more variable:
+## #   rdg_fall_x_ell_Non.ELL &lt;dbl&gt;</code></pre>
 <p>There are a few things to mention here. First, the data do look identical (minus the column names) to what we created by hand, so that’s good news. However, we also used <code>starts_with</code> here, rather than just specifying something like <code>step_interact(~rdg_fall:ell)</code>. This is because after dummy coding, the column names change (as you can see in the above). By specifying <code>starts_with</code>, we are ensuring that we get all the interactions we need. If we forget this step, we end up with the wrong output, along with a warning.</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="interactions.html#cb145-1"></a><span class="kw">recipe</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell, benchmarks) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb145-2"><a href="interactions.html#cb145-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb145-3"><a href="interactions.html#cb145-3"></a><span class="st">  </span><span class="kw">step_interact</span>(<span class="op">~</span>rdg_fall<span class="op">:</span>ell) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb145-4"><a href="interactions.html#cb145-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb145-5"><a href="interactions.html#cb145-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="interactions.html#cb152-1"></a><span class="kw">recipe</span>(rdg_spr <span class="op">~</span><span class="st"> </span>rdg_fall <span class="op">+</span><span class="st"> </span>ell, benchmarks) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-2"><a href="interactions.html#cb152-2"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-3"><a href="interactions.html#cb152-3"></a><span class="st">  </span><span class="kw">step_interact</span>(<span class="op">~</span>rdg_fall<span class="op">:</span>ell) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-4"><a href="interactions.html#cb152-4"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb152-5"><a href="interactions.html#cb152-5"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 174 x 4
 ##    rdg_fall rdg_spr ell_Monitor ell_Non.ELL
 ##       &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;

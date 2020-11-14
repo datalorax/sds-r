@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5 Bagged Trees | Social Data Science with R</title>
+  <title>5.1 Bagged trees | Social Data Science with R</title>
   <meta name="description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5 Bagged Trees | Social Data Science with R" />
+  <meta property="og:title" content="5.1 Bagged trees | Social Data Science with R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5 Bagged Trees | Social Data Science with R" />
+  <meta name="twitter:title" content="5.1 Bagged trees | Social Data Science with R" />
   
   <meta name="twitter:description" content="This is basically course notes corresponding to a series of courses in educational data science, which are generally applicable to a wide range of social data science problems, taught through R." />
   
@@ -26,15 +26,15 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-09" />
+<meta name="date" content="2020-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="tuning-decision-trees.html"/>
-<link rel="next" href="bagging-in-practice.html"/>
+<link rel="prev" href="bagging-and-random-forests.html"/>
+<link rel="next" href="random-forests.html"/>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,6 +53,12 @@
 
 
 <script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="assets/core-js-2.5.3/shim.min.js"></script>
+<script src="assets/react-16.12.0/react.min.js"></script>
+<script src="assets/react-16.12.0/react-dom.min.js"></script>
+<script src="assets/reactwidget-1.0.0/react-tools.js"></script>
+<script src="assets/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="assets/reactable-binding-0.2.0/reactable.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
 
 
@@ -181,11 +187,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5</b> Bagged Trees</a><ul>
-<li class="chapter" data-level="5.1" data-path="bagging-in-practice.html"><a href="bagging-in-practice.html"><i class="fa fa-check"></i><b>5.1</b> Bagging in practice</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="bagging-in-practice.html"><a href="bagging-in-practice.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.1.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.0.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5.1" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.1</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.1.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.1.2</b> Tuning with OOB samples</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="bagging-via-baguette.html"><a href="bagging-via-baguette.html"><i class="fa fa-check"></i><b>5.2</b> Bagging via {baguette}</a></li>
+<li class="chapter" data-level="5.2" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.2</b> Random Forests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-forests.html"><a href="random-forests.html#fitting-random-forests"><i class="fa fa-check"></i><b>5.2.1</b> Fitting random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="feature-and-model-interpretation.html"><a href="feature-and-model-interpretation.html"><i class="fa fa-check"></i><b>5.3</b> Feature and model interpretation</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
@@ -205,21 +216,286 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="bagged-trees" class="section level1">
-<h1><span class="header-section-number">5</span> Bagged Trees</h1>
-<p>In the last chapter, we talked about how decision trees are highly flexible, but are often not the most performant model on their own because they can easily overfit, leading to poor generalizability to new/unseen data. One way to avoid this problem is to build an <em>ensemble</em> of trees from random bootstrap samples of the data, and aggregate the predictions across the entire ensemble. This is a general approach known as <strong>bagging</strong>, or <strong>b</strong>ootstrap <strong>agg</strong>regation, which can be applied to any modeling framework, but generally will only provide large gains in improvement if, like decision trees, the model has high variability.</p>
-<div class="dictionary">
-<p><strong>Bagging</strong>: A general process to improve the performance of highly variable models, regularly applied to decision trees.</p>
-<ol style="list-style-type: decimal">
-<li>Create <span class="math inline">\(b\)</span> bootstrap resamples of the original data</li>
-<li>Fit the model (<strong>base learner</strong>) to each <span class="math inline">\(b\)</span> resample</li>
-<li>Aggregate predictions across all models</li>
-</ol>
-<ul>
-<li>For regression problems, the final prediction is the average of all model predictions</li>
-<li>For classification problems, either (a) average model classification probabilities or (b) take the mode of model classifications.</li>
-</ul>
-<p><strong>Benefits:</strong> Leads to more stable model predictions (reduces model variability)</p>
+<div id="bagged-trees" class="section level2">
+<h2><span class="header-section-number">5.1</span> Bagged trees</h2>
+<p>The <a href="https://baguette.tidymodels.org/index.html"><strong>{baguette}</strong></a> package, part of the <a href="https://www.tidymodels.org"><strong>{tidymodels}</strong></a> metapackage, provides an interface for bagging in R. It is <em>not</em> part of the <a href="https://www.tidymodels.org/packages/">core</a> set of packages, implying it is <em>installed</em> with <strong>{tidymodels}</strong> but <em>not loaded</em>. You must load <strong>{baguette}</strong> outside of your call to <strong>{tidymodels}</strong> (i.e., similar to the <a href="https://lubridate.tidyverse.org"><strong>{lubridate}</strong></a> package in the <a href="https://www.tidyverse.org"><strong>{tidyverse}</strong></a>).</p>
+<p>Recall our best model when <a href="fitting-a-decision-tree.html#fitting-a-decision-tree">fitting a decision tree</a> in the previous chapter had an average AUC across folds of <span class="math inline">\(0.825\)</span>. This included a very low cost complexity parameter of <span class="math inline">\(0.0000000001\)</span> and a minimum <span class="math inline">\(n\)</span> for our terminal nodes of 35. Can we improve performance from this model when using bagging? Let’s try!</p>
+<p>First, we need to load the data, create a split training/test set, pull the training data, and create a <span class="math inline">\(k\)</span>-fold cross-validation dataset. Some of the models we’ll be working with cannot handle missingness on the outcome, so we’ll remove these rows upon reading the data into R.</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="bagged-trees.html#cb234-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb234-2"><a href="bagged-trees.html#cb234-2"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb234-3"><a href="bagged-trees.html#cb234-3"></a></span>
+<span id="cb234-4"><a href="bagged-trees.html#cb234-4"></a>k_train &lt;-<span class="st"> </span><span class="kw">read_csv</span>(</span>
+<span id="cb234-5"><a href="bagged-trees.html#cb234-5"></a>  here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;ds-bowl-2019.csv&quot;</span>),</span>
+<span id="cb234-6"><a href="bagged-trees.html#cb234-6"></a>  <span class="dt">col_types =</span> <span class="kw">cols</span>(<span class="dt">.default =</span> <span class="kw">col_guess</span>(),</span>
+<span id="cb234-7"><a href="bagged-trees.html#cb234-7"></a>                   <span class="dt">accuracy_group =</span> readr<span class="op">::</span><span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="kw">as.character</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">3</span>),</span>
+<span id="cb234-8"><a href="bagged-trees.html#cb234-8"></a>                                                      <span class="dt">ordered =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb234-9"><a href="bagged-trees.html#cb234-9"></a>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb234-10"><a href="bagged-trees.html#cb234-10"></a><span class="st">  </span><span class="kw">drop_na</span>(accuracy_group)</span>
+<span id="cb234-11"><a href="bagged-trees.html#cb234-11"></a></span>
+<span id="cb234-12"><a href="bagged-trees.html#cb234-12"></a>splt &lt;-<span class="st"> </span><span class="kw">initial_split</span>(k_train)</span>
+<span id="cb234-13"><a href="bagged-trees.html#cb234-13"></a>train &lt;-<span class="st"> </span><span class="kw">training</span>(splt)</span>
+<span id="cb234-14"><a href="bagged-trees.html#cb234-14"></a>cv &lt;-<span class="st"> </span><span class="kw">vfold_cv</span>(train)</span></code></pre></div>
+<p>Next, we’ll specify a basic recipe that just specifies the model formula.</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="bagged-trees.html#cb235-1"></a>rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(accuracy_group <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train) </span></code></pre></div>
+<p>And now we’re ready to specify our model. This is <em>pretty much</em> the same as before, except now we are going to load the <strong>{baguette}</strong> package in addition to <strong>{tidymodels}</strong> and use <code>bag_tree()</code> instead of <code>decision_tree()</code>. Additionally, we’ll specify a <code>times</code> argument when we set the engine. Let’s start by fitting a model to 50 bootstrap resamples and aggregating the results across all 50 trees. The rest is the same as before.</p>
+<p>Let’s start by by building a very deep tree, with no pruning and a minimum sample size for the terminal nodes of 2. We’ll also use parallel processing here via the <a href="https://github.com/HenrikBengtsson/future"><strong>{future}</strong></a> package to help the model run faster. The code below also includes timings via teh <a href="https://cran.r-project.org/package=tictoc"><strong>{tictoc}</strong></a> package.</p>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="bagged-trees.html#cb236-1"></a><span class="kw">library</span>(baguette)</span>
+<span id="cb236-2"><a href="bagged-trees.html#cb236-2"></a><span class="kw">library</span>(tictoc)</span>
+<span id="cb236-3"><a href="bagged-trees.html#cb236-3"></a></span>
+<span id="cb236-4"><a href="bagged-trees.html#cb236-4"></a><span class="co"># set model</span></span>
+<span id="cb236-5"><a href="bagged-trees.html#cb236-5"></a>bt_mod &lt;-<span class="st"> </span><span class="kw">bag_tree</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb236-6"><a href="bagged-trees.html#cb236-6"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;rpart&quot;</span>, <span class="dt">times =</span> <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb236-7"><a href="bagged-trees.html#cb236-7"></a><span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb236-8"><a href="bagged-trees.html#cb236-8"></a><span class="st">  </span><span class="kw">set_args</span>(<span class="dt">cost_complexity =</span> <span class="dv">0</span>,</span>
+<span id="cb236-9"><a href="bagged-trees.html#cb236-9"></a>           <span class="dt">min_n =</span> <span class="dv">2</span>)</span>
+<span id="cb236-10"><a href="bagged-trees.html#cb236-10"></a></span>
+<span id="cb236-11"><a href="bagged-trees.html#cb236-11"></a></span>
+<span id="cb236-12"><a href="bagged-trees.html#cb236-12"></a><span class="co"># fit to $k$ folds</span></span>
+<span id="cb236-13"><a href="bagged-trees.html#cb236-13"></a><span class="kw">tic</span>()</span>
+<span id="cb236-14"><a href="bagged-trees.html#cb236-14"></a>bt_fit1 &lt;-<span class="st"> </span><span class="kw">fit_resamples</span>(bt_mod,</span>
+<span id="cb236-15"><a href="bagged-trees.html#cb236-15"></a>                       <span class="dt">preprocessor =</span> rec,</span>
+<span id="cb236-16"><a href="bagged-trees.html#cb236-16"></a>                       <span class="dt">resamples =</span> cv)</span>
+<span id="cb236-17"><a href="bagged-trees.html#cb236-17"></a><span class="kw">toc</span>(<span class="dt">log =</span> <span class="ot">TRUE</span>) <span class="co"># `log = TRUE` so I can refer to this timing later</span></span></code></pre></div>
+<pre><code>## 515.35 sec elapsed</code></pre>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="bagged-trees.html#cb238-1"></a><span class="kw">collect_metrics</span>(bt_fit1)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   .metric  .estimator  mean     n std_err
+##   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1 accuracy multiclass 0.656    10 0.00906
+## 2 roc_auc  hand_till  0.840    10 0.00622</code></pre>
+<p>That’s a pretty decent gain! But how do we know that 50 bags is enough? We can create a learning curve by fitting our model to many different bootstrap resample values, and evaluate the objective function for each of these values. To do that, let’s write a function that specifies a model with any bootstrap value, <span class="math inline">\(b\)</span>, fits the model, and then extracts the AUC.</p>
+<p>Remember, we only need to find the value where our objective function stablizes. Adding additional bootstrap resamples won’t <em>hurt</em> in terms of model performance, but it will cost us in terms of computational time. So we want to use a value of <span class="math inline">\(b\)</span> that is around the lowest possible value once stability has been reached (so we don’t waste computational time).</p>
+<p>When we fit the model above, we used <code>fit_resamples()</code> using 10-fold cross validation. This time, we only want to get a rough estimate of model stability. So, to save on computation time, let’s create a <em>small cv</em> object with just two folds, then use this to fit all the <span class="math inline">\(b\)</span> candidate models.</p>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="bagged-trees.html#cb240-1"></a><span class="co"># specify a small cv</span></span>
+<span id="cb240-2"><a href="bagged-trees.html#cb240-2"></a>small_cv &lt;-<span class="st"> </span><span class="kw">vfold_cv</span>(train, <span class="dt">v =</span> <span class="dv">2</span>)</span>
+<span id="cb240-3"><a href="bagged-trees.html#cb240-3"></a></span>
+<span id="cb240-4"><a href="bagged-trees.html#cb240-4"></a>pull_auc &lt;-<span class="st"> </span><span class="cf">function</span>(b) {</span>
+<span id="cb240-5"><a href="bagged-trees.html#cb240-5"></a>  <span class="co"># specify model</span></span>
+<span id="cb240-6"><a href="bagged-trees.html#cb240-6"></a>  mod &lt;-<span class="st"> </span><span class="kw">bag_tree</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb240-7"><a href="bagged-trees.html#cb240-7"></a><span class="st">    </span><span class="kw">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb240-8"><a href="bagged-trees.html#cb240-8"></a><span class="st">    </span><span class="kw">set_args</span>(<span class="dt">cost_complexity =</span> <span class="dv">0</span>, <span class="dt">min_n =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb240-9"><a href="bagged-trees.html#cb240-9"></a><span class="st">    </span><span class="kw">set_engine</span>(<span class="st">&quot;rpart&quot;</span>, <span class="dt">times =</span> b)</span>
+<span id="cb240-10"><a href="bagged-trees.html#cb240-10"></a>  </span>
+<span id="cb240-11"><a href="bagged-trees.html#cb240-11"></a>  <span class="co"># fit model to full training dataset</span></span>
+<span id="cb240-12"><a href="bagged-trees.html#cb240-12"></a>  m &lt;-<span class="st"> </span><span class="kw">fit_resamples</span>(mod, rec, small_cv)</span>
+<span id="cb240-13"><a href="bagged-trees.html#cb240-13"></a>  </span>
+<span id="cb240-14"><a href="bagged-trees.html#cb240-14"></a>  <span class="co"># extract the AUC &amp; add the $b$ value</span></span>
+<span id="cb240-15"><a href="bagged-trees.html#cb240-15"></a>  auc &lt;-<span class="st"> </span><span class="kw">show_best</span>(m, <span class="st">&quot;roc_auc&quot;</span>) </span>
+<span id="cb240-16"><a href="bagged-trees.html#cb240-16"></a>  auc<span class="op">$</span>b &lt;-<span class="st"> </span>b</span>
+<span id="cb240-17"><a href="bagged-trees.html#cb240-17"></a>  </span>
+<span id="cb240-18"><a href="bagged-trees.html#cb240-18"></a>  <span class="co"># return the AUC data frame</span></span>
+<span id="cb240-19"><a href="bagged-trees.html#cb240-19"></a>  auc</span>
+<span id="cb240-20"><a href="bagged-trees.html#cb240-20"></a>}</span></code></pre></div>
+<p>Now we just need to specify a vector of candidate bags, <span class="math inline">\(b\)</span>, and loop our function through this vector. We’ll look at values between <span class="math inline">\(5\)</span> and <span class="math inline">\(305\)</span> by increments of 25. Note that we have used parallel processing here again to help speed things along. This is still a pretty time-intensive operation. As the timings below indicate, it took a pretty decent amount of time to run for us (we’ll talk about more efficient ways to do this in the next section).</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="bagged-trees.html#cb241-1"></a><span class="co"># specify candidate b models</span></span>
+<span id="cb241-2"><a href="bagged-trees.html#cb241-2"></a>b &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">5</span>, <span class="dv">305</span>, <span class="dv">25</span>)</span>
+<span id="cb241-3"><a href="bagged-trees.html#cb241-3"></a></span>
+<span id="cb241-4"><a href="bagged-trees.html#cb241-4"></a><span class="co"># Fit models</span></span>
+<span id="cb241-5"><a href="bagged-trees.html#cb241-5"></a><span class="kw">library</span>(future)</span>
+<span id="cb241-6"><a href="bagged-trees.html#cb241-6"></a><span class="kw">plan</span>(multisession)</span>
+<span id="cb241-7"><a href="bagged-trees.html#cb241-7"></a><span class="kw">tic</span>()</span>
+<span id="cb241-8"><a href="bagged-trees.html#cb241-8"></a>aucs &lt;-<span class="st"> </span><span class="kw">map_df</span>(b, pull_auc)</span>
+<span id="cb241-9"><a href="bagged-trees.html#cb241-9"></a><span class="kw">toc</span>()</span></code></pre></div>
+<pre><code>## 329.361 sec elapsed</code></pre>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="bagged-trees.html#cb243-1"></a><span class="kw">plan</span>(sequential)</span></code></pre></div>
+<p>Let’s plot these samples now to see when we reach stability. Note</p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="bagged-trees.html#cb244-1"></a><span class="kw">ggplot</span>(aucs, <span class="kw">aes</span>(b, mean)) <span class="op">+</span></span>
+<span id="cb244-2"><a href="bagged-trees.html#cb244-2"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb244-3"><a href="bagged-trees.html#cb244-3"></a><span class="st">  </span><span class="kw">geom_point</span>() </span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
+<p>And it looks like after about 150 bags the model becomes stable.</p>
+<p>Moving forward, we could proceed with model tuning just as we did before, using <span class="math inline">\(k\)</span>-fold cross validation, and using a bagged tree model with <span class="math inline">\(b = 150\)</span>. However, as the process above illustrates, this can be a highly computationally intensive process. We would need to fit decision trees to each of 200 bootstrap resamples, for each of the <span class="math inline">\(k\)</span> folds for every hyperparameter we evaluated. In the <a href="decision-trees.html#decision-trees">Decision Trees</a> chapter, we evaluated 50 hyperparamters in our initial model tuning (10 for cost complexity and 5 for the minimum <span class="math inline">\(n\)</span> size for a terminal node). Assuming 10-fold cross-validation, this would result in <span class="math inline">\(50 \times 10 \times 150 = 75000\)</span> decision trees! That’s going to take a long time. Luckily, there are alternative options.</p>
+<div id="working-with-out-of-bag-samples" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> Working with out of bag samples</h3>
+<p>Recall from our chapter on cross-validation procedures that there are multiple approaches to cross-validation, including bootstrap resampling. When using boostrap resampling for cross-validation, we fit a candidate model on the boostrapped data, and evaluate it against the cases that were <em>not</em> included in the bootstrap. For example, if our data looked like this:</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="bagged-trees.html#cb245-1"></a>lets</span></code></pre></div>
+<pre><code>##   letters score
+## 1       a     5
+## 2       b     7
+## 3       c     2
+## 4       d     4
+## 5       e     9</code></pre>
+<p>and our bootstrap resample looked like this</p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="bagged-trees.html#cb247-1"></a>resamples[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>##     letters score
+## 3         c     2
+## 1         a     5
+## 1.1       a     5
+## 3.1       c     2
+## 4         d     4</code></pre>
+<p>Then we would fit our model to letters a, b, and e, and evaluate our model by making predictions for letters c and d.</p>
+<p>If you’re using bagging to develop a model, you already have bootstrap resamples. The out-of-bag (OOB) samples are then “free”, computationally. If your sample size is reasonably large (<span class="math inline">\(n &gt; 1000\)</span>) the OOB estimates of model performance will be similar to those obtained from <span class="math inline">\(k\)</span>-fold CV, but take only a fraction of the time.</p>
+<p>Unfortunately, as of the time of this writing, there is no way to easily access the OOB samples with <strong>{baguette}</strong>. Luckily, we can fit the model in a slightly different way, using the <a href="https://cran.r-project.org/package=ranger"><strong>{ranger}</strong></a> package, and this will allow us to access the OOB samples.</p>
+<p>In what follows, we’ll use <strong>{ranger}</strong> within a <strong>{tidymodels}</strong> framework to fit and tune a bagged tree model using the OOB samples. The <strong>{ranger}</strong> package is designed to fit random forests, which we’ll talk about next. Bagged trees, however, are just a special case of random forests where there is no sampling of columns when each tree is built (more on this soon). To fit a bagged tree with <strong>{ranger}</strong>, we just have to set the <code>mtry</code> argument equal to the number of predictors in our data frame.</p>
+<p>Let’s start by re-fitting our <code>bt_mod1</code> model with <strong>{ranger}</strong>, using the OOB samples for our model performance. To do this, we’re going to use the <code>fit()</code> function, instead of <code>fit_resamples()</code> (because we’re only going to be fitting the model once). We will therefore need to <code>prep()</code> and <code>bake()</code> our recipe to get our processed training data.</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="bagged-trees.html#cb249-1"></a>processed_train &lt;-<span class="st"> </span>rec <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb249-2"><a href="bagged-trees.html#cb249-2"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb249-3"><a href="bagged-trees.html#cb249-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="dt">new_data =</span> <span class="ot">NULL</span>)</span>
+<span id="cb249-4"><a href="bagged-trees.html#cb249-4"></a></span>
+<span id="cb249-5"><a href="bagged-trees.html#cb249-5"></a>processed_train</span></code></pre></div>
+<pre><code>## # A tibble: 2,767 x 6
+##    event_count event_code game_time title     world accuracy_group
+##          &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt; &lt;ord&gt;         
+##  1           1       2000         0 Mushroom… TREE… 3             
+##  2           3       3010        37 Mushroom… TREE… 3             
+##  3           5       3010      3901 Mushroom… TREE… 3             
+##  4          10       4025      8400 Mushroom… TREE… 3             
+##  5          12       3121      8926 Mushroom… TREE… 3             
+##  6          13       4025      9502 Mushroom… TREE… 3             
+##  7          16       3121     10210 Mushroom… TREE… 3             
+##  8          17       2035     10210 Mushroom… TREE… 3             
+##  9          18       2020     10210 Mushroom… TREE… 3             
+## 10          20       4070     10543 Mushroom… TREE… 3             
+## # … with 2,757 more rows</code></pre>
+<p>Next, it’s helpful to determine the number of predictors we have with code. In this case, it’s fairly straightforward, but occassionally things like dummy-coding can lead to many new columns, and zero or near-zero variance filters may remove columns, so it’s worth double-checking our assumptions.</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="bagged-trees.html#cb251-1"></a><span class="kw">ncol</span>(processed_train) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Note that we subtract one from the number of columns because we are only counting predictors (not the outcome).</p>
+<p>Next, we specify the model. Notice we use <code>rand_forest()</code> here for our model, even though we’re actually fitting a bagged tree, and we set <code>mtry = 5</code>. The number of bags is set by the number of trees. Note that, while we found a higher value is likely better, we’ve set the number of trees below to be 50 so the model is comparable to <code>bt_mod</code>. There is no pruning hyperparameter with <strong>{ranger}</strong>, but we can set the <code>min_n</code> to 2 as we had it before. The below code includes one additional argument that is passed directly to <strong>{ranger}</strong>, <code>probability = FALSE</code>, which will make the predictions from the model be the actual classes, instead of the probabilities in each class.</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="bagged-trees.html#cb253-1"></a>bt_mod2 &lt;-<span class="st"> </span><span class="kw">rand_forest</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb253-2"><a href="bagged-trees.html#cb253-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb253-3"><a href="bagged-trees.html#cb253-3"></a><span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb253-4"><a href="bagged-trees.html#cb253-4"></a><span class="st">  </span><span class="kw">set_args</span>(<span class="dt">mtry =</span> <span class="dv">5</span>,</span>
+<span id="cb253-5"><a href="bagged-trees.html#cb253-5"></a>           <span class="dt">trees =</span> <span class="dv">50</span>,</span>
+<span id="cb253-6"><a href="bagged-trees.html#cb253-6"></a>           <span class="dt">min_n =</span> <span class="dv">2</span>,</span>
+<span id="cb253-7"><a href="bagged-trees.html#cb253-7"></a>           <span class="dt">probability =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>Now we just fit the model to our processed data.</p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="bagged-trees.html#cb254-1"></a><span class="kw">tic</span>()</span>
+<span id="cb254-2"><a href="bagged-trees.html#cb254-2"></a>bt_fit2 &lt;-<span class="st"> </span><span class="kw">fit</span>(bt_mod2,</span>
+<span id="cb254-3"><a href="bagged-trees.html#cb254-3"></a>               accuracy_group <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb254-4"><a href="bagged-trees.html#cb254-4"></a>               processed_train)</span>
+<span id="cb254-5"><a href="bagged-trees.html#cb254-5"></a><span class="kw">toc</span>(<span class="dt">log =</span> <span class="ot">TRUE</span>) <span class="co"># `log = TRUE` so I can refer to this timing later</span></span></code></pre></div>
+<pre><code>## 1.368 sec elapsed</code></pre>
+<p>As you can see, we have <strong>substantially</strong> cut the fitting time down because we’ve only fit the model once. We went from 4.12 minutes to only 0 seconds! But do we get the same estimates for our metrics if we use the OOB samples? Let’s look at the model object</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="bagged-trees.html#cb256-1"></a>bt_fit2</span></code></pre></div>
+<pre><code>## parsnip model object
+## 
+## Fit time:  265ms 
+## Ranger result
+## 
+## Call:
+##  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~5,      x), num.trees = ~50, min.node.size = min_rows(~2, x), probability = ~FALSE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1)) 
+## 
+## Type:                             Classification 
+## Number of trees:                  50 
+## Sample size:                      2767 
+## Number of independent variables:  5 
+## Mtry:                             5 
+## Target node size:                 2 
+## Variable importance mode:         none 
+## Splitrule:                        gini 
+## OOB prediction error:             33.25 %</code></pre>
+<p>This says that our OOB prediction error is 33.25. Our accuracy is one minus this value, or 66.75. Using <span class="math inline">\(k\)</span>-fold cross validation we estimated our accuracy at 65.63. So we’re getting essentially the exact same results, but in this case using the OOB samples is approximately 123,561 times faster!</p>
+<p>What if we want other metrics? We can access the OOB predictions from our model using <code>bt_fit2$fit$predictions</code>. We can then use these predictions to calculate OOB metrics via the <a href="https://yardstick.tidymodels.org/index.html"><strong>{yardstick}</strong></a> package, which is used internally for functions like <code>collect_metrics()</code>. For example, assume we wanted to estimate the OOB AUC. In this case, we would need to re-estimate our model to get the predicted probabilites for each class.</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="bagged-trees.html#cb258-1"></a>bt_mod3 &lt;-<span class="st"> </span><span class="kw">rand_forest</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb258-2"><a href="bagged-trees.html#cb258-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb258-3"><a href="bagged-trees.html#cb258-3"></a><span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb258-4"><a href="bagged-trees.html#cb258-4"></a><span class="st">  </span><span class="kw">set_args</span>(<span class="dt">mtry =</span> <span class="dv">5</span>,</span>
+<span id="cb258-5"><a href="bagged-trees.html#cb258-5"></a>           <span class="dt">trees =</span> <span class="dv">50</span>,</span>
+<span id="cb258-6"><a href="bagged-trees.html#cb258-6"></a>           <span class="dt">min_n =</span> <span class="dv">2</span>,</span>
+<span id="cb258-7"><a href="bagged-trees.html#cb258-7"></a>           <span class="dt">probability =</span> <span class="ot">TRUE</span>) <span class="co"># this is the default</span></span>
+<span id="cb258-8"><a href="bagged-trees.html#cb258-8"></a></span>
+<span id="cb258-9"><a href="bagged-trees.html#cb258-9"></a>bt_fit3 &lt;-<span class="st"> </span><span class="kw">fit</span>(bt_mod3,</span>
+<span id="cb258-10"><a href="bagged-trees.html#cb258-10"></a>               accuracy_group <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb258-11"><a href="bagged-trees.html#cb258-11"></a>               processed_train)</span></code></pre></div>
+<p>Now we just pull the OOB predicted probabilities for each class, and add in the observed class.</p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="bagged-trees.html#cb259-1"></a>preds &lt;-<span class="st"> </span>bt_fit3<span class="op">$</span>fit<span class="op">$</span>predictions <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb259-2"><a href="bagged-trees.html#cb259-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb259-3"><a href="bagged-trees.html#cb259-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">observed =</span> processed_train<span class="op">$</span>accuracy_group)</span>
+<span id="cb259-4"><a href="bagged-trees.html#cb259-4"></a></span>
+<span id="cb259-5"><a href="bagged-trees.html#cb259-5"></a>preds</span></code></pre></div>
+<pre><code>## # A tibble: 2,767 x 5
+##      `0`   `1`   `2`    `3` observed
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;ord&gt;   
+##  1 0.354     0 0.260 0.386  3       
+##  2 0.824     0 0     0.176  3       
+##  3 0         0 0.929 0.0714 3       
+##  4 0.406     0 0.344 0.25   3       
+##  5 0.176     0 0.765 0.0588 3       
+##  6 0.111     0 0.111 0.778  3       
+##  7 0.227     0 0     0.773  3       
+##  8 0.269     0 0.154 0.577  3       
+##  9 0.312     0 0.125 0.562  3       
+## 10 0.289     0 0.158 0.553  3       
+## # … with 2,757 more rows</code></pre>
+<p>And now we can use this data frame to estimate our AUC, using <code>yardstick::roc_auc()</code>.</p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="bagged-trees.html#cb261-1"></a><span class="kw">roc_auc</span>(<span class="dt">data =</span> preds, <span class="dt">truth =</span> observed, <span class="st">`</span><span class="dt">0</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">3</span><span class="st">`</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 1 x 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 roc_auc hand_till      0.843</code></pre>
+<p>How does this compare to our estimate with 10-fold CV?</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="bagged-trees.html#cb263-1"></a><span class="kw">collect_metrics</span>(bt_fit1)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   .metric  .estimator  mean     n std_err
+##   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1 accuracy multiclass 0.656    10 0.00906
+## 2 roc_auc  hand_till  0.840    10 0.00622</code></pre>
+<p>It’s very close and, again, took a fraction of the time.</p>
+</div>
+<div id="tuning-with-oob-samples" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> Tuning with OOB samples</h3>
+<p>If we want to conduct hyperparameter tuning with a bagged tree model, we have to go to a bit more work, but it’s not <em>too</em> terrible. Let’s train on minimum <span class="math inline">\(n\)</span> and set the number of trees to be large—say, 200.</p>
+<p>Much like we did before, we’ll write a function that fits a model for any <code>min_n</code> value. We’ll optimize our model by trying to maximize AUC, so we’ll have our function return the OOB AUC estimate, along with the <span class="math inline">\(n\)</span> size that was used for the terminal nodes.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="bagged-trees.html#cb265-1"></a>tune_min_n &lt;-<span class="st"> </span><span class="cf">function</span>(n) {</span>
+<span id="cb265-2"><a href="bagged-trees.html#cb265-2"></a>  mod &lt;-<span class="st"> </span><span class="kw">rand_forest</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb265-3"><a href="bagged-trees.html#cb265-3"></a><span class="st">    </span><span class="kw">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb265-4"><a href="bagged-trees.html#cb265-4"></a><span class="st">    </span><span class="kw">set_engine</span>(<span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb265-5"><a href="bagged-trees.html#cb265-5"></a><span class="st">    </span><span class="kw">set_args</span>(<span class="dt">mtry =</span> <span class="dv">5</span>,</span>
+<span id="cb265-6"><a href="bagged-trees.html#cb265-6"></a>             <span class="dt">min_n =</span> n,</span>
+<span id="cb265-7"><a href="bagged-trees.html#cb265-7"></a>             <span class="dt">trees =</span> <span class="dv">200</span>)</span>
+<span id="cb265-8"><a href="bagged-trees.html#cb265-8"></a>  </span>
+<span id="cb265-9"><a href="bagged-trees.html#cb265-9"></a>  <span class="co"># fit model to full training dataset</span></span>
+<span id="cb265-10"><a href="bagged-trees.html#cb265-10"></a>  m &lt;-<span class="st"> </span><span class="kw">fit</span>(mod, accuracy_group <span class="op">~</span><span class="st"> </span>., processed_train)</span>
+<span id="cb265-11"><a href="bagged-trees.html#cb265-11"></a>  </span>
+<span id="cb265-12"><a href="bagged-trees.html#cb265-12"></a>  <span class="co"># create probabilities dataset</span></span>
+<span id="cb265-13"><a href="bagged-trees.html#cb265-13"></a>  pred_frame &lt;-<span class="st"> </span>m<span class="op">$</span>fit<span class="op">$</span>predictions <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb265-14"><a href="bagged-trees.html#cb265-14"></a><span class="st">    </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb265-15"><a href="bagged-trees.html#cb265-15"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">observed =</span> processed_train<span class="op">$</span>accuracy_group)</span>
+<span id="cb265-16"><a href="bagged-trees.html#cb265-16"></a>  </span>
+<span id="cb265-17"><a href="bagged-trees.html#cb265-17"></a>  <span class="co"># calculate auc</span></span>
+<span id="cb265-18"><a href="bagged-trees.html#cb265-18"></a>  auc &lt;-<span class="st"> </span><span class="kw">roc_auc</span>(pred_frame, observed, <span class="st">`</span><span class="dt">0</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">3</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb265-19"><a href="bagged-trees.html#cb265-19"></a><span class="st">    </span><span class="kw">pull</span>(.estimate) <span class="co"># pull just the estimate</span></span>
+<span id="cb265-20"><a href="bagged-trees.html#cb265-20"></a>  </span>
+<span id="cb265-21"><a href="bagged-trees.html#cb265-21"></a>  <span class="co"># return as a tibble</span></span>
+<span id="cb265-22"><a href="bagged-trees.html#cb265-22"></a>  <span class="kw">tibble</span>(<span class="dt">auc =</span> auc, <span class="dt">min_n =</span> n)</span>
+<span id="cb265-23"><a href="bagged-trees.html#cb265-23"></a>}</span></code></pre></div>
+<p>Now we can loop through a bunch of <span class="math inline">\(n\)</span> sizes for the terminal nodes and see which provides us the best OOB AUC values for a bagged tree with 200 bags. We’ll use <code>map_df()</code> so the results are bound into a single data frame. Let’s search through values from 2 to 50 and see how the OOB AUC changes.</p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="bagged-trees.html#cb266-1"></a><span class="kw">tic</span>()</span>
+<span id="cb266-2"><a href="bagged-trees.html#cb266-2"></a>min_n_aucs &lt;-<span class="st"> </span><span class="kw">map_df</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">50</span>, tune_min_n)</span>
+<span id="cb266-3"><a href="bagged-trees.html#cb266-3"></a><span class="kw">toc</span>()</span></code></pre></div>
+<pre><code>## 72.686 sec elapsed</code></pre>
+<p>Let’s plot the learning curve.</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="bagged-trees.html#cb268-1"></a><span class="kw">ggplot</span>(min_n_aucs, <span class="kw">aes</span>(min_n, auc)) <span class="op">+</span></span>
+<span id="cb268-2"><a href="bagged-trees.html#cb268-2"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color =</span> <span class="st">&quot;gray40&quot;</span>) <span class="op">+</span></span>
+<span id="cb268-3"><a href="bagged-trees.html#cb268-3"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p>Because we are trying to <em>maximize</em> AUC, the ideal value appears to be somewhere around 15. Let’s extract the maximum AUC <span class="math inline">\(n\)</span>.</p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="bagged-trees.html#cb269-1"></a>max_auc &lt;-<span class="st"> </span>min_n_aucs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb269-2"><a href="bagged-trees.html#cb269-2"></a><span class="st">  </span><span class="kw">filter</span>(auc <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(auc))</span>
+<span id="cb269-3"><a href="bagged-trees.html#cb269-3"></a></span>
+<span id="cb269-4"><a href="bagged-trees.html#cb269-4"></a>max_auc</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##     auc min_n
+##   &lt;dbl&gt; &lt;int&gt;
+## 1 0.859     6</code></pre>
+<p>And now we’re likely ready to finalize our model. Let’s evaluate it against our test set.</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="bagged-trees.html#cb271-1"></a>final_mod &lt;-<span class="st"> </span><span class="kw">rand_forest</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb271-2"><a href="bagged-trees.html#cb271-2"></a><span class="st">    </span><span class="kw">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb271-3"><a href="bagged-trees.html#cb271-3"></a><span class="st">    </span><span class="kw">set_engine</span>(<span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb271-4"><a href="bagged-trees.html#cb271-4"></a><span class="st">    </span><span class="kw">set_args</span>(<span class="dt">mtry =</span> <span class="dv">5</span>,</span>
+<span id="cb271-5"><a href="bagged-trees.html#cb271-5"></a>             <span class="dt">min_n =</span> <span class="dv">13</span>,</span>
+<span id="cb271-6"><a href="bagged-trees.html#cb271-6"></a>             <span class="dt">trees =</span> <span class="dv">200</span>)</span>
+<span id="cb271-7"><a href="bagged-trees.html#cb271-7"></a></span>
+<span id="cb271-8"><a href="bagged-trees.html#cb271-8"></a>final_fit &lt;-<span class="st"> </span><span class="kw">last_fit</span>(final_mod, rec, splt)</span>
+<span id="cb271-9"><a href="bagged-trees.html#cb271-9"></a>final_fit<span class="op">$</span>.metrics</span></code></pre></div>
+<pre><code>## [[1]]
+## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy multiclass     0.680
+## 2 roc_auc  hand_till      0.871</code></pre>
+<p>And our final AUC estimate on our test set is essentially equivalent to what we found during training using our OOB samples</p>
 </div>
 </div>
             </section>
@@ -227,8 +503,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="tuning-decision-trees.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="bagging-in-practice.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bagging-and-random-forests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="random-forests.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="assets/gitbook-2.6.7/js/app.min.js"></script>

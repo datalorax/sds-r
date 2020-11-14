@@ -26,7 +26,7 @@
 <meta name="author" content="Ouafaa Hmaddi" />
 
 
-<meta name="date" content="2020-11-07" />
+<meta name="date" content="2020-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -187,7 +187,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4.3" data-path="tuning-decision-trees.html"><a href="tuning-decision-trees.html#finalizing-our-model-fit"><i class="fa fa-check"></i><b>4.4.3</b> Finalizing our model fit</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a></li>
+<li class="chapter" data-level="5" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html"><i class="fa fa-check"></i><b>5</b> Bagging and Random Forests</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="bagging-and-random-forests.html"><a href="bagging-and-random-forests.html#bagging-by-hand"><i class="fa fa-check"></i><b>5.0.1</b> Bagging “by hand”</a></li>
+<li class="chapter" data-level="5.1" data-path="bagged-trees.html"><a href="bagged-trees.html"><i class="fa fa-check"></i><b>5.1</b> Bagged trees</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="bagged-trees.html"><a href="bagged-trees.html#working-with-out-of-bag-samples"><i class="fa fa-check"></i><b>5.1.1</b> Working with out of bag samples</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bagged-trees.html"><a href="bagged-trees.html#tuning-with-oob-samples"><i class="fa fa-check"></i><b>5.1.2</b> Tuning with OOB samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-forests.html"><a href="random-forests.html"><i class="fa fa-check"></i><b>5.2</b> Random Forests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-forests.html"><a href="random-forests.html#fitting-random-forests"><i class="fa fa-check"></i><b>5.2.1</b> Fitting random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="feature-and-model-interpretation.html"><a href="feature-and-model-interpretation.html"><i class="fa fa-check"></i><b>5.3</b> Feature and model interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-r.html"><a href="introduction-to-r.html"><i class="fa fa-check"></i><b>6</b> Introduction to R</a></li>
 </ul>
 
       </nav>
@@ -208,50 +219,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="visualizing-decision-trees" class="section level2">
 <h2><span class="header-section-number">4.2</span> Visualizing decision trees</h2>
 <p>The decision tree itself is often helpful for understanding how predictions are made. Scatterplots can also be helpful in terms of viewing how the predictor space is being partitioned. For example, imagine we are fitting a model to the following data</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="visualizing-decision-trees.html#cb2-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb2-2"><a href="visualizing-decision-trees.html#cb2-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="visualizing-decision-trees.html#cb183-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb183-2"><a href="visualizing-decision-trees.html#cb183-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
 <p>In this case, we only have a single predictor variable, <code>displ</code>, but we can split on that variable multiple times. Let’s start with a single split, and we’ll build from there. The decision tree for a single split model (also called a “stump”) looks like this</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
 <p>So we are just splitting based on whether <code>displ</code> is greater than or equal to 2.6. How does this look in the scatterplot? Well, if the <code>displ &gt;= 2.6</code>, it’s a horizontal line at 14, and if <code>displ &lt;= 2.6</code>, it’s a horizontal line at 21.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <p>What if we add one additional split? Well then the decision tree looks like this</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 <p>and the scatterplot looks like this</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <p>As the number of splits increases, the fit to the data increases. However, the model can also quickly overfit and not generalize to new data well, which is why a single decision tree is often not the most performant model.</p>
 <p>We can visualize classification problems with decision trees using scatterplots as well, as long as there are two continuous predictor variables. Sticking with our <code>mpg</code> dataset, let’s say we wanted to predict the drivetrain: front-wheel drive, rear-wheel drive, or four-wheel drive. The scatterplot would then look like this (assuming we’re now using <code>displ</code> and <code>cty</code> as predictor variables).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="visualizing-decision-trees.html#cb3-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb3-2"><a href="visualizing-decision-trees.html#cb3-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="visualizing-decision-trees.html#cb184-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb184-2"><a href="visualizing-decision-trees.html#cb184-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
 <p>How does the predictor space get divided up? Let’s try first with a stump model. The tree looks like this</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="visualizing-decision-trees.html#cb4-1"></a>drv_stump &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
-<span id="cb4-2"><a href="visualizing-decision-trees.html#cb4-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">1</span>))</span>
-<span id="cb4-3"><a href="visualizing-decision-trees.html#cb4-3"></a><span class="kw">rpart.plot</span>(drv_stump, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="visualizing-decision-trees.html#cb185-1"></a>drv_stump &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
+<span id="cb185-2"><a href="visualizing-decision-trees.html#cb185-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">1</span>))</span>
+<span id="cb185-3"><a href="visualizing-decision-trees.html#cb185-3"></a><span class="kw">rpart.plot</span>(drv_stump, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
 <p>This model isn’t doing too well. It looks like we’re not capturing any of the rear-wheel drive cases. That of course makes sense, because we only have one split, so we can’t predict three different classes. Here’s what it looks like with the scatterplot</p>
 <p><strong>NOTE:</strong> There’s a bug (I think) in the package that currently means I have to flip the axes here. We should come back and change it when it’s fixed. See here: <a href="https://github.com/grantmcdermott/parttree/issues/5" class="uri">https://github.com/grantmcdermott/parttree/issues/5</a></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="visualizing-decision-trees.html#cb5-1"></a><span class="kw">library</span>(parttree)</span>
-<span id="cb5-2"><a href="visualizing-decision-trees.html#cb5-2"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, displ)) <span class="op">+</span></span>
-<span id="cb5-3"><a href="visualizing-decision-trees.html#cb5-3"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
-<span id="cb5-4"><a href="visualizing-decision-trees.html#cb5-4"></a>                <span class="dt">data =</span> drv_stump, </span>
-<span id="cb5-5"><a href="visualizing-decision-trees.html#cb5-5"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb5-6"><a href="visualizing-decision-trees.html#cb5-6"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
-<span id="cb5-7"><a href="visualizing-decision-trees.html#cb5-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="visualizing-decision-trees.html#cb186-1"></a><span class="kw">library</span>(parttree)</span>
+<span id="cb186-2"><a href="visualizing-decision-trees.html#cb186-2"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, displ)) <span class="op">+</span></span>
+<span id="cb186-3"><a href="visualizing-decision-trees.html#cb186-3"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
+<span id="cb186-4"><a href="visualizing-decision-trees.html#cb186-4"></a>                <span class="dt">data =</span> drv_stump, </span>
+<span id="cb186-5"><a href="visualizing-decision-trees.html#cb186-5"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
+<span id="cb186-6"><a href="visualizing-decision-trees.html#cb186-6"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb186-7"><a href="visualizing-decision-trees.html#cb186-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
 <p>And what if we go with a more complicated model? Say, 3 splits? Then the tree looks like this.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="visualizing-decision-trees.html#cb6-1"></a>drv_threesplits &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
-<span id="cb6-2"><a href="visualizing-decision-trees.html#cb6-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">3</span>))</span>
-<span id="cb6-3"><a href="visualizing-decision-trees.html#cb6-3"></a><span class="kw">rpart.plot</span>(drv_threesplits, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="visualizing-decision-trees.html#cb187-1"></a>drv_threesplits &lt;-<span class="st"> </span><span class="kw">rpart</span>(drv <span class="op">~</span><span class="st">  </span>displ <span class="op">+</span><span class="st"> </span>cty, mpg,</span>
+<span id="cb187-2"><a href="visualizing-decision-trees.html#cb187-2"></a>                 <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxdepth =</span> <span class="dv">3</span>))</span>
+<span id="cb187-3"><a href="visualizing-decision-trees.html#cb187-3"></a><span class="kw">rpart.plot</span>(drv_threesplits, <span class="dt">type =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
 <p>And our predictor space can now be divided up better.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="visualizing-decision-trees.html#cb7-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
-<span id="cb7-2"><a href="visualizing-decision-trees.html#cb7-2"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
-<span id="cb7-3"><a href="visualizing-decision-trees.html#cb7-3"></a>                <span class="dt">data =</span> drv_threesplits, </span>
-<span id="cb7-4"><a href="visualizing-decision-trees.html#cb7-4"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb7-5"><a href="visualizing-decision-trees.html#cb7-5"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
-<span id="cb7-6"><a href="visualizing-decision-trees.html#cb7-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="visualizing-decision-trees.html#cb188-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span></span>
+<span id="cb188-2"><a href="visualizing-decision-trees.html#cb188-2"></a><span class="st">  </span><span class="kw">geom_parttree</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> drv), </span>
+<span id="cb188-3"><a href="visualizing-decision-trees.html#cb188-3"></a>                <span class="dt">data =</span> drv_threesplits, </span>
+<span id="cb188-4"><a href="visualizing-decision-trees.html#cb188-4"></a>                <span class="dt">alpha =</span> <span class="fl">0.4</span>,</span>
+<span id="cb188-5"><a href="visualizing-decision-trees.html#cb188-5"></a>                <span class="dt">flipaxes =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb188-6"><a href="visualizing-decision-trees.html#cb188-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> drv))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
 <p>This looks considerably better and, although we still have some misclassification, that’s ultimately probably a good thing because we don’t want to start to overfit to our training data. Decision trees, like all models, should balance the bias-variance tradeoff. They are flexible and make few assumptions about the data, but that can also quickly lead to overfitting and poor generalizations to new data.</p>
 </div>
             </section>

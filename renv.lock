@@ -485,6 +485,13 @@
       "Repository": "CRAN",
       "Hash": "be6a2b3529928bd803d1c437d1d43152"
     },
+    "gridExtra": {
+      "Package": "gridExtra",
+      "Version": "2.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "7d7f283939f563670a697165b2cf5560"
+    },
     "gtable": {
       "Package": "gtable",
       "Version": "0.3.0",
@@ -702,6 +709,20 @@
       "Repository": "CRAN",
       "Hash": "1bb58822a20301cee84a41678e25d9b7"
     },
+    "mapproj": {
+      "Package": "mapproj",
+      "Version": "1.2.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "74ed0ace54e00d9bc60614b220653b7e"
+    },
+    "maps": {
+      "Package": "maps",
+      "Version": "3.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "392212982257ea03c37b63547dc871b4"
+    },
     "markdown": {
       "Package": "markdown",
       "Version": "1.1",
@@ -860,6 +881,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "a533634fc16d89c28716354629040dd0"
+    },
+    "pdp": {
+      "Package": "pdp",
+      "Version": "0.7.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e049aac9d7c1cc7e72f6736038954737"
     },
     "pillar": {
       "Package": "pillar",
@@ -1322,6 +1350,20 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "0bc90078aeee42f2520b1d0a33bd6758"
+    },
+    "vip": {
+      "Package": "vip",
+      "Version": "0.2.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ca6163837c7c626b16f7911f73bc4d8c"
+    },
+    "viridis": {
+      "Package": "viridis",
+      "Version": "0.5.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6f6b49e5b3b5ee5a6d0c28bf1b4b9eb3"
     },
     "viridisLite": {
       "Package": "viridisLite",
