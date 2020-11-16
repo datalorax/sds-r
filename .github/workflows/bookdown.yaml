@@ -43,6 +43,7 @@ jobs:
 
       - name: Push to branch
         run: |
+          git fetch --all
           git checkout github-actions
           git add --all
           git commit --all -m "build-site"
