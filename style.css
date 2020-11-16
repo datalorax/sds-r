@@ -1,5 +1,5 @@
 /*fonts*/
-@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Forum&family=Nunito&family=Source+Code+Pro:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Forum&family=Nunito&family=Source+Code+Pro:wght@500&family=News+Cycle&display=swap');
 
 /*Declare variables*/
 :root {
@@ -10,8 +10,9 @@
   --highlight-orange: #E8A87C;
   --highlight-purple: #C38D9E;
   --highlight-darker-green: #41B3A3;
+  --highlight-blue: #7ec1e7;
   
-  --highlight-dark-gray: #321a22;
+  --highlight-gray: #788b97;
 
   --txt-color: #3d525f;
   --link-color:#4183c4;
@@ -20,6 +21,7 @@
   --font-title: 'Forum', cursive;
   --font-body: 'Nunito', sans-serif;
   --font-h1: 'Cardo', serif;
+  --font-divtip-title: 'News Cycle', sans-serif;
 
   --font-code: 'Source Code Pro', monospace;
 }
@@ -241,24 +243,43 @@ code span.ot {
 /* -----------div tips------------- */
 div.lightbulb, div.dictionary {
   padding: 1em;
-  margin: 1em 0;
-  padding-left: 100px;
-  background-size: 70px;
+  padding-top: 5px;
+  margin: 0.5em 0;
+  padding-left: 12%;
   background-repeat: no-repeat;
-  background-position: 15px center;
   min-height: 120px;
-  color: #75658c;
-  background-color: var(--highlight-purple);
-  border: dashed 5px #aa5972;
+  border: 3px solid var(--highlight-blue);
+  border-radius: 10px;  
 }
 
 div.lightbulb {
-  background-image: url("img/div_tip_icons/lightbulb.png");
+  background: url(img/div_tip_icons/lightbulb.png), 
+              -webkit-linear-gradient(0deg, 
+                                      var(--highlight-blue) 10%, 
+                                      var(--main-bg-color) 10%);
+	background-repeat: no-repeat;
+  background-position: left;
+  background-size: 10%, contain;
 }
 
 div.dictionary {
-  background-image: url("img/div_tip_icons/dictionary.png");
+	background: url(img/div_tip_icons/dictionary.png), 
+	            -webkit-linear-gradient(0deg, 
+                                      var(--highlight-blue) 10%, 
+                                      var(--main-bg-color) 10%);
+	background-repeat: no-repeat;
+  background-position: left;
+  background-size: 10%, contain;
+	
 }
+
+.book .book-body .page-wrapper .page-inner section.normal .title p {
+	color: var(--highlight-gray);
+	font-family: var(--font-divtip-title);
+	border-bottom: 1px dashed var(--highlight-blue);
+	font-size: 1.6em;
+}
+
 
 /*table style for definitions inside div tips*/
 div.definition-tbl table, tr {
