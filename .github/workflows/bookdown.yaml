@@ -43,8 +43,10 @@ jobs:
 
       - name: Push to branch
         run: |
+          git checkout github-actions
+          git add --all
           git commit --all -m "build-site"
-          git push origin github-actions
+          git push
 
       - name: Install npm
         uses: actions/setup-node@v1
