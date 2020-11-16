@@ -9,7 +9,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.1
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v1
@@ -44,7 +44,7 @@ jobs:
       - name: Push to branch
         run: |
           git fetch --all
-          git checkout --track origin/github-actions
+          git checkout gh-actions
           git add --all
           git commit --all -m "build-site"
           git push
