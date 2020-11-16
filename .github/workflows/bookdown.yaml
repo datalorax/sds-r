@@ -11,12 +11,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Checkout gh-actions & merge main branch
-        run: |
-          git fetch --all
-          git checkout --track origin/github-actions
-          git merge main
-
       - name: Setup R
         uses: r-lib/actions/setup-r@v1
 
@@ -49,6 +43,8 @@ jobs:
 
       - name: Push to branch
         run: |
+          git fetch --all
+          git checkout -B gh-actions
           git add --all
           git commit --all -m "build-site"
           git push
