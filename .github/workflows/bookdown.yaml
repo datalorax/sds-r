@@ -41,11 +41,10 @@ jobs:
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
 
-      - name: Push to gith-actions branch
+      - name: Push to branch
       - run: |
-          git checkout github-actions
           git commit --all -m "build-site"
-          git push
+          git push origin github-actions
 
       - name: Install npm
         uses: actions/setup-node@v1
