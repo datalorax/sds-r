@@ -44,7 +44,7 @@ jobs:
       - name: Push to branch
         run: |
           git fetch --all
-          git checkout gh-actions
+          git checkout -f gh-actions
           git add --all
           git commit --all -m "build-site"
           git push
