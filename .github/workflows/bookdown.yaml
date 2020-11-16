@@ -42,7 +42,7 @@ jobs:
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
 
       - name: Push to branch
-      - run: |
+        run: |
           git commit --all -m "build-site"
           git push origin github-actions
 
