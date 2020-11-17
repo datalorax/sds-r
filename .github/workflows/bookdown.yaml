@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v1
@@ -41,13 +44,12 @@ jobs:
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
 
-      - name: Push to branch
-        run: |
-          git fetch --all
-          git checkout -B gh-actions
-          git add --all
-          git commit --all -m "build-site"
-          git push
+      - name: GitHub Push
+        uses: ad-m/github-push-action@v0.6.0
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: gh-actions
+            force: true
 
       - name: Install npm
         uses: actions/setup-node@v1
