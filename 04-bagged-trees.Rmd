@@ -12,7 +12,12 @@ knitr::opts_chunk$set(warning = FALSE,
 In the last chapter, we talked about how decision trees are highly flexible, but are often not the most performant model on their own because they can easily overfit, leading to poor generalizability to new/unseen data. One way to avoid this problem is to build an *ensemble* of trees from random bootstrap samples of the data, and aggregate the predictions across the entire ensemble. This is a general approach known as **bagging**, or **b**ootstrap **agg**regation, which can be applied to any modeling framework, but generally will only provide large gains in improvement if, like decision trees, the model has high variability.
 
 :::dictionary
-**Bagging**: A general process to improve the performance of highly variable models, regularly applied to decision trees.
+
+:::title
+Bagging
+:::
+
+**A general process to improve the performance of highly variable models, regularly applied to decision trees.**
 
 1. Create $b$ bootstrap resamples of the original data
 2. Fit the model (**base learner**) to each $b$ resample
@@ -27,7 +32,12 @@ In the last chapter, we talked about how decision trees are highly flexible, but
 As mentioned previously, bagging does not tend to help much (and increases computational burdens) when the model already has low variance. Models like linear regression will generally not change much in their model predictions when using bagging. Decision trees, however, can be highly variable. Bagging can help reduce the variance of these models and lead to more stable model predictions.
 
 :::lightbulb
-**How many bags?**
+
+:::title
+How many bags?
+:::
+
+
 
 There is no hard and fast rule. The important thing is to have **enough** bags to reach a stable model.
 
