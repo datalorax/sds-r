@@ -1,26 +1,30 @@
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-name: bookdown
+name: build-book
 
 jobs:
   build:
     runs-on: macOS-latest
     env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      isExtPR: ${{ github.event.pull_request.head.repo.fork == true }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 0
 
       - name: Setup R
-        uses: r-lib/actions/setup-r@v1
+        uses: r-lib/actions/setup-r@master
 
-      - name: Install pandoc and pandoc citeproc
-        run: |
-          brew install pandoc
-          brew install pandoc-citeproc
+      - name: Setup pandoc
+        uses: r-lib/actions/setup-pandoc@master
 
       - name: Cache Renv packages
         uses: actions/cache@v2
@@ -28,6 +32,11 @@ jobs:
           path: $HOME/.local/share/renv
           key: r-${{ hashFiles('renv.lock') }}
           restore-keys: r-
+
+      - name: Configure Git user
+        run: |
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Cache bookdown results
         uses: actions/cache@v2
@@ -44,29 +53,22 @@ jobs:
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
 
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add --all -- ':!.gitignore'
-          git commit -m "Add changes" --all || echo "No changes to commit"
-
-      - name: GitHub Push
-        if: github.ref == 'refs/heads/main'
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-actions
-          force: true
-
-      - name: Install npm
-        uses: actions/setup-node@v1
+      - name: Copy
+        run: cp _redirects _book/
 
       - name: Deploy to Netlify
-        # NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID added in the repo's secrets
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: |
-          npm install netlify-cli -g
-          netlify deploy --prod --dir _book
+        if: contains(env.isExtPR, 'false')
+        id: netlify-deploy
+        uses: nwtgck/actions-netlify@v1.1
+        with:
+          publish-dir: './_book'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message:
+            'Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})'
+          # these all default to 'true'
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+          # enable-commit-status: true
+          #o verwrites-pull-request-comment: true
+        timeout-minutes: 1
