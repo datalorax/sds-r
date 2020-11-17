@@ -1,0 +1,10 @@
+# Boosting and Boosted Trees
+
+```{r include = FALSE, cache = FALSE}
+source("_common.R")
+
+library(tidyverse)
+library(tidymodels)
+knitr::opts_chunk$set(warning = FALSE,
+                      cache = TRUE)
+```
