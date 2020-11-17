@@ -48,7 +48,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "Add changes" -a || echo "No changes to commit"
+          git add --all -- ':!.gitignore'
+          git commit -m "Add changes" --all ':!.gitignore'|| echo "No changes to commit"
 
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
