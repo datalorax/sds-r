@@ -280,6 +280,16 @@ div.dictionary {
 	font-size: 1.6em;
 }
 
+div.concept {
+  float: right;
+  margin-left: 0.5em;
+  padding: 1em;
+  max-width: 300px;
+  min-height: 50px;
+  background-color: #e5f3fa;
+  border-radius: 10px;
+}
+
 
 /*table style for definitions inside div tips*/
 div.definition-tbl table, tr {
