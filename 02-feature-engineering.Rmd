@@ -962,7 +962,7 @@ ggplot(sim, aes(x, y)) +
 
 Let's look at the true data-generating curve with each of the splines, omitting the points for clarity.
 
-```{r label, options}
+```{r }
 ns_d <- data.frame(x = 1:100, 
                    y = predict(ns_mod), 
                    method = "Natural Spline")
