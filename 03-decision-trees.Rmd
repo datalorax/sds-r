@@ -1,9 +1,10 @@
 # Decision Trees
 
-```{r include = FALSE}
+```{r include = FALSE, cache = FALSE}
 source("_common.R")
 
-knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(warning = FALSE,
+                      cache = TRUE)
 ```
 
 <!-- Here is an html comment -->
