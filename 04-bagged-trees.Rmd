@@ -29,7 +29,9 @@ Bagging
 :::
 
 
-As mentioned previously, bagging does not tend to help much (and increases computational burdens) when the model already has low variance. Models like linear regression will generally not change much in their model predictions when using bagging. Decision trees, however, can be highly variable. Bagging can help reduce the variance of these models and lead to more stable model predictions.
+As mentioned previously, bagging does not tend to help much (and increases computational burdens) when the model already has low variance. Models like linear regression will generally not change much in their model predictions when using bagging. For example, for a very small sample, bagging may help a linear model, but as the sample size grows, the predictions will be nearly identical while increasing computational complexity. Decision trees, however, can be highly variable. Bagging can help reduce the variance of these models and lead to more stable model predictions.
+
+<!-- added an example from the slides which I thought was simple and good-->
 
 :::lightbulb
 
@@ -37,16 +39,16 @@ As mentioned previously, bagging does not tend to help much (and increases compu
 How many bags?
 :::
 
-
+Put differently, how many bootstrap resamples?
 
 There is no hard and fast rule. The important thing is to have **enough** bags to reach a stable model.
 
 Noisier data will require more bags. Data with strongly predictive features will require fewer bags.
 
-Start with somewhere between between 50-500 bags, evaluate the learning curve, and adjust the bags from there.
+Start with somewhere between between 50-500 bags depending on how variable you think your data are, evaluate the learning curve, and then adjust up or down from there accordingly.
 :::
 
-There is no rule for the number of "bags", or bootstrap resamples, that one should use to create a stable model. Further, the number of bags just needs to be sufficiently high that the model becomes stable---after stability is achieved, additional bags will not help model performance. In other words, there is no upper bound for the number of bags (the only burden is computational), but it is critical that there are *enough* bags to create a stable model. Datasets with highly predictive features will generally need fewer bags to reach stability. A good rule of thumb is to start with somewhere between 50-500 bags, depending on how variable you think your data are, and then adjust up or down from there accordingly.
+There is no rule for the number of "bags", or bootstrap resamples, that one should use to create a stable model. Further, the number of bags just needs to be sufficiently high that the model becomes stable---after stability is achieved, additional bags will not help model performance. In other words, there is no upper bound for the number of bags (the only burden is computational), but it is critical that there are *enough* bags to create a stable model. Datasets with highly predictive features will generally need fewer bags to reach stability. 
 
 ### Bagging "by hand"
 To understand bagging we first have to be clear about what bootstrap resampling implies. When we take bootstrap resamples from our dataset, we sample $n$ rows of our dataset *with replacement*, where $n$ represents the total number of rows in our data. For example, suppose we had a dataset that had the first five letters of the alphabet, each with an associated score.
@@ -122,7 +124,7 @@ rec <- recipe(accuracy_group ~ ., data = train)
 
 And now we're ready to specify our model. This is *pretty much* the same as before, except now we are going to load the **{baguette}** package in addition to **{tidymodels}** and use `bag_tree()` instead of `decision_tree()`. Additionally, we'll specify a `times` argument when we set the engine. Let's start by fitting  a model to 50 bootstrap resamples and aggregating the results across all 50 trees. The rest is the same as before. 
 
-Let's start by by building a very deep tree, with no pruning and a minimum sample size for the terminal nodes of 2. We'll also use parallel processing here via the [**{future}**](https://github.com/HenrikBengtsson/future) package to help the model run faster. The code below also includes timings via teh [**{tictoc}**](https://cran.r-project.org/package=tictoc) package.
+Let's start by by building a very deep tree, with no pruning and a minimum sample size for the terminal nodes of 2. We'll also use parallel processing here via the [**{future}**](https://github.com/HenrikBengtsson/future) package to help the model run faster. The code below also includes timings via the [**{tictoc}**](https://cran.r-project.org/package=tictoc) package.
 
 ```{r }
 library(baguette)
@@ -130,7 +132,7 @@ library(tictoc)
 
 # set model
 bt_mod <- bag_tree() %>% 
-  set_engine("rpart", times = 50) %>% 
+  set_engine("rpart", times = 50) %>%  #50 bootstrap resamples or bags
   set_mode("classification") %>% 
   set_args(cost_complexity = 0,
            min_n = 2)
@@ -199,6 +201,8 @@ plan(sequential)
 
 Let's plot these samples now to see when we reach stability. Note
 
+<!-- is something missing here? Not sure what Note refers to-->
+
 ```{r }
 ggplot(aucs, aes(b, mean)) +
   geom_line() +
@@ -209,7 +213,7 @@ And it looks like after about 150 bags the model becomes stable.
 
 Moving forward, we could proceed with model tuning just as we did before, using $k$-fold cross validation, and using a bagged tree model with $b = 150$. However, as the process above illustrates, this can be a highly computationally intensive process. We would need to fit decision trees to each of 200 bootstrap resamples, for each of the $k$ folds for every hyperparameter we evaluated. In the [Decision Trees] chapter, we evaluated 50 hyperparamters in our initial model tuning (10 for cost complexity and 5 for the minimum $n$ size for a terminal node). Assuming 10-fold cross-validation, this would result in $50 \times 10 \times 150 = 75000$ decision trees! That's going to take a long time. Luckily, there are alternative options.
 
-### Working with out of bag samples
+### Working with out-of-bag samples
 Recall from our chapter on cross-validation procedures that there are multiple approaches to cross-validation, including bootstrap resampling. When using boostrap resampling for cross-validation, we fit a candidate model on the boostrapped data, and evaluate it against the cases that were *not* included in the bootstrap. For example, if our data looked like this:
 
 ```{r }
@@ -228,7 +232,7 @@ If you're using bagging to develop a model, you already have bootstrap resamples
 
 Unfortunately, as of the time of this writing, there is no way to easily access the OOB samples with **{baguette}**. Luckily, we can fit the model in a slightly different way, using the [**{ranger}**](https://cran.r-project.org/package=ranger) package, and this will allow us to access the OOB samples. 
 
-In what follows, we'll use **{ranger}** within a **{tidymodels}** framework to fit and tune a bagged tree model using the OOB samples. The **{ranger}** package is designed to fit random forests, which we'll talk about next. Bagged trees, however, are just a special case of random forests where there is no sampling of columns when each tree is built (more on this soon). To fit a bagged tree with **{ranger}**, we just have to set the `mtry` argument equal to the number of predictors in our data frame.
+In what follows, we'll use **{ranger}** within a **{tidymodels}** framework to fit and tune a bagged tree model using the OOB samples. The **{ranger}** package is designed to fit random forests, which we'll talk about next. Bagged trees, however, are just a special case of random forests where there is no sampling of columns when each tree is built (more on this soon). To fit a bagged tree with **{ranger}**, we just have to set the `mtry` argument equal to the number of predictors in our data frame. 
 
 Let's start by re-fitting our `bt_mod1` model with **{ranger}**, using the OOB samples for our model performance. To do this, we're going to use the `fit()` function, instead of `fit_resamples()` (because we're only going to be fitting the model once). We will therefore need to `prep()` and `bake()` our recipe to get our processed training data.
 
@@ -254,8 +258,8 @@ Next, we specify the model. Notice we use `rand_forest()` here for our model, ev
 bt_mod2 <- rand_forest() %>% 
   set_engine("ranger") %>% 
   set_mode("classification") %>% 
-  set_args(mtry = 5,
-           trees = 50,
+  set_args(mtry = 5, # Specify number of predictors
+           trees = 50, # Number of bags
            min_n = 2,
            probability = FALSE)
 ```
