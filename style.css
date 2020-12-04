@@ -241,7 +241,7 @@ code span.ot {
 }
 
 /* -----------div tips------------- */
-div.lightbulb, div.dictionary {
+div.lightbulb, div.dictionary, div.warning {
   padding: 1em;
   padding-top: 5px;
   margin: 0.5em 0;
@@ -249,6 +249,16 @@ div.lightbulb, div.dictionary {
   background-repeat: no-repeat;
   min-height: 120px;
   border: 3px solid var(--highlight-blue);
+  border-radius: 10px;  
+}
+div.warning {
+  padding: 1em;
+  padding-top: 5px;
+  margin: 0.5em 0;
+  padding-left: 12%;
+  background-repeat: no-repeat;
+  min-height: 120px;
+  border: 3px solid #e26260;
   border-radius: 10px;  
 }
 
@@ -273,6 +283,17 @@ div.dictionary {
 	
 }
 
+div.warning {
+	background: url(img/div_tip_icons/alert-circle.png), 
+	            -webkit-linear-gradient(0deg, 
+                                      #e26260 10%, 
+                                      var(--main-bg-color) 10%);
+	background-repeat: no-repeat;
+  background-position: left;
+  background-size: 10%, contain;
+	
+}
+
 .book .book-body .page-wrapper .page-inner section.normal .title p {
 	color: var(--highlight-gray);
 	font-family: var(--font-divtip-title);
@@ -290,13 +311,6 @@ div.concept {
   border-radius: 10px;
 }
 
-
-/*table style for definitions inside div tips*/
-div.definition-tbl table, tr {
-	table-layout: fixed;
-	background-color: var(--main-bg-color);
-	border: none;
-}
 
 /*Tables*/
 table {

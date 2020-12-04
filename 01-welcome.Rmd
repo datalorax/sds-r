@@ -58,3 +58,10 @@ The title of this divtip
 
 Here's another div tip. To use for important definitions? 
 :::
+
+
+:::warning
+
+This takes a long time
+
+:::
