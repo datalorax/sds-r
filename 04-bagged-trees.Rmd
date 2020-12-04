@@ -327,7 +327,7 @@ collect_metrics(bt_fit1)
 It's very close and, again, took a fraction of the time.
 
 ### Tuning with OOB samples
-If we want to conduct hyperparameter tuning with a bagged tree model, we have to go to a bit more work, but it's not *too* terrible. Let's train on minimum $n$ and set the number of trees to be large---say, 200.
+If we want to conduct hyperparameter tuning with a bagged tree model, we have to do to a bit more work, but it's not *too* terrible. Let's train on minimum $n$ and set the number of trees to be large---say, 200.
 
 Much like we did before, we'll write a function that fits a model for any `min_n` value. We'll optimize our model by trying to maximize AUC, so we'll have our function return the OOB AUC estimate, along with the $n$ size that was used for the terminal nodes. 
 
@@ -403,7 +403,7 @@ One potential problem with bagged trees is that the predictions across trees oft
 
 Random forests extend bagged trees by introducing a stochastic component to the features. Specifically, rather than building each tree with all of the features, each tree is built using a random sample of features *at each split*. The predictive performance of any individual tree is then unlikely to be as performant as a tree using all the features at each split, but the forest of trees (aggregate prediction) can regularly provide better predictions than any single tree. 
 
-Assume we have a features with one *very* strong predictor and a few features that are moderately strong predictors. If we used bagging, the moderately strong predictors would likely be internal nodes for nearly every tree--meaning their importance would be conditional on the strong predictor. Yet, these variables might provide important information for specific samples on their own. If we remove the very strong predictor for the root node split, that tree we be built with one of the moderately strong predictors at the root node. The very strong predictor may then be selected in one of the internal nodes and, while this model may not be as predictive *overall*, it may result in better predictions for specific cases. If we average over all these diverse models we can often get better predictions for the entire dataset. 
+Assume we have a feature with one *very* strong predictor and a few features that are moderately strong predictors. If we used bagging, the moderately strong predictors would likely be internal nodes for nearly every tree--meaning their importance would be conditional on the strong predictor. Yet, these variables might provide important information for specific samples on their own. If we remove the very strong predictor from the root node split, that tree will be built with one of the moderately strong predictors at the root node. The very strong predictor may then be selected in one of the internal nodes and, while this model may not be as predictive *overall*, it may result in better predictions for specific cases. If we average over all these diverse models, we can often get better predictions for the entire dataset. 
 
 In essence, a random forest is just a bagged tree with a stochastic component introduced to decorrelate the trees. This means each individual model is *more* different than a bagged tree. When we average across all the trees we reduce this variance and *may* be able to get overall improved performance when compared to a single tree or a bagged tree.
 
@@ -414,7 +414,7 @@ Random forests work like bagged trees, but include a random selection of feature
 Random forest models tend to provide very good "out of the box" model performance. Because bagged trees are just a special case of random forests, and the number of predictors to select for each tree is a hyperparameter that can be tuned, it's generally worth starting with a random forest and only moving to a bagged tree if, for your specific situation, using all the predictors for each tree works better than using a sample. 
 
 ### Fitting random forests
-In the previous section we used the `rand_forest()` function to fit bagged classification trees and obtain performance metrics on the OOB samples. We did this by setting `mtry = p`, where `p` is equal to the number of predictor variables. When fitting a random forest, we just change `mtry` to a smaller value, which represents the number of features to randomly select from at each split. Everything else is the same: `trees` represents the number of bags, or the number of tree in the forest, while `min_n` represents the minimum sample size for a terminal node (i.e., limiting the depth to which each tree is grown).
+In the previous section we used the `rand_forest()` function to fit bagged classification trees and obtain performance metrics on the OOB samples. We did this by setting `mtry = p`, where `p` is equal to the number of predictor variables. When fitting a random forest, we just change `mtry` to a smaller value, which represents the number of features to randomly select from at each split. Everything else is the same: `trees` represents the number of bags, or the number of trees in the forest, while `min_n` represents the minimum sample size for a terminal node (i.e., limiting the depth to which each tree is grown).
 
 <!-- Might need cites for the below  -->
 A good place to start is `mtry = p/3` for regression problems and `mtry = sqrt(p)` for classification problems. Generally, higher values of `mtry` will work better when the data are fairly noisy and the predictors are not overly strong. Lower values of `mtry` will work better when there are a few very strong predictors. 
@@ -500,7 +500,7 @@ fit_rf <- function(tree_n, mtry = 2, min_n = 2) {
 }
 ```
 
-Notice in the above we've made it a bit more general so we can come back to checking the number of trees with different values of `mtry` and `min_n`. Let's look at values from 100 (which is almost certainly too low) to 1201 by increments of 50 trees. First, we loop through these values using `map_df()` so they are all bound in a single data frame.
+Notice in the above we've made it a bit more general so we can come back to check the number of trees with different values of `mtry` and `min_n`. Let's look at values from 100 (which is almost certainly too low) to 1201 by increments of 50 trees. First, we loop through these values using `map_df()` so they are all bound in a single data frame.
 
 ```{r warning = FALSE}
 test_n_trees <- map_df(seq(1, 1201, 50), fit_rf)
@@ -513,7 +513,7 @@ ggplot(test_n_trees, aes(trees, .estimate)) +
   geom_line()
 ```
 
-And as we can see, we're actually pretty safe with a much lower value, perhaps even as low as 100. However, because the models run very fast, we won't worry too about this too much. When we conduct our model tuning, we'll drop to 500 trees instead of 1000 (still well above what it appears is needed).
+And as we can see, we're actually pretty safe with a much lower value, perhaps even as low as 100. However, because the models run very fast, we won't worry about this too much. When we conduct our model tuning, we'll drop to 500 trees instead of 1000 (still well above what it appears is needed).
 
 Let's see if we can improve performance by changing the `mtry` or `min_n`. Because we only have five predictor variables in this case, we don't have a huge range to evaluate with `mtry`. But let's setup a regular grid looking at values of 2, 3, 4 and 5 for `mtry`, and `min_n` values of 2, 5, 10, 15, 20, and 25. We can then use our `fit_rf()` function again, but this time setting the number of trees and looping through each of our `mtry` and `min_n` values.
 
@@ -566,7 +566,7 @@ The recipe above does the following
 * Changes the role of `tst_dt` from a predictor to a `time_index`, which is a special role that can be used to calculate date windows
 * Changes the role of all ID variables to an arbitrary `"id vars"` role, just so they are not used as predictors in the model
 * Recodes nominal columns such that previously unencountered levels of the variable will be recoded to a `"new"` level
-* Imputes and `"unknown"` category for all nominal data
+* Imputes an `"unknown"` category for all nominal data
 * Uses a rolling time window imputation (median for the closes 5 data points) to impute all numeric columns
 * In cases where the time window is missing, imputes with the median of the column for all numeric columns
 * Removes zero variance predictors
@@ -606,7 +606,7 @@ rf_fit_reg <- function(tree_n, mtry, min_n) {
 }
 ```
 
-Notice in the above that I've used `sqrt(rf_fit$fit$prediction.error)` for the root mean square error, rather than using the model predictions with a **{yardstick}** function. This is because the default OOB error for a regression models with **{ranger}** is the mean square error, so we don't have to do any predictions on our own - we just need to take the square root of this value. Most of the rest of this function is the same as before.
+Notice in the above that I've used `sqrt(rf_fit$fit$prediction.error)` for the root mean square error, rather than using the model predictions with a **{yardstick}** function. This is because the default OOB error for a regression model with **{ranger}** is the mean square error, so we don't have to do any predictions on our own - we just need to take the square root of this value. Most of the rest of this function is the same as before.
 
 Let's now conduct our tuning. First, let's check how many predictors we have:
 
@@ -614,7 +614,7 @@ Let's now conduct our tuning. First, let's check how many predictors we have:
 ncol(processed_reg) - 1
 ```
 
-Remember, for regression problems, I good place to start is around $m/3$, or `r round((ncol(processed_reg) - 1) / 3, 2)`. Let's make a grid of `mtry` values, centered around `r round((ncol(processed_reg) - 1) / 3, 2)`. For `min_n`, we'll use the same values we did before: 2, 5, 10, 15, 20, and 25. We'll then evaluate the OOB RMSE across these different values and see if we need to conduct any more hyperparameter tuning.
+Remember, for regression problems, a good place to start is around $m/3$, or `r round((ncol(processed_reg) - 1) / 3, 2)`. Let's make a grid of `mtry` values, centered around `r round((ncol(processed_reg) - 1) / 3, 2)`. For `min_n`, we'll use the same values we did before: 2, 5, 10, 15, 20, and 25. We'll then evaluate the OOB RMSE across these different values and see if we need to conduct any more hyperparameter tuning.
 
 ```{r }
 grid_reg <- expand.grid(mtry = 5:15,
@@ -640,6 +640,7 @@ ggplot(rf_reg_fits, aes(mtry, rmse)) +
   geom_line() +
   facet_wrap(~min_n)
 ```
+
 It looks like values of 7 or 8 are optimal for `mtry`, and our `min_n` is likely somewhere north of 20. Let's see if we can improve performance more by tuning a bit more on `min_n`. We'll evaluate values from 21 to 31 in increments of 2, while using both `mtry` values of 7 and 8.
 
 ```{r }
@@ -690,13 +691,13 @@ And now it looks more stable. So even with 500 trees we likely would have been f
 From here, we could continue on to evaluate our final model against the test set using the `last_fit()` function, but we will leave that as an exercise for the reader. Note that we also only worked with 5% of the total data. The hyperparameters that we settled on may be different if we used more of the data. We could also likely improve performance more by including additional information in the model - e.g., information on staffing and funding, the size of the school or district, indicators of the economic and demographic makeup of the surrounding area, or practices related to school functioning (e.g., use of suspension/expulsion).
 
 ## Feature and model interpretation
-A considerable benefit of decision tree model is that they are relatively easy to understand, in terms of how predictions are made. It's perhaps less clear *why* specific splits have been made, but it's relatively straightforward to communicate with stakeholders *how* predictions are made. This is because the tree itself can be followed, like a road map, to the terminal node. The tree is just a series of if/then statements. Unfortunately, this ease of interpretation all goes out the window with bagged trees and random forests. Instead of just building one decision tree, we are building hundreds or even thousands, with each tree (or at least most trees) being at least slightly different. So how do we communicate the results of our model with stakeholders? How can we effectively convey how our model makes predictions?
+A considerable benefit of decision tree models is that they are relatively easy to understand, in terms of how predictions are made. It's perhaps less clear *why* specific splits have been made, but it's relatively straightforward to communicate with stakeholders *how* predictions are made. This is because the tree itself can be followed, like a road map, to the terminal node. The tree is just a series of if/then statements. Unfortunately, this ease of interpretation all goes out the window with bagged trees and random forests. Instead of just building one decision tree, we are building hundreds or even thousands, with each tree (or at least most trees) being at least slightly different. So how do we communicate the results of our model with stakeholders? How can we effectively convey how our model makes predictions?
 
 Perhaps the most straightforward way to communicate complex models with stakeholders is to focus on feature importance. That is, which features in the model are **most important** in establishing the prediction. We can do this with **{ranger}** models using the [**{vip}**](https://koalaverse.github.io/vip/index.html) package (vip stands for **v**ariable **i**mportance **p**lots). 
 
 In a standard decision, a variable is selected at a given node if it improves the objective function score. The relative importance of a given variable is then determined by the sum of the squared improvements (see [**{vip}** documentation](https://koalaverse.github.io/vip/articles/vip.html)). This basic idea is extended to ensembles of trees, like bagged trees and random forest, by computing the mean of these importance scores across all trees in the ensemble. 
 
-To obtain variable importance scores, we first have to re-run our **{ranger}** model, requesting it compute variable importance metrics. We do this by specifying `importance = "impurity"` (which is the Gini index for classification problems). 
+To obtain variable importance scores, we first have to re-run our **{ranger}** model, requesting it computes variable importance metrics. We do this by specifying `importance = "impurity"` (which is the Gini index for classification problems). 
 
 ```{r }
 # specify the model and request a variable importance metric
@@ -721,7 +722,7 @@ library(vip)
 vi(rf_fit_reg_final$fit)
 ```
 
-The results of this investigation are not entirely surprising. The `enrl_grd` the student is in is the most important predictor of their score. Following grade level, the students' economic disadvantaged status is the most predictive feature in the model, following [a long history](https://static1.squarespace.com/static/592b5bbfd482e9898c67fd98/t/5e6582fd24dfaf352639d205/1583710974310/The+Widening+Income+Acheivement+Gap+Between+the+Rich+and+The+Poor.pdf) of evidence documenting differential achievement by socioeconomic status. Students classified as talented and gifted (TAG), and those who received special education services are the next two most predictive variables, followed by the physical location of the school (`lat` = latitude and `lon` = longitude). Each of these variables would be among those that we might have guessed, a priori, would be the most predictive.
+The results of this investigation are not entirely surprising. The `enrl_grd` the student in is the most important predictor of their score. Following grade level, the students' economic disadvantaged status is the most predictive feature in the model, following [a long history](https://static1.squarespace.com/static/592b5bbfd482e9898c67fd98/t/5e6582fd24dfaf352639d205/1583710974310/The+Widening+Income+Acheivement+Gap+Between+the+Rich+and+The+Poor.pdf) of evidence documenting differential achievement by socioeconomic status. Students classified as talented and gifted (TAG), and those who received special education services are the next two most predictive variables, followed by the physical location of the school (`lat` = latitude and `lon` = longitude). Each of these variables would be among those that we might have guessed, a priori, would be the most predictive.
 
 Let's look at a plot showing the relative importance of the features in our model.
 
@@ -755,7 +756,7 @@ As we can see, there are a few small differences, but generally the results agre
 
 Inspecting variable importance helps us  understand *which* variables contribute to our model predictions, but not necessarily *how* they relate to the outcome. For that, we can look at partial dependency plots via the [**{pdp}**](https://bgreenwell.github.io/pdp/index.html) package (which is developed by the same people who created **{vip}**).
 
-Partial dependency plots show the *marginal* effect of a feature on the outcome. This can help us to understand the directionality of the effect and whether it is generally linear or not. For example, we would probably expect that students' scores would increase roughly linearly and monotonically with `enrl_grd`. To see if that's the case we case we use the `pdp::partial()` function.
+Partial dependency plots show the *marginal* effect of a feature on the outcome. This can help us understand the directionality of the effect and whether it is generally linear or not. For example, we would probably expect that students' scores would increase roughly linearly and monotonically with `enrl_grd`. To see if that's the case we use the `pdp::partial()` function.
 
 ```{r }
 library(pdp)
@@ -799,9 +800,10 @@ ggplot(or, aes(long, lat)) +
   theme_void() +
   theme(legend.position = "bottom")
 ```
-Note that, when the PDP is created, it just create a grid for prediction. So when we overlay the map of Oregon, we see some areas where the prediction extends outside of the state, which are not particularly trustworthy.
 
-Finally, we might also be interested in the individual variability of a feature. Let's again look at the enrolled grade of students. In this case, we'll create *individual conditional expectation* plots, or ICE curves, which are the equivalent to PDP's but for individual observations. The **{pdp}** package can again create these for us. The process for creating them is essentially equivalent, but we provide one additional argument, `ice = TRUE`. Note that we can use `plot = TRUE` here too but I've just output the values to have a bit more control of how the plot renders.
+Note that, when the PDP is created, it just creates a grid for prediction. So when we overlay the map of Oregon, we see some areas where the prediction extends outside of the state, which are not particularly trustworthy.
+
+Finally, we might also be interested in the individual variability of a feature. Let's again look at the enrolled grade of students. In this case, we'll create *individual conditional expectation* plots, or ICE curves, which are equivalent to PDP's but for individual observations. The **{pdp}** package can again create these for us. The process for creating them is essentially equivalent, but we provide one additional argument, `ice = TRUE`. Note that we can use `plot = TRUE` here too but I've just output the values to have a bit more control of how the plot renders.
 
 ```{r }
 ice_grade <- partial(rf_fit_reg_final$fit, 
@@ -819,4 +821,4 @@ ggplot(ice_grade, aes(enrl_grd, yhat)) +
 
 And as we would likely expect, there is a *lot* of variation here in expected scores across grades. 
 
-Bagged trees can often lead to better predictions than a single decision tree by creating *ensembles* of trees based on bootstrap resamples of the data and aggregating the results across all trees. Random forests extend this framework by randomly sample $m$ columns at each split of each tree that is grown in the ensemble (or forest) which can help decorrelate the trees and, often, lead to better overall predictions. Unfortunately creating an ensemble of trees also makes feature and model interpretation a bit more difficult. Tools like variable importance and partial dependence plots can be an efficient means of communicating *how* and *why* a model is making the predictions it is, while still maintaining strong overall model performance. For more information on these and other methods, see [Molnar, 2020](https://christophm.github.io/interpretable-ml-book/). 
+Bagged trees can often lead to better predictions than a single decision tree by creating *ensembles* of trees based on bootstrap resamples of the data and aggregating the results across all trees. Random forests extend this framework by randomly sampling $m$ columns at each split of each tree that is grown in the ensemble (or forest) which can help decorrelate the trees and, often, lead to better overall predictions. Unfortunately creating an ensemble of trees also makes feature and model interpretation a bit more difficult. Tools like variable importance and partial dependence plots can be an efficient means of communicating *how* and *why* a model is making the predictions it is, while still maintaining strong overall model performance. For more information on these and other methods, see [Molnar, 2020](https://christophm.github.io/interpretable-ml-book/). 
