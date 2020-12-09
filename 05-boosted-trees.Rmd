@@ -5,8 +5,9 @@ source("_common.R")
 
 library(tidyverse)
 library(tidymodels)
+library(sds)
 knitr::opts_chunk$set(warning = FALSE,
-                      cache = TRUE)
+                     cache = FALSE)
 ```
 
 Similar to bagging, boosting is a general algorithm that can be applied to any model. Frequently, however, it is applied to trees. Recall that when we use bagging (often through bagged tree or random forest models), we needed to have a sufficient number of bags, or bootstrap resamples, of the training data so our model performance metrics stabilize. Including additional bags (trees) once the performance has stabilized will not *hurt* in terms of model performance, but it will take longer to fit (i.e., more computationally expensive).
@@ -335,7 +336,7 @@ ggplot(sim_d, aes(x, y)) +
 
 Or, just for fun, we could animate it. 
 
-```{r }
+```{r cache = TRUE}
 library(gganimate)
 ggplot(grad) +
   geom_point(aes(x, y), sim_d) +
@@ -470,18 +471,20 @@ Beyond these additional stochastic-based hyperparameters, **{xgboost}** provides
 
 The **{xgboost}** package itself includes *even more* hyperparameters, including slightly alternative methods for fitting the model altogether. For example, the `dart` booster includes a random *dropout* component. The idea, which originated with neural nets, is that trees added early in the ensemble will be more important than trees added late in the ensemble. So, particularly in cases where the model overfits quickly, it can be helpful to randomly remove (drop) specific trees from the overall ensemble. This is a rather extreme regularization approach, but has been shown to improve performance in some situations. 
 
-In what follows, we discuss implementation beginning with **{tidymodels}**. However, we will also provide examples with **{xgboost}** directly, including direct comparisons between the two implementations. We discuss both implementations because using **{xgboost}** directly can often lead to benefits in computational time. Further, as mentioned above, using **{xgboost}** directly allows for the inclusion of even more hyperparameters easily.
+In what follows, we discuss implementation with **{tidymodels}**. However, we will also provide a few examples with **{xgboost}** directly, including direct comparisons between the two implementations. Our motivation here is not necessarily to advocate for the use of one versus the other, but to highlight that there are some differences and, depending on your specific situation, you might prefer to use one over the other. For example, if you do not have a need to move outside of the hyperparameters that have already been implementedin **{parsnip}** for the **{xgboost}** engine, there's likely no need to move outside of the **{tidymodels}** framework. If, however, you are having problems with severe overfitting and you want to try using *dropout* for regularization, then you will need to move to **{xgboost}** directly with the *dart* booster. 
 
 ## Fitting boosted tree models
 Let's use our same statewide testing data we have now used at numerous points, along with our same recipe.
 
 ```{r }
+library(sds)
 library(tidyverse)
 library(tidymodels)
 library(tictoc)
+
 set.seed(41920)
-full_train <- read_csv("https://github.com/uo-datasci-specialization/c4-ml-fall-2020/raw/master/data/train.csv") %>% 
-  slice_sample(prop = 0.02) %>% 
+full_train <- get_data("state-test") %>% 
+  slice_sample(prop = 0.05) %>% 
   select(-classification)
 
 splt <- initial_split(full_train)
@@ -489,7 +492,7 @@ train <- training(splt)
 cv <- vfold_cv(train)
 ```
 
-Next we'll specify a basic recipe. One thing to note about the below, generally we don't have to worry about dummy-coding variables for decision trees. However, dummy-coding (or one-hot encoding) *is* neccessary when using **{xgboost}**.
+Next we'll specify a basic recipe. One thing to note about the below is that we generally don't have to worry about dummy-coding variables for decision trees. However, dummy-coding (or one-hot encoding) *is* necessary when using **{xgboost}**.
 
 ```{r }
 rec <- recipe(score ~ ., train) %>% 
@@ -507,27 +510,392 @@ rec <- recipe(score ~ ., train) %>%
   step_nzv(all_predictors(), freq_cut = 995/5)
 ```
 
-XGBoost is "an optimized distributed gradient boosting library designed to be highly **efficient**" (emphasis in the original, from the [XGBoost documentation](https://xgboost.readthedocs.io/en/latest/)). The distributed part means that the models are built to work efficiently with parallel processing, and is (relative to alternative methods) extremely fast. It defaults to using the maximum number of threads available, but you can specify this if you want it to use fewer with the `nthread` argument passed to `set_engine()`. We'll also add additional arguments to specify a large number of trees with early stopping through the `trees` and `stop_iter` arguments.
+XGBoost is "an optimized distributed gradient boosting library designed to be highly **efficient**" (emphasis in the original, from the [XGBoost documentation](https://xgboost.readthedocs.io/en/latest/)). The distributed part means that the models are built to work efficiently with parallel processing, and is (relative to alternative methods) extremely fast. We specify the model the same basic way we always do in the **{tidymodels}** framework, using `parsnip::boost_tree()` to specify the model and setting the engine to `xgboost`. We'll also set the mode to be regression.
+
 
 ```{r }
 mod <- boost_tree() %>% 
-  set_engine("xgboost") %>% # will use the maximum number of threads
-  set_mode("regression") %>% 
-  set_args(trees = 5000,
-           stop_iter = 20)
+  set_engine("xgboost") %>% 
+  set_mode("regression") 
 ```
 
-Let's now estimate this model using the default hyperparameter values.
+We can translate this model to essentially a raw **{xgboost}** model using the `translate` function.
+
+```{r }
+translate(mod)
+```
+
+Note that the data have not yet been specified (we pass these arguments when we use `fit_resamples()` or similar). Additionally, the `nthread` argument specifies the number of processors to use in parallel processing. By default, **{parsnip}** sets this argument to `1`, but **{xgboost}** will set it to the maximum number of processors available. We can change this by passing the `nthread` argument either directly to `set_engine()` or to `set_args()`.
+
+Additionally, we want to use early stopping. To do this we have to pass three additional arguments: `ntree`, `stop_iter` and `validation`. These arguments represent, respectively, the maximum number of trees to use, the number of consecutive trees that should show no improvement on the validation set to exit the stop the algorithm, and the proportion of the data that should be used for the validation set (to monitor the objective function and potentially exit early). The maximum number of trees should just be sufficiently large that early stopping will kick in at some point. The `stop_iter` argument is a hyperparameter, but is less important than other - generally we use somewhere between 20-50, but values of 100 or so may also work well (because they are evaluated against the validation set, generally you just need a number that is sufficiently large). Finally, you **must** also pass a `validation` argument specifying the proportion of the data you would like to use to determine early stopping or the early stopping will not work (because it can't evaluate changes against a validation set when no validation set exists, and there is no default value for `validation`). We typically use 20% for validation. Additionally it is worth noting that, at least at present, the methods for establishing early stopping differ somewhat between the two implementations (see [here](https://github.com/tidymodels/parsnip/issues/237#issuecomment-625981756)). 
+
+Let's specify our model with these additional arguments, while setting the `nthread` to the maximum.
+
+```{r }
+parallel::detectCores()
+mod <- mod %>% 
+    set_args(nthread = 16,
+             trees = 5000,
+             stop_iter = 20,
+             validation = 0.2)
+```
+
+And finally, we can estimate using the default hyperparameter values.
 
 ```{r }
 tic()
-boosted_fit1_tm <- fit_resamples(mod, rec, cv)
+gbt_def_tm <- fit_resamples(mod, rec, cv)
 toc(log = TRUE)
 ```
 
-Notice we're only working with a small portion of the overall sample and, despite what we just mentioned about speed, it still took a while. How does the default performance look?
+Notice we're only working with 5% of the overall sample (to save time in rendering this chapter). But this was relatively quick for 10-fold CV. How does the default performance look?
 
 ```{r }
-collect_metrics(boosted_fit1_tm)
+collect_metrics(gbt_def_tm)
 ```
 
+Not bad! But there's a lot of tuning we can still do to potentially improve performance from here. Notice that this took  `r tic_seconds(1)` seconds. What if we do this same thing with **{xgboost}** directly?
+
+First, we'll need to process our data
+
+```{r }
+processed_train <- rec %>% 
+  prep() %>% 
+  bake(train)
+```
+
+Next, we're going to drop the ID variables and the outcome and transform the data frame into a matrix, which is what **{xgboost}** will want.
+
+```{r }
+features <- processed_train %>% 
+  select(-score, -contains("id"), -ncessch) %>% 
+  as.matrix()
+```
+
+And now we can fit the model using these data directly with **{xgboost}**. We'll still use 10-fold cross-validation, but have **{xgboost}** do it for us directly. Notice in the below that some of the arguments are a bit different, but they all walk directly to what we used with **{tidymodels}**. We're using the squared errors as the objective function, which is equivalent to the mean squared error. Notice also that I do not have specify the `nthread` argument because it will default to the maximum number of processors.
+
+```{r }
+library(xgboost)
+tic()
+fit_default_xgb <- xgb.cv(
+  data = features,
+  label = processed_train$score,
+  nrounds = 5000, # number of trees
+  objective = "reg:squarederror", 
+  early_stopping_rounds = 20, 
+  nfold = 10,
+  verbose = FALSE
+)
+toc(log = TRUE)
+```
+
+And this took `r tic_seconds(2)` to fit, so just a bit faster. But, this also takes additional time before estimation in data processing (and that data processing happens directly with the **{tidymodels}** implementation.
+
+How do the results compare? When using **{xgboost}** directly, the history of the model is stored in an `evaluation_log` data frame inside the returned object. There is also a `best_iteration` value that specifies which iteration had the best value for the objective function for the given model. We can use these together to look at our final model results.
+
+```{r}
+fit_default_xgb$evaluation_log %>% 
+  dplyr::slice(fit_default_xgb$best_iteration)
+```
+
+And as you can see, the RMSE value for the validation set is very similar to what we got with **{tidymodels}**. 
+
+One nice feature about using **{xgboost}** directly is that we can use the `evaluation_log` to plot the learning curve. We just have to first rearrange the data frame a bit.
+
+```{r }
+log_def <- fit_default_xgb$evaluation_log %>% 
+  pivot_longer(-iter,
+               names_to = c("set", "metric", "measure"),
+               names_sep = "_") %>% 
+  pivot_wider(names_from = "measure",
+              values_from = "value")
+log_def
+```
+
+And then we can plot the test and train curves together.
+
+```{r }
+ggplot(log_def, aes(iter, mean)) +
+  geom_line(aes(color = set)) 
+```
+
+As we can see, in this case, there is very little separation between the test and train sets, which is a good thing. If the curves started to converge but then separated again, or never really converged but always had a big gap between them, this would be strong evidence that we were overfitting (i.e. the training error continues to go down as the test/validation error goes up).
+
+### Model tuning 
+Let's now tune our model, starting with the learning rate. In what follows, we illustrate this approach using both the **{tidymodels}** implementation and **{xgboost}** directly. However, following tuning our model, we proceed with further tuning using only the **{tidymodels}** implementation.
+
+:::warning
+The models here take a long time to fit. In fact, we did not estimate them here directly. Rather, we sampled half of the total data (rather than 5% as above) and ran each of the models below using a high performance computing cluster. We recommend **not** running these models on your local computer, and instead using high-performance computing.
+:::
+
+First, we need to specify a grid of values to search over. Remember, smaller learning rate values will lead to the model learning slower (and thus taking longer to fit) and risk finding local minima. However, lower learning rates are also *more* likely to find the global minimum. Higher learning rates will fit quicker, taking larger steps downhill, but risk "stepping over" the global minimum.
+
+First, let's create a grid of 20 learning rate values to evaluate.
+
+```{r }
+grd <- expand.grid(learn_rate = seq(0.001, 0.2, length.out = 20))
+```
+
+We'll start with the **{tidymodels}** approach. Let's update our previous **{parsnip}** model to set the learning rate to `tune()`.
+
+```{r }
+mod <- mod %>% 
+  set_args(learn_rate = tune())
+mod
+```
+
+Next, we just use `tune_grid()` like normal, passing it our model, cv object, and grid to search over.
+
+```{r eval = FALSE}
+tune_tree_lr_tm <- tune_grid(mod, rec, cv, grid = grd)
+```
+
+```{r echo = FALSE}
+tune_tree_lr_tm <- readRDS(here::here("models", "xgboost",  "tune_tree_lr_tm.Rds"))
+```
+
+Let's try the same thing with **{xgboost}** directly. In this case, we're going to have to loop over the learning rate candidate values "manually". In the below, we've used `purrr::pmap()` because it's the most general. In other words, you could very easily modify the below code to include additional hyperparameters by providing them within the `list` argument, and then referring to those parameters in the function by their location in the list (e.g., `..1` for the first argument, as below, `..2` for the second, `..7` for the seventh, etc.). In this case, however, `purrr::map()` or `base::lapply()` would work just as well, and you could always use a `for` loop if you prefer (and you could also use names within `pmap()` by including `function(...)`).
+
+```{r eval = FALSE}
+tune_tree_lr_xgb <- pmap(list(grd$learn_rate), ~ {
+ xgb.cv(
+   data = features,
+   label = processed_train$score,,
+   nrounds = 5000, # number of trees
+   objective = "reg:squarederror", # 
+   early_stopping_rounds = 20, 
+   nfold = 10,
+   verbose = FALSE,
+   params = list(eta = ..1) # learning rate = eta
+ ) 
+})
+```
+
+```{r echo = FALSE}
+tune_tree_lr_xgb <- readRDS(here::here("models", "xgboost",  "tune_tree_lr_xgb.Rds"))
+```
+
+How do the results compare? Let's first look at the best hyperparamter values using **{tidymodels}**. 
+
+```{r }
+lr_tm_best <- collect_metrics(tune_tree_lr_tm) %>% 
+  filter(.metric == "rmse") %>% 
+  arrange(mean)
+lr_tm_best
+```
+
+To get these same values with the **{xgboost}** model we have to work a *little* bit harder. The models are all stored in a single list. We'll loop through that list and pull out the best iteration. If we name the list first by the learning rate values the entry represents, then we can use the `.id` argument with `map_df()` to return a nice data frame.
+
+```{r }
+names(tune_tree_lr_xgb) <- grd$learn_rate
+lr_xgb_best <- map_df(tune_tree_lr_xgb, ~{
+  .x$evaluation_log[.x$best_iteration, ]
+  }, .id = "learn_rate") %>% 
+  arrange(test_rmse_mean) %>% 
+  mutate(learn_rate = as.numeric(learn_rate))
+lr_xgb_best
+```
+
+Notice that we do get slightly different values here, but it appears clear from both implementations that the best learning rate is somewhere around 0.05. Let's go ahead and set it at this value and proceed with tuning our tree depth. We'll use a space filling design (max entropy) to tune the minimum $n$ for a terminal node, and the maximum depth of the tree. We'll fit 30 total models.
+
+```{r }
+tree_grd <- grid_max_entropy(min_n(c(0, 50)), # min_child_weight
+                             tree_depth(), # max_depth
+                             size = 30)
+```
+
+We can visualize this grid to see how well we're  doing in actually filling the full space of this grid.
+
+```{r }
+ggplot(tree_grd, aes(min_n, tree_depth)) +
+  geom_point()
+```
+
+Looks pretty good! At least as a starting point. But we'll want to look at the trends for each of these
+hyperparatmers after tuning to see if we need to further refine them.
+
+
+Going forward from here with *just* the **{tidymodels}** implementation, we'll set the learning rate at 0.05 and set each of the tree depth parameters to tune. 
+
+```{r }
+mod <- mod %>% 
+  set_args(learn_rate = 0.05,
+           min_n = tune(),
+           tree_depth = tune())
+```
+
+
+We'll then fit the model (using high performance computing) for each of the combinations in our hyperparamter space-filling design using `tune_grid()`.
+
+```{r eval = FALSE}
+tune_treedepth_tm <- tune_grid(mod, rec, cv, grid = tree_grid)
+```
+
+```{r echo = FALSE}
+tune_treedepth_tm <- readRDS(here::here("models", "xgboost",  "tune_treedepth_tm.Rds"))
+```
+
+Let's evaluate the trends of each of the hyperparameters
+
+```{r }
+collect_metrics(tune_treedepth_tm) %>% 
+  filter(.metric == "rmse") %>% 
+  pivot_longer(c("min_n", "tree_depth")) %>% 
+  ggplot(aes(value, mean)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~name, scales = "free_x")
+```
+
+And we can see that the optimal value for `min_n` is a little bit less clear than for `tree_depth`. The former looks to be somewhere in the range of 12-25, but a few of the higher values (e.g., 33-ish) look pretty good as well. For the latter, it seems pretty clear that a tree depth of about 8 is optimal. Note that this is a bit higher than typical. Let's look at just the raw 
+
+```{r }
+collect_metrics(tune_treedepth_tm) %>% 
+  filter(.metric == "rmse") %>% 
+  arrange(mean)
+```
+
+And as we can see there are actually multiple combinations of our two hyperparameters that lead to essentially equivalentRMSE values. The variability (estimated by the standard error) is fairly consistent as well, although it is a bit lower for a few models. This is fairly common for boosted tree models and, really, any model with multiple hyperparameters - various combinations of the hyperparameters lead to similar results. Just to be certain this is really what we want, we could use a regular grid to search over `min_n` values from, say, 12 to 25 and 30 to 35 while tuning the tree depth over a smaller range, perhaps 6 to 9. For now, however, we'll just move forward with our best combination from the grid search we've conducted. Let's first update our model with the best hyperparameter combination we found. We'll then proceed with model tuning to see if we can additional gains by limiting the depth of the tree by the change in the cost function (i.e, tuning the loss reduction).
+
+```{r }
+mod <- mod %>% 
+  finalize_model(
+    select_best(tune_treedepth_tm, metric = "rmse")
+  ) %>% 
+  set_args(loss_reduction = tune())
+
+mod
+```
+
+Let's search 15 different values of loss reduction, searching over the default recommended range provided to use by the `dials::loss_reduction` function
+
+```{r }
+lossred_grd <- grid_regular(loss_reduction(c(-4, 1.7)), levels = 15)
+lossred_grd$loss_reduction
+```
+
+Note that I have changed the default range here (after applying a log10 transformation) so there aren't quite so many values down close to zero, and there are a few more that are in the upper range.
+
+Let's tune the model
+
+```{r eval = FALSE}
+tune_lossred_tm <- tune_grid(mod, rec, cv, grid = lossred_grd)
+```
+
+```{r echo = FALSE}
+tune_lossred_tm <- readRDS(here::here("models", "xgboost",  "tune_lossred_tm.Rds"))
+```
+
+And evaluate the how the loss reduction related to the RMSE:
+
+```{r }
+collect_metrics(tune_lossred_tm) %>% 
+  filter(.metric == "rmse") %>% 
+  arrange(mean)
+```
+
+Our best model above is *slightly* better than our previous best, and the standard error (variance in the means across folds) is essentially unchanged. Let's just look at these values quickly and make sure we don't see any trends that would warrant additional tuning. Note that I've put a log 10 transformation on the x axis because that was the transformer that was used when creating the hyperparemeters, so that will allow us to view the hyperparameters with equal intervals.
+
+```{r }
+collect_metrics(tune_lossred_tm) %>% 
+  filter(.metric == "rmse") %>% 
+  ggplot(aes(loss_reduction, mean)) +
+  geom_line() +
+  geom_point() +
+  scale_x_log10()
+```
+
+We don't see much of a trend, and it's important to note that the range of the y-axis is severely restricted (meaning all models are pretty comparable), but the two best values are on the lower end of the scale.
+
+Let's move forward with these, and tune the stochastic components. We'll start by randomly sampling a proportion of rows and columns to sample for each *tree* (as opposed to each each split, as we do with random forests). We will again setup a grid for these parameters. To do this most efficiently, we'll first bake our data so we can efficiently determine the number of rows and columns in our data. We will also use the `dials::finalize()` function to help us determine the range of reasonable values. This is because functions like `dials::mtry()` have a lower bound range of 1 (one column at a time) and an upper value that is unknown and depends on the number of columns in the data. 
+
+```{r }
+baked <- rec %>% 
+  prep() %>% 
+  bake(train) %>% 
+  select(-contains("id"), -ncessch)
+
+cols_range <- finalize(mtry(), baked)
+cols_range
+```
+
+For the `sample_size` argument **{parsnip}** expects (rather confusingly) a proportion of rows to be exposed to the fitting algorithm for each tree, rather than a number (i.e., at least as of thise writing, you will get an error if you used `dials::sample_size()` to determine the number of rows). We will therefore use `sample_prop()` and keep the default range from 10% to 100% of the rows.
+
+Let's again use a space-filling design to specify our grid, evaluating 30 different combinations of these hyperparameters.
+
+```{r }
+stoch_grd <- grid_max_entropy(cols_range, 
+                              sample_size = sample_prop(),
+                              size = 30)
+stoch_grd
+```
+
+And finally, we can update our previous model with the best loss reduction, setting the stochastic parameters to tune. We then tune over our grid with `tune_grid()`.
+
+```{r }
+mod <- mod %>% 
+  finalize_model(select_best(tune_lossred_tm, metric = "rmse")) %>% 
+  set_args(sample_size = tune(),
+           mtry = tune())
+mod
+```
+
+```{r eval = FALSE}
+tune_stoch_tm <- tune_grid(mod, rec, cv, grid = stoch_grd)
+```
+
+```{r echo = FALSE}
+tune_stoch_tm <- readRDS(here::here("models", "xgboost",  "tune_stoch_tm.Rds"))
+```
+
+```{r }
+stoch_mets <- collect_metrics(tune_stoch_tm) %>% 
+  filter(.metric == "rmse") %>% 
+  arrange(mean)
+stoch_mets
+```
+
+And once again our best model is very marginally better over our previous best. Let's see if there are any trends in these hyperparameters.
+
+```{r }
+stoch_mets %>% 
+  pivot_longer(c(mtry, sample_size)) %>% 
+  ggplot(aes(value, mean)) +
+  geom_line() + 
+  geom_point() +
+  facet_wrap(~name, scales = "free_x")
+```
+
+There doesn't appear to be much of a trend in `mtry`, although values abouve about 10 seem to be preferred. For `sample_size`, there is a fairly clear trend downward as the proportion goes up, but the best is before we reach all the data. We might want to retune here with a more limited range on sample size somewhere between the 0.9 to 1.0 range, but we'll leave here for now.
+
+The final step for tuning this model would be to set the stochastic components and re-tune the learning rate to see if we could improve performance further. Given where we've been, and the progress we've made, our model is unlikely to have *substantial* performance improvements from here, but we might be able to make some marginal gains. In this case, we also didn't have much evidence that our model was overfitting. If we did, we could try to tune on hyperparameters that are not currently implemented in `parsnip::boost_tree()`, like L1 and L2 regularizers, by just passing these arguments direction to the **{xgboost}** function through `set_args()`. We just need to use the name of the parameter in **{xgboost}**. For example
+
+```{r }
+mod <- mod %>% 
+  finalize_model(select_best(tune_stoch_tm, metric = "rmse")) %>% 
+  set_args(
+    alpha = tune(), # L1
+    lambda = tune() # L2
+  )
+```
+
+Then we set a grid. I've used a space filling design below and the method is a bit hacky because `grid_max_entropy` won't let us have two `penalty()` values, and it also won't (currently) let us have two named values. So we just create it with different names and then manually rename the columns. 
+
+```{r }
+penalized_grid <- grid_max_entropy(penalty(), lambda = penalty(), size = 15)
+names(penalized_grid)[1] <- "alpha"
+penalized_grid
+```
+
+And then we can tune. Note that we are not actually fitting this model here, but rather we are illustrating *how* you can tune hyperparameters with **{tidymodels}** that are not yet implemented in the given **{parsnip}** model.
+
+```{r eval = FALSE}
+tune_penalized_tm <- tune_grid(mod, rec, cv, grid = penalized_grid)
+```
+
+Note that if we wanted to try a different *booster*, such as **DART** (which uses dropout), we would need to use **{xgboost}** directly.
+
+### Wrapping up
+Gradient boosted trees provide a powerful framework for constructing highly performant models. They differ from other tree-based ensemble models by building the trees sequentially, with each new tree fit to the errors of the previous. The learning is guided by gradient descent, an algorithm that finds the optimal direction the model needs to move in to minimize the objective function. The rate at which we move in that direction, is called the learning rate.
+
+Gradient boosted trees, particularly when implemented with **{xgboost}** have a large number of hyperparameters - many more than we've seen in previous models. This means that multiple combinations of these hyperparameters may lead to similarly performing models. It can also become overwhelming if you are searching for any combination that even marginally improves performance, as with online machine learning competition platforms like [Kaggle](https://www.kaggle.com). In most social science problems, however, the *practical* difference in a model that has an RMSE value of (in our example) 83.8 versus, say, 83.6 is unlikely to be a game changer. If it is, then you should likely go through several cycles of hyperparameter tuning to try to identify the optimal hyperparameter combination. But if it's not, we suggest proceeding in the method shown here, using early stopping to control the number of trees, tuning the learning rate, then the tree-specific hyperparemters, and then the stochastic components. After conducting those steps, you should re-evaluate the learning rate and, in particular, see if a reduced learning rate will increase model performance. From there, we would likely move on and call our model complete. Knowing when to push for more model performance, and when to abandon you efforts and live with what you have, is part of the "art" to building predictive models, and this intuition builds both with experience and with your own knowledge of the data.
