@@ -1085,8 +1085,8 @@
       "RemoteRepo": "sds-pkg",
       "RemoteUsername": "datalorax",
       "RemoteRef": "HEAD",
-      "RemoteSha": "a1862f7fd6ce0263c932c991c060ef3e77954fc7",
-      "Hash": "d3c39a31111558ece24b7d29a7f44eb5"
+      "RemoteSha": "a6301ee4fa0ada3104c9c04c3999004887bf2009",
+      "Hash": "6f32e2381bb98f0383887a1ba80e423d"
     },
     "selectr": {
       "Package": "selectr",
