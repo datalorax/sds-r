@@ -100,14 +100,9 @@ First, we need to load the data, create a split training/test set, pull the trai
 ```{r message = FALSE}
 library(tidyverse)
 library(tidymodels)
+library(sds)
 
-k_train <- read_csv(
-  here::here("data", "ds-bowl-2019.csv"),
-  col_types = cols(.default = col_guess(),
-                   accuracy_group = readr::col_factor(levels = as.character(0:3),
-                                                      ordered = TRUE))
-) %>% 
-  drop_na(accuracy_group)
+k_train <- get_data("ds-bowl-2019")
 
 splt <- initial_split(k_train)
 train <- training(splt)
@@ -117,7 +112,7 @@ cv <- vfold_cv(train)
 Next, we'll specify a basic recipe that just specifies the model formula. 
 
 ```{r }
-rec <- recipe(accuracy_group ~ ., data = train) 
+rec <- recipe(accuracy_group ~ ., data = train)
 ```
 
 And now we're ready to specify our model. This is *pretty much* the same as before, except now we are going to load the **{baguette}** package in addition to **{tidymodels}** and use `bag_tree()` instead of `decision_tree()`. Additionally, we'll specify a `times` argument when we set the engine. Let's start by fitting  a model to 50 bootstrap resamples and aggregating the results across all 50 trees. The rest is the same as before. 
@@ -142,10 +137,6 @@ bt_fit1 <- fit_resamples(bt_mod,
                        preprocessor = rec,
                        resamples = cv)
 toc(log = TRUE) # `log = TRUE` so I can refer to this timing later
-```
-
-```{r, include = FALSE}
-elapsed_bt_fit1 <- as.double(gsub("[^0-9\\.]", "", tic.log()[[1]]))
 ```
 
 ```{r}
@@ -270,11 +261,7 @@ bt_fit2 <- fit(bt_mod2,
 toc(log = TRUE) # `log = TRUE` so I can refer to this timing later
 ```
 
-```{r, include = FALSE}
-elapsed_bt_fit2 <- as.double(gsub("[^0-9\\.]", "", tic.log()[[2]]))
-```
-
-As you can see, we have **substantially** cut the fitting time down because we've only fit the model once. We went from `r round(elapsed_bt_fit1/60, 2)` minutes to only `r round(elapsed_bt_fit2, 2)` seconds! But do we get the same estimates for our metrics if we use the OOB samples? Let's look at the model object
+As you can see, we have **substantially** cut the fitting time down because we've only fit the model once. We went from `r tic_seconds(1) / 60` minutes to only `r tic_seconds(2)` seconds! But do we get the same estimates for our metrics if we use the OOB samples? Let's look at the model object
 
 ```{r }
 bt_fit2

@@ -19,7 +19,8 @@ Initially, we think it's easiest to think about decision trees through a classif
 
 ```{r }
 library(tidyverse)
-titanic <- read_csv(here::here("data", "titanic.csv"))
+library(sds)
+titanic <- get_data("titanic")
 ```
 
 ```{r echo = FALSE}
@@ -206,16 +207,8 @@ The outcome is `accuracy_group`, which is an ordered categorical variable rangin
 
 First, we need to read in the **train.csv** and **train_labels.csv** data. Note that I've removed the `event_data` column, which includes JSON data on `event_count`, `event_code`, and `game_time`, which are already represented as columns in **train.csv**. I've also sampled only read in the first 10,000 rows of the data so that things will run more quickly.
 
-<!-- We should probably move to an R package for the book soon, and that could include either (a) a function to download these data from Kaggle's API, or (b) a small sample of the data. I'd rather the latter but I'm not sure if there's any restrictions for that sort of thing on the data. 
-
-UPDATE: The data have actually been removed so they are fairly obviously not very interested in sharing. Maybe we should just simulate some that are similar.
-
--->
-
 ```{r }
-k_train <- read_csv(here::here("data", "ds-bowl-2019.csv"),
-                    col_types = cols(.default = col_guess(),
-                                     accuracy_group = col_character()))
+k_train <- get_data("ds-bowl-2019")
 ```
 
 After joining the training data with the labels, our full training dataset look like this

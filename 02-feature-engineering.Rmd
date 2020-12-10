@@ -708,7 +708,8 @@ As we can see, it's better than the raw data, but still insufficient.
 Let's look at an applied example. We'll use the `violence` data (see the full data dictionary [here](http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized#)) and see if we can predict the neighborhoods where the number of murders are greater than zero, using the percentage of people living in poverty and the percentage of people living in dense housing units (more than one person per room) as predictors. Let's start with a basic plot.
 
 ```{r }
-violence <- read_csv(here::here("data", "violence.csv"))
+library(sds)
+violence <- get_data("violence")
 
 violence <- violence %>% 
   mutate(murder = ifelse(murders > 0, "Yes", "No"))
@@ -1040,7 +1041,7 @@ Of course, the more splines you are tuning, the more computationally expensive i
 An interaction occurs when the slope, or relation, between one variable and the outcome *depends upon* a second variable. This is also often referred to as *moderation* or a *moderating variable*. For example, consider data that look like this:
 
 ```{r }
-benchmarks <- read_csv(here::here("data", "benchmarks.csv"))
+benchmarks <- get_data("benchmarks")
 
 ggplot(benchmarks, aes(rdg_fall, rdg_spr)) +
   geom_point(color = "gray70") +
