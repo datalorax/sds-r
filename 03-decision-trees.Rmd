@@ -19,7 +19,8 @@ Initially, we think it's easiest to think about decision trees through a classif
 
 ```{r }
 library(tidyverse)
-titanic <- read_csv(here::here("data", "titanic.csv"))
+library(sds)
+titanic <- get_data("titanic")
 ```
 
 ```{r echo = FALSE}
@@ -206,16 +207,8 @@ The outcome is `accuracy_group`, which is an ordered categorical variable rangin
 
 First, we need to read in the **train.csv** and **train_labels.csv** data. Note that I've removed the `event_data` column, which includes JSON data on `event_count`, `event_code`, and `game_time`, which are already represented as columns in **train.csv**. I've also sampled only read in the first 10,000 rows of the data so that things will run more quickly.
 
-<!-- We should probably move to an R package for the book soon, and that could include either (a) a function to download these data from Kaggle's API, or (b) a small sample of the data. I'd rather the latter but I'm not sure if there's any restrictions for that sort of thing on the data. 
-
-UPDATE: The data have actually been removed so they are fairly obviously not very interested in sharing. Maybe we should just simulate some that are similar.
-
--->
-
 ```{r }
-k_train <- read_csv(here::here("data", "ds-bowl-2019.csv"),
-                    col_types = cols(.default = col_guess(),
-                                     accuracy_group = col_character()))
+k_train <- get_data("ds-bowl-2019")
 ```
 
 After joining the training data with the labels, our full training dataset look like this
@@ -233,11 +226,10 @@ train <- training(splt)
 cv <- vfold_cv(train)
 ```
 
-Let's now create a basic recipe for this dataset. In this case, we won't spend much time on the feature engineering (because we're focusing on the modeling). So we'll just use the recipe to specify the outcome as a factor with four levels.
+Let's now create a basic recipe for this dataset. In this case, we won't spend much time on the feature engineering (because we're focusing on the modeling). So we'll just use the recipe to specify the formula.
 
 ```{r }
-rec <- recipe(accuracy_group ~ ., data = train) %>% 
-  step_mutate(accuracy_group = as.factor(accuracy_group))
+rec <- recipe(accuracy_group ~ ., data = train)
 ```
 
 And finally, we'll specify the type of model we want to fit. Because we're using [{tidymodels}](https://www.tidymodels.org) metapackage, and the [{parsnip}](https://parsnip.tidymodels.org) package in particular for specifying our model, the code setup is essentially equivalent to what we've seen in the past. Rather than specifying, say, `lineary_regression()`, however, we just use `decision_tree()`. We then specify the engine to estimate the model, which will be [{rpart}](https://cran.r-project.org/package=rpart), and set our mode (classification). 
@@ -367,15 +359,25 @@ As we can see, there's a big gap in cost complexity, so we'll want to be careful
 
 Now let's actually conduct the search. I have again included timing here so you can see how long it took for me to run on my local computer (which is a decent amount of time).
 
-```{r }
-tic()
+:::warning
+The below took about 20 minutes to run on a local computer.
+:::
+
+```{r eval = FALSE}
 dt_tune_fit <- tune_grid(
   dt_tune,
   preprocessor = rec,
   resamples = cv,
   grid = dt_grid
 )
-toc()
+```
+
+```{r eval = FALSE, echo = FALSE}
+saveRDS(dt_tune_fit, here::here("models", "decision-tree", "dt_tune_fit.Rds"))
+```
+
+```{r echo = FALSE}
+dt_tune_fit <- readRDS(here::here("models", "decision-tree", "dt_tune_fit.Rds"))
 ```
 
 First let's look at our results by hyperparameter. We can use `collect_metrics` to get a summary (mean) of the metrics we set (which we didn't, so we'll get the defaults, which in this case are [roc_auc](https://yardstick.tidymodels.org/reference/roc_auc.html) and [accuracy](https://yardstick.tidymodels.org/reference/accuracy.html)) across folds. You can optionally get te results by fold (no summarizing) by specifying `summarize = FALSE`.
@@ -410,22 +412,39 @@ dt_tune_metrics %>%
   arrange(desc(mean))
 ```
 
-Unsurprisingly, 30 is looking best for our minimum $n$. To be sure we've got this right though, let's set cost_complexity and tune *just* on the minimum $n$. We know that values of 21 and 40 are both worst than 30, but let's see if there's any more room for optimization around there. This shouldn't take quite as long as our previous grid search.
+Unsurprisingly, 30 is looking best for our minimum $n$. To be sure we've got this right though, let's set cost_complexity and tune *just* on the minimum $n$. We know that values of 21 and 40 are both worst than 30, but let's see if there's any more room for optimization around there. 
 
-```{r }
+:::warning
+This shouldn't take quite as long as our previous grid search, but on my local computer it still took about five and half minutes.
+:::
+
+
+
+```{r eval = FALSE}
 grid_min_n <- tibble(min_n = 23:37)
 
 dt_tune2 <- dt_tune %>% 
   set_args(cost_complexity = 0.0000000001)
 
-tic()
 dt_tune_fit2 <- tune_grid(
   dt_tune2,
   preprocessor = rec,
   resamples = cv,
   grid = grid_min_n
 )
-toc()
+```
+
+```{r echo = FALSE, eval = FALSE}
+saveRDS(dt_tune_fit2, here::here("models", "decision-tree", "dt_tune_fit2.Rds"))
+```
+
+```{r echo = FALSE}
+grid_min_n <- tibble(min_n = 23:37)
+
+dt_tune2 <- dt_tune %>% 
+  set_args(cost_complexity = 0.0000000001)
+
+dt_tune_fit2 <- readRDS(here::here("models", "decision-tree", "dt_tune_fit2.Rds"))
 ```
 
 Let's look at our best metrics now and see if we've made any improvements.

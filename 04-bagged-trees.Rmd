@@ -5,8 +5,7 @@ source("_common.R")
 
 library(tidyverse)
 library(tidymodels)
-knitr::opts_chunk$set(warning = FALSE,
-                      cache = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
 ```
 
 In the last chapter, we talked about how decision trees are highly flexible, but are often not the most performant model on their own because they can easily overfit, leading to poor generalizability to new/unseen data. One way to avoid this problem is to build an *ensemble* of trees from random bootstrap samples of the data, and aggregate the predictions across the entire ensemble. This is a general approach known as **bagging**, or **b**ootstrap **agg**regation, which can be applied to any modeling framework, but generally will only provide large gains in improvement if, like decision trees, the model has high variability.
@@ -102,14 +101,9 @@ First, we need to load the data, create a split training/test set, pull the trai
 ```{r message = FALSE}
 library(tidyverse)
 library(tidymodels)
+library(sds)
 
-k_train <- read_csv(
-  here::here("data", "ds-bowl-2019.csv"),
-  col_types = cols(.default = col_guess(),
-                   accuracy_group = readr::col_factor(levels = as.character(0:3),
-                                                      ordered = TRUE))
-) %>% 
-  drop_na(accuracy_group)
+k_train <- get_data("ds-bowl-2019")
 
 splt <- initial_split(k_train)
 train <- training(splt)
@@ -119,36 +113,45 @@ cv <- vfold_cv(train)
 Next, we'll specify a basic recipe that just specifies the model formula. 
 
 ```{r }
-rec <- recipe(accuracy_group ~ ., data = train) 
+rec <- recipe(accuracy_group ~ ., data = train)
 ```
 
 And now we're ready to specify our model. This is *pretty much* the same as before, except now we are going to load the **{baguette}** package in addition to **{tidymodels}** and use `bag_tree()` instead of `decision_tree()`. Additionally, we'll specify a `times` argument when we set the engine. Let's start by fitting  a model to 50 bootstrap resamples and aggregating the results across all 50 trees. The rest is the same as before. 
 
-Let's start by by building a very deep tree, with no pruning and a minimum sample size for the terminal nodes of 2. We'll also use parallel processing here via the [**{future}**](https://github.com/HenrikBengtsson/future) package to help the model run faster. The code below also includes timings via the [**{tictoc}**](https://cran.r-project.org/package=tictoc) package.
+Let's start by by building a very deep tree, with no pruning and a minimum sample size for the terminal nodes of 2. First we'll set the model.
 
 ```{r }
 library(baguette)
 library(tictoc)
 
-# set model
 bt_mod <- bag_tree() %>% 
   set_engine("rpart", times = 50) %>%  #50 bootstrap resamples or bags
   set_mode("classification") %>% 
   set_args(cost_complexity = 0,
            min_n = 2)
+```
 
+and then we'll fit it to the $k$ folds.
 
-# fit to $k$ folds
-tic()
+:::warning
+The code below took about 13.5 minutes to fit on a local computer.
+:::
+
+```{r eval = FALSE}
 bt_fit1 <- fit_resamples(bt_mod,
                        preprocessor = rec,
                        resamples = cv)
-toc(log = TRUE) # `log = TRUE` so I can refer to this timing later
 ```
 
-```{r, include = FALSE}
-elapsed_bt_fit1 <- as.double(gsub("[^0-9\\.]", "", tic.log()[[1]]))
+```{r echo = FALSE, eval = FALSE}
+saveRDS(bt_fit1, here::here("models", "bagged-trees", "bt_fit1.Rds"))
 ```
+
+```{r echo = FALSE}
+bt_fit1 <- readRDS(here::here("models", "bagged-trees", "bt_fit1.Rds"))
+```
+
+Then we can look at the performance of the model.
 
 ```{r}
 collect_metrics(bt_fit1)
@@ -183,9 +186,13 @@ pull_auc <- function(b) {
 }
 ```
 
-Now we just need to specify a vector of candidate bags, $b$, and loop our function through this vector. We'll look at values between $5$ and $305$ by increments of 25. Note that we have used parallel processing here again to help speed things along. This is still a pretty time-intensive operation. As the timings below indicate, it took a pretty decent amount of time to run for us (we'll talk about more efficient ways to do this in the next section).
+Now we just need to specify a vector of candidate bags, $b$, and loop our function through this vector. We'll look at values between $5$ and $305$ by increments of 25. Note that we have used parallel processing here again to help speed things along via the [**{future}**](https://github.com/HenrikBengtsson/future) package. However, this is still a highly computationally intensive operation. We'll talk about more efficient ways to do this in the next section.
 
-```{r }
+:::warning
+The code below took approximately 3 hours and 45 minutes to run on a local computer.
+:::
+
+```{r eval = FALSE}
 # specify candidate b models
 b <- seq(5, 305, 25)
 
@@ -198,6 +205,16 @@ toc()
 
 plan(sequential)
 ```
+
+```{r echo = FALSE, eval = FALSE}
+saveRDS(aucs, here::here("models", "bagged-trees", "aucs.Rds"))
+```
+
+```{r echo = FALSE}
+b <- seq(5, 305, 25)
+aucs <- readRDS(here::here("models", "bagged-trees", "aucs.Rds"))
+```
+
 
 Let's plot these samples now to see when we reach stability. Note
 
@@ -264,9 +281,10 @@ bt_mod2 <- rand_forest() %>%
            probability = FALSE)
 ```
 
-Now we just fit the model to our processed data.
+Now we just fit the model to our processed data. We're using the [**{tictoc}**](https://cran.r-project.org/package=tictoc) package to time the results.
 
 ```{r }
+library(tictoc)
 tic()
 bt_fit2 <- fit(bt_mod2,
                accuracy_group ~ .,
@@ -274,17 +292,13 @@ bt_fit2 <- fit(bt_mod2,
 toc(log = TRUE) # `log = TRUE` so I can refer to this timing later
 ```
 
-```{r, include = FALSE}
-elapsed_bt_fit2 <- as.double(gsub("[^0-9\\.]", "", tic.log()[[2]]))
-```
-
-As you can see, we have **substantially** cut the fitting time down because we've only fit the model once. We went from `r round(elapsed_bt_fit1/60, 2)` minutes to only `r round(elapsed_bt_fit2, 2)` seconds! But do we get the same estimates for our metrics if we use the OOB samples? Let's look at the model object
+As you can see, we have **substantially** cut the fitting time down because we've only fit the model once, and it now fits in `r sds::tic_seconds(1)` seconds! But do we get the same estimates for our metrics if we use the OOB samples? Let's look at the model object
 
 ```{r }
 bt_fit2
 ```
 
-This says that our OOB prediction error is `r round(bt_fit2$fit$prediction.error*100, 2)`. Our accuracy is one minus this value, or `r round((1 - bt_fit2$fit$prediction.error)*100, 2)`. Using $k$-fold cross validation we estimated our accuracy at `r round(collect_metrics(bt_fit1)$mean[1]*100, 2)`. So we're getting essentially the exact same results, but in this case using the OOB samples is approximately `r format(round(elapsed_bt_fit1/elapsed_bt_fit2), big.mark =",")` times faster!
+This says that our OOB prediction error is `r round(bt_fit2$fit$prediction.error*100, 2)`. Our accuracy is one minus this value, or `r round((1 - bt_fit2$fit$prediction.error)*100, 2)`. Using $k$-fold cross validation we estimated our accuracy at `r round(collect_metrics(bt_fit1)$mean[1]*100, 2)`. So we're getting essentially the exact same results, but using the OOB samples *much* faster!
 
 What if we want other metrics? We can access the OOB predictions from our model using `bt_fit2$fit$predictions`. We can then use these predictions to calculate OOB metrics via the [**{yardstick}**](https://yardstick.tidymodels.org/index.html) package, which is used internally for functions like `collect_metrics()`. For example, assume we wanted to estimate the OOB AUC. In this case, we would need to re-estimate our model to get the predicted probabilites for each class. 
 
@@ -359,10 +373,20 @@ tune_min_n <- function(n) {
 
 Now we can loop through a bunch of $n$ sizes for the terminal nodes and see which provides us the best OOB AUC values for a bagged tree with 200 bags. We'll use `map_df()` so the results are bound into a single data frame. Let's search through values from 2 to 50 and see how the OOB AUC changes.
 
-```{r }
-tic()
+:::warning
+The code chunk below takes about 20 minutes to run on a local computer.
+:::
+
+```{r eval = FALSE}
 min_n_aucs <- map_df(2:50, tune_min_n)
-toc()
+```
+
+```{r echo = FALSE, eval = FALSE}
+saveRDS(min_n_aucs, here::here("models", "bagged-trees", "min_n_aucs.Rds"))
+```
+
+```{r echo = FALSE}
+min_n_aucs <- readRDS(here::here("models", "bagged-trees", "min_n_aucs.Rds"))
 ```
 
 Let's plot the learning curve.
@@ -495,15 +519,28 @@ fit_rf <- function(tree_n, mtry = 2, min_n = 2) {
   roc_auc(pred_frame, observed, `0`:`3`) %>% 
     mutate(trees = tree_n, 
            mtry = mtry, 
-           min_n = min_n,
-           model = list(rf_fit))
+           min_n = min_n)
 }
 ```
 
 Notice in the above we've made it a bit more general so we can come back to check the number of trees with different values of `mtry` and `min_n`. Let's look at values from 100 (which is almost certainly too low) to 1201 by increments of 50 trees. First, we loop through these values using `map_df()` so they are all bound in a single data frame.
 
-```{r warning = FALSE}
+:::warning
+The code below took about 10 minutes to run on a local computer.
+:::
+
+```{r warning = FALSE, eval = FALSE}
+tic()
 test_n_trees <- map_df(seq(1, 1201, 50), fit_rf)
+toc()
+```
+
+```{r echo = FALSE, eval = FALSE}
+saveRDS(test_n_trees, here::here("models", "bagged-trees", "test_n_trees.Rds"))
+```
+
+```{r }
+test_n_trees <- readRDS(here::here("models", "bagged-trees", "test_n_trees.Rds"))
 ```
 
 Next, we plot the result!
@@ -515,13 +552,32 @@ ggplot(test_n_trees, aes(trees, .estimate)) +
 
 And as we can see, we're actually pretty safe with a much lower value, perhaps even as low as 100. However, because the models run very fast, we won't worry about this too much. When we conduct our model tuning, we'll drop to 500 trees instead of 1000 (still well above what it appears is needed).
 
-Let's see if we can improve performance by changing the `mtry` or `min_n`. Because we only have five predictor variables in this case, we don't have a huge range to evaluate with `mtry`. But let's setup a regular grid looking at values of 2, 3, 4 and 5 for `mtry`, and `min_n` values of 2, 5, 10, 15, 20, and 25. We can then use our `fit_rf()` function again, but this time setting the number of trees and looping through each of our `mtry` and `min_n` values.
+Let's see if we can improve performance by changing the `mtry` or `min_n`. Because we only have five predictor variables in this case, we don't have a huge range to evaluate with `mtry`. But let's setup a regular grid looking at values of 2, 3, 4 and 5 for `mtry`, and `min_n` values of 2, 5, 10, 15, 20, and 25. 
 
 ```{r }
 grid <- expand.grid(mtry = 2:5,
                     min_n = c(2, seq(5, 25, 5)))
+```
 
+We can then use our `fit_rf()` function again, but this time setting the number of trees and looping through each of our `mtry` and `min_n` values.
+
+:::warning
+The code below took about 18 and a half minutes to run on a local computer.
+:::
+
+```{r eval = FALSE}
 rf_tune <- map2_df(grid$mtry, grid$min_n, ~fit_rf(500, .x, .y))
+
+rf_tune %>% 
+  arrange(desc(.estimate))
+```
+
+```{r echo = FALSE, eval = FALSE}
+saveRDS(rf_tune, here::here("models", "bagged-trees", "rf_tune.Rds"))
+```
+
+```{r echo = FALSE}
+rf_tune <- readRDS(here::here("models", "bagged-trees", "rf_tune.Rds"))
 
 rf_tune %>% 
   arrange(desc(.estimate))
@@ -532,12 +588,12 @@ And notice that *all* of our top models here include our maximum number of predi
 #### A regression example
 For completeness, let's run through another example using our statewide testing data. We didn't use these data when fitting a bagged tree model, but we can start with a random forest anyway and see if it simplifies to a bagged tree. 
 
-First, let's read in the data and create our testing set. We'll only sample 5% of the data so things run more quickly.
+First, let's read in the data and create our testing set. We'll only sample 20% of the data so things run more quickly.
 
 ```{r }
-state_tests <- read_csv("https://github.com/uo-datasci-specialization/c4-ml-fall-2020/raw/master/data/train.csv") %>% 
-  slice_sample(prop = 0.05) %>% 
-  select(-classification)
+state_tests <- get_data("state-test") %>% 
+  select(-classification) %>% 
+  slice_sample(prop = 0.2)
 
 splt_reg <- initial_split(state_tests)
 train_reg <- training(splt_reg)
@@ -582,7 +638,7 @@ processed_reg <- rec_reg %>%
 processed_reg
 ```
 
-We'll now use the processed data to fit a random forest, evaluating our model using the OOB samples. Let's start by writing a function that fits the model for a given set of hyperparameters and returns a data frame with the hyperparameter values, our performance metric (RMSE) and the model object.
+We'll now use the processed data to fit a random forest, evaluating our model using the OOB samples. Let's start by writing a function that fits the model for a given set of hyperparameters and returns a data frame with the hyperparameter values, our performance metric (RMSE) and the model object. Notice I've set `num.threads = 16` because the local computer I'm working has (surprise!) 16 cores.
 
 ```{r }
 rf_fit_reg <- function(tree_n, mtry, min_n) {
@@ -591,7 +647,8 @@ rf_fit_reg <- function(tree_n, mtry, min_n) {
     set_engine("ranger") %>% 
     set_args(mtry = mtry,
              min_n = min_n,
-             trees = tree_n)
+             trees = tree_n,
+             num.threads = 16)
 
   rf_fit <- fit(rf_mod_reg, 
                 formula = score ~ .,
@@ -601,12 +658,11 @@ rf_fit_reg <- function(tree_n, mtry, min_n) {
   tibble(rmse = sqrt(rf_fit$fit$prediction.error)) %>% 
     mutate(trees = tree_n, 
            mtry = mtry, 
-           min_n = min_n,
-           model = list(rf_fit))
+           min_n = min_n)
 }
 ```
 
-Notice in the above that I've used `sqrt(rf_fit$fit$prediction.error)` for the root mean square error, rather than using the model predictions with a **{yardstick}** function. This is because the default OOB error for a regression model with **{ranger}** is the mean square error, so we don't have to do any predictions on our own - we just need to take the square root of this value. Most of the rest of this function is the same as before.
+In the above I've used `sqrt(rf_fit$fit$prediction.error)` for the root mean square error, rather than using the model predictions with a **{yardstick}** function. This is because the default OOB error for a regression models with **{ranger}** is the mean square error, so we don't have to do any predictions on our own - we just need to take the square root of this value. Most of the rest of this function is the same as before.
 
 Let's now conduct our tuning. First, let's check how many predictors we have:
 
@@ -623,17 +679,31 @@ grid_reg <- expand.grid(mtry = 5:15,
 
 And now we'll use our function from above to fit each of these models, evaluating each with the OOB RMSE. We'll start out with 1000 trees, then inspect that with our finalized model to make sure it is sufficient. Note that, even with using the OOB samples for our tuning, the following code takes a decent amount of time to run. 
 
-```{r }
-tic()
+:::warning
+The code below took about 8 and half minutes to run on a local computer.
+:::
+
+```{r eval = FALSE}
 rf_reg_fits <- map2_df(grid_reg$mtry, grid_reg$min_n, 
                        ~rf_fit_reg(1000, .x, .y))
-toc()
 
 rf_reg_fits %>% 
   arrange(rmse)
 ```
 
-Let's evaluate the hyperparameters we search by plotting the `mtry` values against the RMSE, faceting by `min_n`. 
+
+```{r eval = FALSE, echo = FALSE}
+saveRDS(rf_reg_fits, here::here("models", "random-forests", "rf_reg_fits.Rds"))
+```
+
+```{r }
+rf_reg_fits <- readRDS(here::here("models", "random-forests", "rf_reg_fits.Rds"))
+
+rf_reg_fits %>% 
+  arrange(rmse)
+```
+
+Let's evaluate the hyperparameters we searched by plotting the `mtry` values against the RMSE, faceting by `min_n`. 
 
 ```{r }
 ggplot(rf_reg_fits, aes(mtry, rmse)) +
@@ -678,12 +748,12 @@ ggplot(rf_reg_ntrees, aes(trees, rmse)) +
   geom_line()
 ```
 
-Hmm... that doesn't look terrifically stable. **BUT WAIT!** Notice the bottom to the top of the y-axis is only about one-tenth of a point difference. So really, this is not a problem with instability, but that it is actually stable across all these values. Just to prove this to ourselves, let's look at the same plot, but making the y-axis span one point (which is still not very much), going from 87 to 88.
+Hmm... that doesn't look terrifically stable. **BUT WAIT!** Notice the bottom to the top of the y-axis is only about one-tenth of a point difference. So really, this is not a problem with instability, but that it is actually stable across all these values. Just to prove this to ourselves, let's look at the same plot, but making the y-axis span one point (which is still not very much), going from 86 to 87.
 
 ```{r }
 ggplot(rf_reg_ntrees, aes(trees, rmse)) +
   geom_line() +
-  ylim(87, 88)
+  ylim(86, 87)
 ```
 
 And now it looks more stable. So even with 500 trees we likely would have been fine.
@@ -710,9 +780,11 @@ rf_mod_reg_final <- rand_forest() %>%
              importance = "impurity")
 
 # fit the model
+tic()
 rf_fit_reg_final <- fit(rf_mod_reg_final,
                         score ~ .,
                         processed_reg)
+toc()
 ```
 
 And now we can request variable importance *scores* with `vip::vi()`, or a variable importance *plot* with `vip::vip()`. Let's first look at the scores.
@@ -745,10 +817,11 @@ rf_mod_reg_final2 <- rand_forest() %>%
              trees = 1000,
              importance = "purmutation")
 
+tic()
 rf_fit_reg_final2 <- fit(rf_mod_reg_final,
                         score ~ .,
                         processed_reg)
-
+toc()
 vip(rf_fit_reg_final2$fit)
 ```
 
@@ -756,7 +829,7 @@ As we can see, there are a few small differences, but generally the results agre
 
 Inspecting variable importance helps us  understand *which* variables contribute to our model predictions, but not necessarily *how* they relate to the outcome. For that, we can look at partial dependency plots via the [**{pdp}**](https://bgreenwell.github.io/pdp/index.html) package (which is developed by the same people who created **{vip}**).
 
-Partial dependency plots show the *marginal* effect of a feature on the outcome. This can help us understand the directionality of the effect and whether it is generally linear or not. For example, we would probably expect that students' scores would increase roughly linearly and monotonically with `enrl_grd`. To see if that's the case we use the `pdp::partial()` function.
+Partial dependency plots show the *marginal* effect of a feature on the outcome. This can help us to understand the directionality of the effect and whether it is generally linear or not. For example, we would probably expect that students' scores would increase roughly linearly and monotonically with `enrl_grd`. To see if that's the case we case we use the `pdp::partial()` function. Note that these functions take a bit of time to run, as shown by the timings
 
 ```{r }
 library(pdp)
@@ -769,14 +842,33 @@ partial(rf_fit_reg_final$fit,
 
 And we can see that, yes, the relation is roughly linear and monotonically increasing. 
 
-What if we want to explore more than one variable? Let's look at the geographic location of the school.
+What if we want to explore more than one variable? Let's look at the geographic location of the school. The code below takes a bit of time to run (~30 minutes on a local computer). Additionally, while we could just add `plot = TRUE` and `plot.engine = "ggplot2"`, we've saved the object and plotted it separately to have a bit more control over how the plot is rendered.
+
+:::warning
+The code below took about 30 minutes to run on a local computer.
+:::
+
+```{r eval = FALSE}
+partial_lon_lat <- partial(rf_fit_reg_final$fit, 
+        pred.var = c("lon", "lat"),
+        train = processed_reg)
+```
+
+```{r echo = FALSE, eval = FALSE}
+saveRDS(partial_lon_lat, here::here("models", "random-forests", "partial_lon_lat.Rds"))
+```
+
+```{r echo = FALSE}
+partial_lon_lat <- readRDS(here::here("models", "random-forests", "partial_lon_lat.Rds"))
+```
 
 ```{r }
-partial(rf_fit_reg_final$fit, 
-        pred.var = c("lon", "lat"),
-        train = processed_reg,
-        plot = TRUE,
-        plot.engine = "ggplot2")
+ggplot(partial_lon_lat, aes(lon, lat)) +
+  geom_tile(aes(fill = yhat)) +
+  coord_map() +
+  theme_void() +
+  theme(legend.position = "bottom",
+        legend.key.width = unit(1, "cm"))
 ```
 
 Because this is geographic data, and we know the data come from Oregon (although they are simulated) we can interpret this as if we were looking at a physical map. One notable aspect is that there is a fairly clear band running north/south in the western part of the state. This is roughly where I-5 runs and where many of the more populous towns/cities are located, including Ashland/Medford in the south, Eugene around the center, and Portland in the north. We could even overlay an image of Oregon here, which actually helps us with interpretation a bit more.
@@ -785,20 +877,16 @@ Because this is geographic data, and we know the data come from Oregon (although
 or <- map_data("state") %>% 
   filter(region == "oregon") 
 
-p <- partial(rf_fit_reg_final$fit, 
-        pred.var = c("lon", "lat"),
-        train = processed_reg,
-        plot = FALSE)
-
-ggplot(or, aes(long, lat)) +
-  geom_tile(aes(lon, lat, color = yhat, fill = yhat),
-              data = p) +
-  geom_polygon(fill = NA,
+ggplot(partial_lon_lat, aes(lon, lat)) +
+  geom_tile(aes(fill = yhat)) +
+  geom_polygon(aes(long, lat, group = group),
+               data = or,
+               fill = NA,
                color = "black") +
-  guides(color = "none") +
-  coord_map() +
   theme_void() +
-  theme(legend.position = "bottom")
+  coord_map() +
+  theme(legend.position = "bottom",
+        legend.key.width = unit(1, "cm")) 
 ```
 
 Note that, when the PDP is created, it just creates a grid for prediction. So when we overlay the map of Oregon, we see some areas where the prediction extends outside of the state, which are not particularly trustworthy.
