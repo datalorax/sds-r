@@ -41,7 +41,8 @@ Imports:
     xgboost,
     sds,
     gganimate,
-    gbm
+    gbm,
+    ranger
 Depends: 
     tidyverse,
     tidymodels
