@@ -651,7 +651,7 @@ tune_tree_lr_tm <- tune_grid(mod, rec, cv, grid = grd)
 ```
 
 ```{r echo = FALSE}
-tune_tree_lr_tm <- readRDS(here::here("models", "xgboost",  "tune_tree_lr_tm.Rds"))
+tune_tree_lr_tm <- readRDS(here::here("models", "boosted-trees",  "tune_tree_lr_tm.Rds"))
 ```
 
 Let's try the same thing with **{xgboost}** directly. In this case, we're going to have to loop over the learning rate candidate values "manually". In the below, we've used `purrr::pmap()` because it's the most general. In other words, you could very easily modify the below code to include additional hyperparameters by providing them within the `list` argument, and then referring to those parameters in the function by their location in the list (e.g., `..1` for the first argument, as below, `..2` for the second, `..7` for the seventh, etc.). In this case, however, `purrr::map()` or `base::lapply()` would work just as well, and you could always use a `for` loop if you prefer (and you could also use names within `pmap()` by including `function(...)`).
@@ -672,7 +672,7 @@ tune_tree_lr_xgb <- pmap(list(grd$learn_rate), ~ {
 ```
 
 ```{r echo = FALSE}
-tune_tree_lr_xgb <- readRDS(here::here("models", "xgboost",  "tune_tree_lr_xgb.Rds"))
+tune_tree_lr_xgb <- readRDS(here::here("models", "boosted-trees",  "tune_tree_lr_xgb.Rds"))
 ```
 
 How do the results compare? Let's first look at the best hyperparamter values using **{tidymodels}**. 
@@ -732,7 +732,7 @@ tune_treedepth_tm <- tune_grid(mod, rec, cv, grid = tree_grid)
 ```
 
 ```{r echo = FALSE}
-tune_treedepth_tm <- readRDS(here::here("models", "xgboost",  "tune_treedepth_tm.Rds"))
+tune_treedepth_tm <- readRDS(here::here("models", "boosted-trees",  "tune_treedepth_tm.Rds"))
 ```
 
 Let's evaluate the trends of each of the hyperparameters
@@ -783,7 +783,7 @@ tune_lossred_tm <- tune_grid(mod, rec, cv, grid = lossred_grd)
 ```
 
 ```{r echo = FALSE}
-tune_lossred_tm <- readRDS(here::here("models", "xgboost",  "tune_lossred_tm.Rds"))
+tune_lossred_tm <- readRDS(here::here("models", "boosted-trees",  "tune_lossred_tm.Rds"))
 ```
 
 And evaluate the how the loss reduction related to the RMSE:
@@ -845,7 +845,7 @@ tune_stoch_tm <- tune_grid(mod, rec, cv, grid = stoch_grd)
 ```
 
 ```{r echo = FALSE}
-tune_stoch_tm <- readRDS(here::here("models", "xgboost",  "tune_stoch_tm.Rds"))
+tune_stoch_tm <- readRDS(here::here("models", "boosted-trees",  "tune_stoch_tm.Rds"))
 ```
 
 ```{r }
