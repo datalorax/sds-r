@@ -24,7 +24,7 @@ OK, let's get started! First you need to *import* your data into R using the imp
 
 Let's install then call our first `library` rio. This is often the library used for data *import* and *export*. 
 
-```{r}
+```{r, eval = FALSE}
 install.packages("rio")  #Installing rio. You only need to do this step once
 library(rio) #Calling rio. You need to do this each time you create a new R Markdown file. 
 ```
@@ -33,10 +33,15 @@ In writing code, you would probably have your first code chunk that calls all th
 
 Finally, we will now import data. There are many ways you can this, but I personally prefer importing from the same folder what my R Markdown is saved. This helps me avoid any confusion with working directories. I usually never run into problems using this method. Basically, for every project create a folder, put all your data in that folder, and save your .rmd file in it (.rmd is the extension of an R Markdown file). If you this you should be able to see your datasets if you click on Files on the lower right section of the interface. Using this method, all you need to do when importing or reading your data files is to write the data name.    
 
-Here, I am importing an spss dataset (.sav) called 'sesame13'. I then store the data imported in an object called sesame13. 
+Here, I am importing an spss dataset (.sav) called 'sesame13'. I then store the data imported in an object called sesame13. Notice that I also set the class to be `"tbl_df"` which returns a tibble (i.e., `tibble::tibble()`) instead of a standard data frame, which mostly just has nicer printing. 
 
-```{r}
-sesame13 <- import('data/sesame13.sav')
+```{r, eval = FALSE}
+sesame13 <- import('data/sesame13.sav', 
+                   setclass = "tbl_df")
+```
+
+```{r echo = FALSE}
+sesame13 <- sds::get_data("sesame")
 ```
 
 The next thing we want to do is take a look at the data but without loading all of it. We use the function `head` to look at the first 6 lines. You can also use `tail` to look at the bottom 6 lines. 
