@@ -5,5 +5,9 @@ bookdown::gitbook:
   lib_dir: assets
   split_by: section
   config:
+    toc: 
+      collapse: section
+      scroll_highlight: true
     toolbar:
       position: static
+  download: ["rmd", "epub"]
