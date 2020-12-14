@@ -1,3 +1,5 @@
+# (PART) Foundations {-} 
+
 # Introduction to R
 
 ```{r include = FALSE}
@@ -5,19 +7,20 @@ source("_common.R")
 
 knitr::opts_chunk$set(warning = FALSE)
 ```
-##Transitioning to R
+
+## Transitioning to R
 Moving to R from other statistical software generally requires a fundamental shift in the way we think about and interact with data. Aside from this shift in thinking, there is also a substantial amount of code to learn, which can be both frustrating and intimidating. The primary goal for this chapter is to make this shift less intimidating and the learning curve less steep. 
 
 We will focus primarily on three components: data processing (munging/manipulating/wrangling), data visualization, and reproducible workflows. We will be oriented around the philosophy of tidy data and, as such, primarily rely on tools within the tidyverse for manipulating and visualizing data. The tidyverse is a suite of packages developed by RStudio, generally led by [Hadley Wickham](http://hadley.nz/), which are all optimized for tidy data. The focus of this course is on working with R, as opposed to the specifics of any given analysis. Statistical models will be used for illustrative examples throughout the chapter, but high-level statistical knowledge (e.g., multilevel modeling or structural equation modeling) is not a prerequisite.
 
-##Installing R
+## Installing R
 The installation process is straight forward. Download R and RStudio (Windows, Linux and Mac OS X), run the files and follow the instructions to install them (install R first and RStudio second). 
 Once both installed, open RStudio, go to File > New File > R Markdown to create a new RMarkdown. There are many other types of files but we will mainly be using RMarkdown in this book. I will give you few minutes to complete these steps. If you get any errors or warnings, please look them up. Looking up errors is 90% of coding especially in the early stages of learning, the percentage starts decreasing as you become more fluent in the coding language. In looking up errors, I mostly find the solution in [Stackoverflow](stackoverflow.com).
 
 All done? Perfect! Let's talk about the R Markdown interface. It is divided into 4 sections: (1) _upper left_: the editor where you write your code, (2) _upper right_: the environment history where you will see you variables, and other details about your data and history of your edits, (3) _lower left_: the console where you see the execution of your code, and (4) _lower right_: the window that shows your files (databases and code files), the plots you generated, the packages you are using, a _Help_ tab if needed (we will discuss later how to use help), and a _Viewer_ tab. The editor section is the one you will use the most. 
 
 
-##Programing in R
+## Programing in R
 OK, let's get started! First you need to *import* your data into R using the import function from the rio package, so make sure you install rio and call the library rio. Wait! What does all this mean? Great question. Before we get to how you import data, let's clarify some key concepts in order to speak the same language. 
 
 **Functions** are a simple `If Then` code. When you set your alarm, you are basically using the function: `If DD/MM/YYYY HH:MM:SS = X Then Play Song Y`. **Packages** are primarily a collections of R functions. In addition to functions, packages can also contain data and some other details, all compiled in a well-defined format, created to add specific functionality. There are 10,000+ user contributed packages and growing. **Library** is the directory where the packages are installed. Does that mean installing R is nothing without its libraries and packages? Not really, there are a set of standard (or base) packages which are considered part of the R source code and automatically available as part of your R installation. Think of R as a scientific calculator, the base functions as the +, - operations, the base packages as the mean or standard deviation calculations, the additional packages as installed programs to conduct specific regressions like fixed effects or a Poisson model. One other important about libraries is the difference between installing and loading libraries. Think of a library as book. Installing it is like buying a book and putting it on your shelf. Each time you want to reach the book you still need to get the book off the shelf, that's what calling a library is.
@@ -51,7 +54,7 @@ head(sesame13)
 #tail (sesame13)  #You can use the symbol # to comment your code to avoid executing it. You can also use it to add comments and notes for you and your collaborators. 
 ```
 
-##Data cleaning and processing 
+## Data cleaning and processing 
 We will now move to cleaning our data starting with variable names. Often variable names have capital letters or spaces which are not ideal for our limited cognitive ability so it is easier to make all variables lower capital and no spaces. That's what `clean_names()` does. This function is part of the `janitor` library so we will need to call it.
 
 ```{r}

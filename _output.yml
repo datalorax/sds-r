@@ -3,7 +3,18 @@ bookdown::gitbook:
     in_header: header.html
   css: style.css
   lib_dir: assets
-  split_by: section
+  split_by: chapter
   config:
+    toc: 
+      collapse: section
+      scroll_highlight: true
     toolbar:
       position: static
+    edit:
+      link: https://github.com/datalorax/sds-r/edit/main/%s
+    download: ["rmd", "epub"]
+    sharing:
+      github: yes
+      facebook: no
+      twitter: yes
+      all: no
