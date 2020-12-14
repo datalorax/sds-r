@@ -32,6 +32,7 @@ rmd_files: ["index.Rmd",
             "inference-vs-prediction.Rmd", # Machine Learning
             "ethics-in-machine-learning.Rmd",
             "cross-validation.Rmd",
+            "cloud-computing.Rmd",
             "extending-lm.Rmd",
             "feature-engineering.Rmd",
             "k-nearest-neighbor.Rmd",
