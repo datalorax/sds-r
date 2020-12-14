@@ -10,8 +10,11 @@ bookdown::gitbook:
       scroll_highlight: true
     toolbar:
       position: static
-  download: ["rmd", "epub"]
-  sharing:
+    edit:
+      link: https://github.com/datalorax/sds-r/edit/main/%s
+    download: ["rmd", "epub"]
+    sharing:
       github: yes
       facebook: no
       twitter: yes
+      all: no
