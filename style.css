@@ -146,9 +146,9 @@
 
 /*Code blocks*/
 .book .book-body .page-wrapper .page-inner section.normal pre {
-	border-top: 1px solid var(--highlight-seafoam);
-	border-bottom: 1px solid var(--highlight-seafoam);
-	background-color: var(--main-bg-color);
+/*	border-top: 1px solid var(--highlight-seafoam);
+	border-bottom: 1px solid var(--highlight-seafoam);*/
+	background-color: #F6F8FA;
 	color: #415A6E;
 }
 
@@ -207,17 +207,17 @@ code span.ot {
 .section.level1 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;*/
+	/*border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 .section.level2 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
 	border-top: 1px solid var(--highlight-seafoam) !important;
 	border-bottom: 1px solid var(--highlight-seafoam) !important;
 }
@@ -225,19 +225,19 @@ code span.ot {
 .section.level3 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;
+	border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 .section.level4 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;*/
+	/*border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 /* -----------div tips------------- */
@@ -257,7 +257,7 @@ div.warning {
   margin: 0.5em 0;
   padding-left: 12%;
   background-repeat: no-repeat;
-  min-height: 120px;
+  /*min-height: 120px;*/
   border: 3px solid #e26260;
   border-radius: 10px;  
 }
