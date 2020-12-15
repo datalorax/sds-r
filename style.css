@@ -218,8 +218,8 @@ code span.ot {
 	margin-top: -22px !important;
 	/*border: none !important;*/
 	background-color: #ced9e4 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;*/
+	/*border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 .section.level3 > pre {
