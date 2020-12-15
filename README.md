@@ -6,3 +6,56 @@ This is basically course notes that may eventually turn into a book. It's a coll
 ## Code of Conduct
 
 Please note that the sds-r project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+
+## Book outline 
+
+### Section 1: Foundations
+
+Getting Started  
+Producing your first plot  
+Basic R Markdown  
+Basic data wrangling   
+Types of data  
+Tidy data  
+Joins  
+Collaborating with git and GitHub  
+A collaborative exploratory data analysis example  
+Collaborating with git and GitHub
+A collaborative exploratory data analysis example
+
+### Section 2: Data visualization & Communication
+
+Introduction to visualizations    
+Visual perception     
+Color    
+Refining your plots     
+Geographic data    
+Visualizing uncertainty    
+Tables & fonts    
+Websites in R Markdown    
+Flex dashboards    
+Shiny   
+
+### Section 3: Functional Programming
+
+Data Types    
+Iteration    
+Batch load and processing dat    
+List columns    
+Parallel iterations    
+Writing functions    
+Package development    
+
+### Section 4: Machine Learning
+
+Inference vs. Prediction    
+Ethics in Machine Learning    
+Cross validation    
+Cloud computing     
+Extending `lm`: Ridge, Lasso, Elastic net    
+Feature engineering    
+*K*-nearest neighbor    
+Decision trees    
+Bagged trees & Random forests    
+Boosted Trees    
+Model Stacking    
