@@ -1,6 +1,6 @@
 # Collaborating with git and Github
 
-Anyone who has ever worked on any sort of collaborative writing project (code or otherwise) has likely run into frustrations of *version control*. For example, I might be working on some revisions to a document. I make some edits and send it to my colleague. By the time they get my version, however, it's already *behind* their version in other areas (e.g, maybe they revised their description of the analysis at the same time I provided edits to the document in whole). They can't just accept my edits without losing other changes, but they'd like to incorporate *both* changes. In many situations like this, version control is handled by naming conventions, e.g., `"full-manuscript_v1.docx"` becomes `"full-manuscript_v1da.docx"` which then becomes `"full-manuscript_v2.docx"` until we eventually end up with `"full-manuscript_vFinal.docx"` which inevitably ends up as `"full-manuscript_vFinalv2.docx"` and so on until we actually call the document complete. *git* is an alternative approach to managing version of a document by tracking changes to the *lines* of documents. If two people are working on the same document, but editing different lines, those changes will be merged together automatically. Critically, however, nothing is lost and *the entire history of the project is stored* from its initial creation through the final stages. *git* was initially created for software developers, but we advocate for its use for a broader range of applications, including dynamic documents (i.e., anything produced through [RMarkdown](https://rmarkdown.rstudio.com)). From our view, the learning curve for *git* is deceptively steep. We often see discussions of *git* being simple (e.g., "learn these five commands to work with *git*") with little explicit instruction devoted to the topic. Rather, it is a skill that is presumed one will "pick up" along the way. While there are exceptions to this (e.g., the wonderful [Happy Git and GitHub for the useR](https://happygitwithr.com) book by Jenny Bryan), we felt it important to cover the topic explicitly. 
+Anyone who has ever worked on any sort of collaborative writing project (code or otherwise) has likely run into frustrations of *version control*. For example, I might be working on some revisions to a document. I make some edits and send it to my colleague. By the time they get my version, however, it's already *behind* their version in other areas (e.g, maybe they revised their description of the analysis at the same time I provided edits to the document in whole). They can't just accept my edits without losing other changes, but they'd like to incorporate *both* changes. In many situations like this, version control is handled by naming conventions, e.g., `"full-manuscript_v1.docx"` becomes `"full-manuscript_v1da.docx"` which then becomes `"full-manuscript_v2.docx"` until we eventually end up with `"full-manuscript_vFinal.docx"` which inevitably ends up as `"full-manuscript_vFinalv2.docx"` and so on until we actually call the document complete. *git* is an alternative approach to managing versions of a document by tracking changes to the *lines* of documents. If two people are working on the same document, but editing different lines, those changes will be merged together automatically. Critically, however, nothing is lost and *the entire history of the project is stored* from its initial creation through the final stages. *git* was initially created for software developers, but we advocate for its use for a broader range of applications, including dynamic documents (i.e., anything produced through [RMarkdown](https://rmarkdown.rstudio.com)). From our view, the learning curve for *git* is deceptively steep. We often see discussions of *git* being simple (e.g., "learn these five commands to work with *git*") with little explicit instruction devoted to the topic. Rather, it is a skill that is presumed one will "pick up" along the way. While there are exceptions to this (e.g., the wonderful [Happy Git and GitHub for the useR](https://happygitwithr.com) book by Jenny Bryan), we felt it important to cover the topic explicitly. 
 
 This chapter aims to cover:
 
@@ -77,10 +77,10 @@ Assuming this is successful, you should get the following notification
 
 ## Creating a repository
 
-Generally when you're working with a project in R, it starts one of two ways: (a) you are beginning a new project, and you know it's something you want to keep track of, document, and share, or (b) you are exploring some data, and the resulting work may move into another project, or develop into a larger project on its own. In either case, we recommend using version control, but the way you approach using version control may differ. For example, if you know from the start that you want this will be a long-lasting or important project, you should probably start the project by initializing a git repo. If, instead, you're just doing some exploratory analyses, there's a chance that work could move into an existing repo or, perhaps, even thrown away. In that case, you may find yourself in a situation where you've want to start a repository with an *existing* project. We'll cover each of this situations below.
+Generally when you're working with a project in R, it starts one of two ways: (a) you are beginning a new project, and you know it's something you want to keep track of, document, and share, or (b) you are exploring some data, and the resulting work may move into another project, or develop into a larger project on its own. In either case, we recommend using version control, but the way you approach using version control may differ. For example, if you know from the start that you want this to be a long-lasting or important project, you should probably start the project by initializing a git repo. If, instead, you're just doing some exploratory analyses, there's a chance that work could move into an existing repo or, perhaps, even thrown away. In that case, you may find yourself in a situation where you've want to start a repository with an *existing* project. We'll cover each of these situations below.
 
 ### Starting with an empty project
-Generally, if you're starting a new project, you should by initializing a repo. The easiest way to do this is to:
+Generally, if you're starting a new project, you should do it by initializing a repo. The easiest way to do this is to:
 
 * Create a new empty repo on Github
 * Clone the repo locally
@@ -88,11 +88,14 @@ Generally, if you're starting a new project, you should by initializing a repo. 
 * Commit your initial changes
 * Push the changes to the remote
 
+
 Once you're logged into GitHub, you will see a `+` in the top right of the navigation bar with a drop down menu. In the menu, you will see "New repository". 
 
 ![](img/git-github/newrepo-github.png)
 
 You can then choose a name for the repo, which would ideally be descriptive of the project, provide a (slightly) more detailed description of project, whether the repo should be public or private, and any files the repo should be initialized with. Note that the repo name must be unique to your username (i.e., you can't have two repos with the same name). I typically initialize the repo with a README, which I fill in more later, along with a `.gitignore` file and a basic license. GitHub has many `.gitignore` templates that are helpful, including one for R. The `.gitignore` file will tell the repo what files *should not* be tracked by *git*. There are also a number of different licenses that are available, and even more that could be added after (e.g., using `usethis::use_[name]_license`, where `[name]` is the abbreviation for the specific license, such as`ccby`). 
+
+<!-- I think it would make it more simple for the beginner to say use MIT License and .gitignore template:R as shown in the screenshot below -->
 
 ![](img/git-github/setup-newrepo-github.png)
 
@@ -155,7 +158,7 @@ If you look back at your actual folder, and you have hidden files set to be visi
 
 ![](img/git-github/git-initialized.png)
 
-You'll now also see the `.gitignore` file (which is also viewable through the "Files" pane in RStudio) which tells *git* the files that it should **not** monitor. If we open this up (either through a text editor or RStudio) you will see things like `.Rhistory` and `/cache/`. These are the defaults from the template we used, but we could delete anything in here and *git* would then monitor those files. Similarly, there may be other files we want to ignore, and we could add those here. For example, you might want make a project mostly publicly available, but not include private, protected data. You could do this by adding a folder that has all of the data you do *not* want share, and then put the name of this folder in th .gitignore file (e.g., adding `private-data/` would ignore all the files in the "private-data" folder).
+You'll now also see the `.gitignore` file (which is also viewable through the "Files" pane in RStudio) which tells *git* the files that it should **not** monitor. If we open this up (either through a text editor or RStudio) you will see things like `.Rhistory` and `/cache/`. These are the defaults from the template we used, but we could delete anything in here and *git* would then monitor those files. Similarly, there may be other files we want to ignore, and we could add those here. For example, you might want to make a project mostly publicly available, but not include private, protected data. You could do this by adding a folder that has all of the data you do *not* want to share, and then put the name of this folder in the .gitignore file (e.g., adding `private-data/` would ignore all the files in the "private-data" folder).
 
 Now, we need to connect this repo to a remote, or online repo on GitHub. Just as before, we're going to go to GitHub and create a new repo there. Unlike before, however, we want to create the repo *without any files* (i.e., no license, .gitignore file, or README, because). You can still give your repo a description online, but it should not have any existing files because we already have them all locally. 
 
@@ -165,7 +168,7 @@ Once you've created the empty repo, it will look like the below, providing sugge
 
 ![](img/git-github/emptyrepo-github.png)
 
-Finally, we're just going to copy the link, as we did before, got back to GitKraken, and click the green plus button (only shows up on hover) on the remote section of the tool bar on the left-hand side.
+Finally, we're just going to copy the link, as we did before, go back to GitKraken, and click the green plus button (only shows up on hover) on the remote section of the tool bar on the left-hand side.
 
 ![](img/git-github/remote-add-gitkraken1.png)
 
@@ -254,7 +257,7 @@ Each time you start to work on your project, you should first pull for the most 
 
 However, rather than pulling first (as we should) let's make edits to the same file, on the same lines, commit those changes locally, and try to push them to the remote. This is the equivalent of two collaborators working on the same lines of the same file and both committing them to the repo, without first pulling the most recent changes.
 
-One the remote, we made edits to the first and second lines. On our local, let's make edits to the first and third lines, like so:
+On the remote, we made edits to the first and second lines. On our local, let's make edits to the first and third lines, like so:
 
 ![](img/git-github/merge-conflict-local.png)
 
@@ -262,7 +265,7 @@ Then we'll move to GitKraken as we normally would and stage the file (preparing 
 
 ![](img/git-github/stage-merge-conflict.png)
 
-Not pictured in the above is that, before staging, had we of looked at our commits, we would have seen that our local was behind our remote. Regardless, in some cases, it might actually be worth creating a merge conflict intentionally and then decided what to keep (particularly because GitKraken has such a nice interface for dealing with merge conflicts).
+Not pictured in the above is that, before staging, had we first looked at our commits, we would have seen that our local was behind our remote. Regardless, in some cases, it might actually be worth creating a merge conflict intentionally and then decide what to keep (particularly because GitKraken has such a nice interface for dealing with merge conflicts).
 
 Assuming that we were  oblivious to the commits shown in GitKraken (and that we were behind the remote) we might try to just push our changes. In this case, we would get a message telling us our local was behind the remote. It would then ask us what we would like to do. 
 
