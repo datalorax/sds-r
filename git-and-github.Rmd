@@ -80,7 +80,7 @@ Assuming this is successful, you should get the following notification
 Generally when you're working with a project in R, it starts one of two ways: (a) you are beginning a new project, and you know it's something you want to keep track of, document, and share, or (b) you are exploring some data, and the resulting work may move into another project, or develop into a larger project on its own. In either case, we recommend using version control, but the way you approach using version control may differ. For example, if you know from the start that you want this to be a long-lasting or important project, you should probably start the project by initializing a git repo. If, instead, you're just doing some exploratory analyses, there's a chance that work could move into an existing repo or, perhaps, even thrown away. In that case, you may find yourself in a situation where you've want to start a repository with an *existing* project. We'll cover each of these situations below.
 
 ### Starting with an empty project
-Generally, if you're starting a new project, you should do it by initializing a repo. The easiest way to do this is to:
+Generally, if you're starting a new project, you should start with initializing a repo. The easiest way to do this is to:
 
 * Create a new empty repo on Github
 * Clone the repo locally
@@ -93,9 +93,9 @@ Once you're logged into GitHub, you will see a `+` in the top right of the navig
 
 ![](img/git-github/newrepo-github.png)
 
-You can then choose a name for the repo, which would ideally be descriptive of the project, provide a (slightly) more detailed description of project, whether the repo should be public or private, and any files the repo should be initialized with. Note that the repo name must be unique to your username (i.e., you can't have two repos with the same name). I typically initialize the repo with a README, which I fill in more later, along with a `.gitignore` file and a basic license. GitHub has many `.gitignore` templates that are helpful, including one for R. The `.gitignore` file will tell the repo what files *should not* be tracked by *git*. There are also a number of different licenses that are available, and even more that could be added after (e.g., using `usethis::use_[name]_license`, where `[name]` is the abbreviation for the specific license, such as`ccby`). 
+You can then choose a name for the repo, which would ideally be descriptive of the project, provide a (slightly) more detailed description of project, whether the repo should be public or private, and any files the repo should be initialized with. Note that the repo name must be unique to your username (i.e., you can't have two repos with the same name). I typically initialize the repo with a README, which I fill in more later, along with a `.gitignore` file and a basic license. GitHub has many `.gitignore` templates that are helpful, including one for R. The `.gitignore` file will tell the repo what files *should not* be tracked by *git*. There are also a number of different licenses that are available, and even more that could be added after. A good default is the [MIT license](https://en.wikipedia.org/wiki/MIT_License), which a permissable license allowing others to freely share and distribute your code as long as they include the license (which includes a copyright with your name and year). I am also generally in favor of the [Creative Commons Attribution](https://creativecommons.org/licenses/by/4.0/) license (CC BY 4.0), which allows sharing provided proper attribution is made to the original developer. Note that this must be added *after* creating the repo and an easy way to do this is by running `usethis::use_ccby_license()` once you're in a project in your repo.
 
-<!-- I think it would make it more simple for the beginner to say use MIT License and .gitignore template:R as shown in the screenshot below -->
+If you're feeling uncertain, the below is a decent template to get started.
 
 ![](img/git-github/setup-newrepo-github.png)
 
