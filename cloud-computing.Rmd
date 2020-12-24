@@ -1,1 +1,86 @@
 # Cloud computing
+
+As we progress on this book our workloads grew and are becoming increasingly resource intensive. The necessity to move from a local compute environment to scaleable, fully managed cloud services becomes salient for speed and efficiency purposes.
+
+Cloud computing helps us ramp up the RAM on the virtual machine instance. Plus, cloud has much better bandwidth speed making package installation, data analyses, and data transfer much faster on the cloud.
+
+With services from the likes of Amazon, Google and Microsoft, cloud services are now easily accessible.  
+
+Why AWS: You can use cloud options from Google and Windows Azure as well. However most of the space is dominated by Amazon Web Services.
+
+How to use R Programming on the cloud?
+
+Amazon has a free tier that enables you to try out the Amazon cloud for free for 1 year. However this is only for micro instances which have very small RAM and very small disk space. For higher RAM and higher storage you need to pay more. To look at the various instances and their per hour pricing you can see visit [here](https://www.ec2instances.info/). Basically fees is charged in compute units but this website makes it easy to figure out costs.
+
+
+First you need to create your an Amazon account. Once you are done, follow the steps below to create a cloud instance on amazon web services:
+
+## Compute:EC2 instance
+
+Just about anything you can do on a server, you would be able to do it on a EC2 instance. You are basically, provisioning servers on demand. 
+
+
+an AMI contains information about how you want your instance to be configured, including the operating system and possible applications to be installed on that instance. You can launch one or many instances from a single AMI, which would create multiple instances that all share the same configuration. Beyond the operating system, you can also configure the instance type and size, which correspond to the amount of compute, memory, and networking capabilities available per instance. This allows yo...
+
+EC2 is a resizable resource with a few clicks in the console, or it can be done programmatically through an API call. This enables you to embrace change over time.
+
+So we're going to go ahead and click on EC2, which brings us to the EC2 dashboard. From this point, we can launch an EC2 instance pretty simply. I'm going to walk you through that process now. First thing to do is to click Launch Instance. This brings us to the screen where we can select an AMI. We've already defined what an AMI is: that's our Amazon Machine Image. This is what allows us to configure what operating system, web server, or other software that we have running on the machine. So we're just going to go ahead and select Amazon Linux 2, which is the first one. We'll click Select, and that brings us to the screen where we can choose an instance type. An instance type, again, is what is controlling the underlying hardware, and the capacity that hardware can support. We're going to select a t2 micro because it's Free Tier eligible, and we'll just click Next to configure the instance details for that instance. All right. At this point, we have to select a VPC to launch our instance into. We'll cover this later, so don't worry about it too much. We're just going to go ahead and select the app-vpc. Similarly, we also need to determine what kind of subnet we're going to be launching into. We just need to make sure that we're in a public subnet, and again, we'll talk about that later. Scrolling down a bit, we also have to select a role. We're going to select the instance-role for this. Roles are what allow one service in AWS to communicate with another service. 
+
+I'm just going to leave the defaults and skip through to tags. Tags are a feature that allow you to categorize your EC2 instances. Common tags would be things like name, where you can name your instance or department, so you can figure out which department owns the instance. We're going to go ahead and add a tag here, and I'm just going to give it a name. So give it a name, and we're just going to name it Demo. At this point, we'll click Next to configure the security group.
+
+We're going to select an existing security group, and we can see here we have a web security group, we'll select that one. What this is letting us do is it's going to let us reach our instance over HTTP. We're deploying a web application to this EC2 instance, so we want to be able to reach it over the internet. That's all this is letting us do. So we're going to now review and launch our instance. We get a warning here, that's fine, we don't have to worry about it. We're just going to continue through it. All right, so let's review our instance before we launch it. 
+
+All right, so let's go ahead and click Launch, and see what we got. Here we just have to acknowledge that we have a private key pair for this. We're not going to worry about this for now, we'll just go ahead and select acknowledge, and launch the instance.
+
+Now that we've launched our instance, it's going to take a few minutes to come up, but we can scroll down and click View Instances. Now that we're back at the EC2 dashboard, we can see that our instance state is running, but the status checks are initializing. We're going to wait for those status checks to pass before we go and look at our application.
+
+Now we can see our status checks have passed, our instance is up and running, and we can go and access that instance through its public IP address.
+
+The only thing that I need is this public IP address. So, I'm just going to copy this and open up a new tab so we can access our application. Make a new tab, paste that IP address in there, hit enter, and this is our
+
+
+
+Some of you though, you just want to simplify the whole process. You don't want to be a developer. You don't want to go through the process of spinning up an EC2 instance. You just want a solution to running your application. Well, Louis Asttet got your back
+
+## Storage: S3
+
+Like computing, you probably need more RAM for storage itself.
+
+object (file) vs. block (items) storage. We are only focusing on object storage and that's why we will use AWS S3.
+
+Amazon Simple Storage Service (Amazon S3) stores data as objects within resources that are called buckets. You can store as many objects as you want within a bucket, and you can write, read, and delete objects in your bucket. Objects can be up to 5 TB in size.
+
+let's go ahead and create a bucket, and actually upload an object into that bucket.
+
+navigate to the S3 service dashboard. So, I'm going to just click S3 and that brings up the management console for S3.
+
+I'm just going to create a bucket and I'm going to name this bucket morganspublicdocs.
+
+Next, I'm going to just click Create bucket and that bucket will be available for us to upload objects into. Click Create and as you can see, here it is. It's super simple to create a bucket. At this point, I want to actually upload a document into this bucket and then publicly access that document. So, I'm just going to go ahead and click on morganspublicdocs, and that brings us into our bucket. Right now, our bucket is empty, we just need to upload an object. So, I'm going to go ahead and select Upload, and I will browse to my document, which is in Documents, and I'm just going to upload this PDF for AWS overview. Select Open and then select Upload. All right. The object has now been uploaded into our bucket. So, if I click on this object, I can see the different attributes of this object like the owner, when it was modified, and you can also see down here, I have a link. This is our publicly accessible link to access that object. So, if I click on this and open it in a new tab, you'll notice it says access denied. The reason for that is that all objects are private by default when you upload into S3. So, if I want to access this document from the URL, I have to change the permissions on that object first. So, let's hop back into management console and change those permissions. To do that, I'm going to scroll up and select Permissions. From here, I can scroll down and change the public access on this. I'm going to select everyone and allow read access to everyone. It's giving me a warning here, this object will have public access.
+
+
+
+## Amazon SageMaker - Notebook instances
+
+Amazon SageMaker is a fully managed service to help data scientists and developers to build, train, and deploying Machine Learning models quickly and easily. It has three major components. A hosted notebook instance, a distributed on-demand training environment, and a model hosting environment. you have the flexibility to use any combination of those components in order to fit your own workflow
+
+Amazon SageMaker provides hosted Jupiter notebooks that requires no setup. With a few clicks on Amazon SageMaker console or through APIs, you can create a fully managed notebook instance, which comes with preloaded data science packages such as R. 
+
+
+In Amazon's SageMaker, model training is flexible. You can certainly bring arbitrary algorithms, either open-sourced or developed by yourself in the form of Docker images. 
+
+I will create a notebook instance from Amazon SageMaker console, build my workflow in the notebook instance to train a simple classification model, and then deploy that model so that I can make inferences against it. 
+
+Now, I'm on Amazon SageMaker console and I am creating a notebook instance. I will give it a name, for example, my notebook instance-1. As you can see, I can pick the type of the notebook instance here. Since I only plan to use a notebook instance as my development environment and rely on the on-demand training environment to execute heavy lifting training jobs for me, I just pick the smallest instance, which is Ml.t2.medium. I'm also granting permissions to the notebook instance through IAM role so that I can access necessary AWS resources from my notebook instance without the need to provide my AWS credential. If you don't have IAM role in place, Amazon SageMaker will automatically create a role for you with your permission. 
+
+You can also secure your data in the notebook instance leveraging KMS encryption. I will go ahead, hit the Create Notebook instance button and this notebook instance will be created and automatically started. Now that my notebook instance is up and running, I will just click on the "Open button" on the right, which brings me to the Jupiter notebook dashboard. For those who are not familiar with Jupiter notebooks, it is an open source web application that allows users to author and execute code interactively. It is very widely used by the Data Scientist community. From the Jupiter notebook dashboard, I can see a list of pre-populated example notebooks showing me how to use Amazon sage maker to build all kinds of machine learning solutions. 
+
+This example notebooks are developed by subject matter experts across Amazon and we will continue adding more examples over time. 
+
+
+To start, let's set up some variables such as the IAM role that Amazon SageMaker can use during training and hosting. Depending on your preference, it can be the same or different from the role that you have passed to the notebook instance. I'm also setting up the S3 bucket in my account which I am using to store the dataset as well as the model artifacts that will be written by Amazon SageMaker once the training job is finished. I'm also importing some Python libraries to be used in this notebook. 
+
+I then upload the datasets to my S3 bucket and move on to the training step. Creating your training job in Amazon SageMaker is pretty straightforward.
+
+
+
