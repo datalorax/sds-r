@@ -10,10 +10,15 @@ Why AWS: You can use cloud options from Google and Windows Azure as well. Howeve
 
 How to use R Programming on the cloud?
 
-Amazon has a free tier that enables you to try out the Amazon cloud for free for 1 year. However this is only for micro instances which have very small RAM and very small disk space. For higher RAM and higher storage you need to pay more. To look at the various instances and their per hour pricing you can see visit [here](https://www.ec2instances.info/). Basically fees is charged in compute units but this website makes it easy to figure out costs.
+Amazon has a free tier that enables you to try out the Amazon cloud for free for 1 year. However this is only for micro instances which have very small RAM and very small disk space. For higher RAM and higher storage you need to pay more. To look at the various instances and their per hour pricing you can see visit [here](https://www.ec2instances.info/). Basically fees are charged in compute units but the EC2 info website makes it easy to figure out costs.
 
 
-First you need to create your an Amazon account. Once you are done, follow the steps below to create a cloud instance on amazon web services:
+First you need to create an Amazon account. 
+
+
+IAM vs Roote User
+
+Once you are done, follow the steps below to create a cloud instance on amazon web services:
 
 ## Compute:EC2 instance
 
@@ -24,7 +29,46 @@ an AMI contains information about how you want your instance to be configured, i
 
 EC2 is a resizable resource with a few clicks in the console, or it can be done programmatically through an API call. This enables you to embrace change over time.
 
-So we're going to go ahead and click on EC2, which brings us to the EC2 dashboard. From this point, we can launch an EC2 instance pretty simply. I'm going to walk you through that process now. First thing to do is to click Launch Instance. This brings us to the screen where we can select an AMI. We've already defined what an AMI is: that's our Amazon Machine Image. This is what allows us to configure what operating system, web server, or other software that we have running on the machine. So we're just going to go ahead and select Amazon Linux 2, which is the first one. We'll click Select, and that brings us to the screen where we can choose an instance type. An instance type, again, is what is controlling the underlying hardware, and the capacity that hardware can support. We're going to select a t2 micro because it's Free Tier eligible, and we'll just click Next to configure the instance details for that instance. All right. At this point, we have to select a VPC to launch our instance into. We'll cover this later, so don't worry about it too much. We're just going to go ahead and select the app-vpc. Similarly, we also need to determine what kind of subnet we're going to be launching into. We just need to make sure that we're in a public subnet, and again, we'll talk about that later. Scrolling down a bit, we also have to select a role. We're going to select the instance-role for this. Roles are what allow one service in AWS to communicate with another service. 
+So we're going to go ahead and click on EC2, which brings us to the EC2 dashboard. From this point, we can launch an EC2 instance pretty simply. I'm going to walk you through that process now. First thing to do is to click Launch Instance. This brings us to the screen where we can select an AMI. We've already defined what an AMI is: that's our Amazon Machine Image. This is what allows us to configure what operating system, web server, or other software that we have running on the machine. So we're just going to go ahead and select Amazon Linux 2, which is the first one. 
+
+You can choose the Amazon Linux AMI, which is provided at no additional cost and has a stable version of R in the repository.
+
+We'll click Select, and that brings us to the screen where we can choose an instance type. An instance type, again, is what is controlling the underlying hardware, and the capacity that hardware can support. By default, R runs only on one core node and, in many cases, requires a lot of memory. The M4 instance family is often a good choice for R workloads. They provide a good mix of CPU power and memory.
+
+An advantage of using AWS is that you aren’t locked into the instance type that you originally choose. You can change your instance type in minutes: just stop your instance, change the instance type, and start the instance again.
+
+For now, we're going to select a t2 micro because it's Free Tier eligible, and we'll just click Next to configure the instance details for that instance. All right. At this point, we have to select a VPC to launch our instance into. We'll cover this later, so don't worry about it too much. We're just going to go ahead and select the app-vpc. Similarly, we also need to determine what kind of subnet we're going to be launching into. We just need to make sure that we're in a public subnet, and again, we'll talk about that later. Scrolling down a bit, we also have to select a role. We're going to select the instance-role for this. Roles are what allow one service in AWS to communicate with another service. 
+
+* Instance details 
+
+When you launch an EC2 instance, you can pass in user data that can be used to perform common automated configuration tasks. The tasks can even run scripts for installation after the instance starts. In the EC2 launch wizard, you can add this at the Configure Instance Details step by expanding the Advanced Details pane:
+
+![]
+
+Before running the following script to install R, RStudio Server, the Shiny package, and Shiny Server, visit https://www.rstudio.com/products/rstudio/download-server/ to check for the latest versions of RStudio Server. Modify the script to download and install the most recent version. This script also adds a user and password that you use for logging in later to RStudio.
+
+```{bash}
+#!/bin/bash
+#install R
+yum install -y R
+
+#install RStudio-Server 1.0.153 (2017-07-20)
+wget https://download2.rstudio.org/rstudio-server-rhel-1.0.153-x86_64.rpm
+yum install -y --nogpgcheck rstudio-server-rhel-1.0.153-x86_64.rpm
+rm rstudio-server-rhel-1.0.153-x86_64.rpm
+
+#install shiny and shiny-server (2017-08-25)
+R -e "install.packages('shiny', repos='http://cran.rstudio.com/')"
+wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.5.4.869-rh5-x86_64.rpm
+yum install -y --nogpgcheck shiny-server-1.5.4.869-rh5-x86_64.rpm
+rm shiny-server-1.5.4.869-rh5-x86_64.rpm
+
+#add user(s)
+useradd username
+echo username:password | chpasswd 
+```
+
+Change the user name and password based on your requirements, and check for the latest RStudio Server and Shiny Server versions. 
 
 I'm just going to leave the defaults and skip through to tags. Tags are a feature that allow you to categorize your EC2 instances. Common tags would be things like name, where you can name your instance or department, so you can figure out which department owns the instance. We're going to go ahead and add a tag here, and I'm just going to give it a name. So give it a name, and we're just going to name it Demo. At this point, we'll click Next to configure the security group.
 
@@ -83,4 +127,10 @@ To start, let's set up some variables such as the IAM role that Amazon SageMaker
 I then upload the datasets to my S3 bucket and move on to the training step. Creating your training job in Amazon SageMaker is pretty straightforward.
 
 
+https://aws.amazon.com/blogs/big-data/running-r-on-aws/
+
+
+CONCEPTS
+
+* IAM is the discipline of providing the right users, the right access, to the right resources, at the right time. 
 
