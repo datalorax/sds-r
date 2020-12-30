@@ -13,8 +13,9 @@ Decision trees are non-parametric, meaning they do not make any assumptions abou
 
 At their core, decision trees work by *splitting* the features into a series of yes/no decisions. These splits divide the feature space into a series of non-overlapping regions, where the cases are similar in each region. To understand how a given prediction is made, one simply "follows" the splits of the tree (a branch) to the terminal node (the final prediction). This splitting continues until a specified criterion is met. 
 
-### A simple decision tree
-Initially, we think it's easiest to think about decision trees through a classification lens. One of the most common example datasets for decision trees is the *titanic* dataset, which includes information on passengers aboard the titanic. The data look like this
+## A simple decision tree
+
+Initially, it's easiest to think about decision trees through a classification lens. One of the most common example datasets for decision trees is the *titanic* dataset, which includes information on passengers aboard the titanic.
 
 <!-- Note - the data below is from kaggle: https://www.kaggle.com/c/titanic/data?select=train.csv -->
 
@@ -28,7 +29,7 @@ titanic <- get_data("titanic")
 reactable::reactable(titanic, filterable = TRUE, highlight = TRUE)
 ```
 
-Imagine we wanted to create a model that would predict if passengers aboard the titanic survived. A decision tree model might look something like this.
+Imagine we wanted to create a model that would predict if passengers aboard the titanic survived. A decision tree model might look something like this (where `SibSp` indicates the number of siblings/spouses on board with the passenger):
 
 ```{r echo = FALSE}
 library(rpart)
@@ -40,26 +41,26 @@ m <- rpart(Survived ~ Sex + Age + SibSp, data = titanic)
 rpart.plot(m, type = 4)
 ```
 
-where `Sibsp` indicates the number of siblings/spouses onboard with the passenger.
+### Definitions 
 
-Let's talk about vocabulary here for a bit (see **Definitions** table below). In the above, there is a node at the top that provides us some descriptive statistics - namely that when there have been no splits on any features (we have 100% of the sample), approximately 38% of passengers survived. But the **root node**, the first feature we split on, is the sex of the passenger, which in this case is a binary indicator with two levels: `male` and `female`. Approximately 65% of all passengers were coded as male, while the remaining 35% were coded as female. Of those that were coded male, about 19% survived, while approximately 74% of those coded female survived. These are different **branches** of the tree. Each node is then split again on an **internal node**, but the feature that optimally splits these nodes is different. For passengers coded female, we use the number of siblings/spouses, with an optimal cut being three. Those with three or fewer would be predicted to survive, while those with two or less would be not be predicted to survive. Note that these are the final predictions, or the **terminal nodes** for this branch. Females who with three or fewer siblings/spouses represent 33% of the total sample, of which 77% survived (as predicted by the terminal node), while females with three or more siblings/spouses represent 2% of the total sample, of which 29% survived (these passengers would not be predicted to survive). 
+In the above, there is a node at the top that provides us some descriptive statistics - when there have been no splits on any features (we have 100% of the sample), approximately 38% of passengers survived. The first feature we split on is called the **root node**, in this case the sex of the passenger, a binary indicator with two levels: `male` and `female`. Approximately 65% of all passengers were coded as male, while the remaining 35% were coded as female. Of those that were coded male, about 19% survived, while approximately 74% of those coded female survived. These splits represent different **branches** of the tree. Each node is then split again on an **internal node**, but the feature that optimally splits these nodes is different. For passengers coded female, we use the number of siblings/spouses, with an optimal cut being three. Those with three or more siblings/spouses would be predicted to survive, while those with fewer than three would be not be predicted to survive; these are the final predictions, or the **terminal nodes** for this branch. Females with fewer than siblings/spouses represent 33% of the total sample, of which 77% survived (as predicted by the terminal node), while females with three or more siblings/spouses represent 2% of the total sample, of which 29% survived (these passengers would not be predicted to survive). 
 
-For male passengers, note that the first internal node splits first on age, because this is the more important feature for these passengers. Those who were six and a half or older are immediately predicted to not survive. This group represents 62% of the total sample, with only a 17% survival rate. However, for passengers coded male who were younger than 6.5, there was a small amount of additional information in the siblings/spouses feature. Passengers with three or more siblings/spouses would not be predicted to survive (representing 1% of the total sample, and an 11% survival rate) while those with fewer than three sibling/spouses would be predicted to survive (and all such passengers did actually survive, representing 2% of the total sample). 
+For male passengers, the first internal node splits first on age, because this is the more important feature for these passengers. Those who were six and a half or older are immediately predicted to not survive. This group represents 62% of the total sample, with only a 17% survival rate. However, for passengers coded male who were younger than 6.5, there was a small amount of additional information in the siblings/spouses feature. Passengers with three or more siblings/spouses would not be predicted to survive (representing 1% of the total sample, and an 11% survival rate) while those with fewer than three sibling/spouses would be predicted to survive (and all such passengers did actually survive, representing 2% of the total sample). 
 
-Note that in this example, the optimal split for siblings/spouses happened to be the same in both branches, but this is a bit of coincidence. It's possible there's something important about this number, but the split value does not have to be the same, and in fact the same feature can be used multiple times for multiple splits, each with a different value, while splitting on internal nodes.
+In this example, the optimal split for siblings/spouses happened to be the same in both branches, but this is a bit of coincidence. It's possible there's something important about this number, but the split value does not have to be the same. In fact, the same feature can be used multiple times for multiple splits, each with a different value, while splitting on internal nodes.
 
 For classification problems, like the above, the predicted class in the terminal node is determined by the most frequent class (the mode). For regression problems, the prediction is determined by the mean of the outcome for all cases in the given terminal node.
 
 <!-- I'd really like the left column to be not so wide (not 50/50 split) but I'm tired of messing with it for now. -->
 
-
-| Term | Description |
+| Term | Definition |
 |:---|:---|
 | **Root node** | The top feature in a decision tree. The column that has the first split|
 | **Internal node** | A grouping within the tree between the root node and the terminal node, e.g., *all passengers coded female*. |
 | **Terminal node** or **Terminal leaf** | The final node/leaf of a decision tree. The prediction grouping.|
 | **Branch** | The prediction "flow" of the tree. One often "follows" a branch to a terminal node.|
 | **Split** | A threshold value for numeric features, or a classification separation rule for categorical features, that optimally separates the sample according to the outcome|
+
 
 ## Determining optimal splits
 Regression trees work by optimally splitting each node until some criterion is met. But how do we determine what's optimal? We use an objective function. For regression problems, this usually the sum of the squared errors, defined by
