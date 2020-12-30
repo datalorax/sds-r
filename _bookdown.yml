@@ -1,0 +1,44 @@
+book_filename: "Social Data Science with R"
+language:
+  ui:
+    chapter_name: ""
+delete_merged_file: true
+rmd_files: ["index.Rmd",
+            "introduction-to-R.Rmd", # Foundations
+            "first-plot.Rmd",
+            "basic-rmarkdown.Rmd",
+            "basic-data-wrangling.Rmd",
+            "types-of-data.Rmd",
+            "tidy-data.Rmd",
+            "joins.Rmd",
+            "git-and-github.Rmd",
+            "eda-example.Rmd",
+            "intro-to-visualizations.Rmd", # Data vizualization & communication
+            "visual-perception.Rmd",
+            "color.Rmd",
+            "refining-your-plots.Rmd",
+            "geographic-data.Rmd",
+            "visualizing-uncertainty.Rmd",
+            "tables-and-fonts.Rmd",
+            "websites.Rmd",
+            "flexdashboards.Rmd",
+            "shiny.Rmd",
+            "data-types.Rmd", # Functional Programming
+            "iteration.Rmd",
+            "batch-load-processing.Rmd",
+            "list-columns.Rmd",
+            "writing-functions.Rmd",
+            "package-development.Rmd",
+            "inference-vs-prediction.Rmd", # Machine Learning
+            "ethics-in-machine-learning.Rmd",
+            "cross-validation.Rmd",
+            "cloud-computing.Rmd",
+            "extending-lm.Rmd",
+            "feature-engineering.Rmd",
+            "k-nearest-neighbor.Rmd",
+            "feature-engineering.Rmd",
+            "decision-trees.Rmd",
+            "bagging-and-rf.Rmd",
+            "boosted-trees.Rmd",
+            "model-stacking.Rmd"
+            ]

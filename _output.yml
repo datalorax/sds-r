@@ -5,5 +5,16 @@ bookdown::gitbook:
   lib_dir: assets
   split_by: section
   config:
+    toc: 
+      collapse: section
+      scroll_highlight: true
     toolbar:
       position: static
+    edit:
+      link: https://github.com/datalorax/sds-r/edit/main/%s
+    download: ["rmd", "epub"]
+    sharing:
+      github: yes
+      facebook: no
+      twitter: yes
+      all: no

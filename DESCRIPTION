@@ -37,7 +37,12 @@ Imports:
     vip,
     pdp,
     maps,
-    mapproj
+    mapproj,
+    xgboost,
+    sds,
+    gganimate,
+    gbm,
+    ranger
 Depends: 
     tidyverse,
     tidymodels

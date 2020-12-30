@@ -146,9 +146,9 @@
 
 /*Code blocks*/
 .book .book-body .page-wrapper .page-inner section.normal pre {
-	border-top: 1px solid var(--highlight-seafoam);
-	border-bottom: 1px solid var(--highlight-seafoam);
-	background-color: var(--main-bg-color);
+/*	border-top: 1px solid var(--highlight-seafoam);
+	border-bottom: 1px solid var(--highlight-seafoam);*/
+	background-color: #F6F8FA;
 	color: #415A6E;
 }
 
@@ -207,41 +207,41 @@ code span.ot {
 .section.level1 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;*/
+	/*border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 .section.level2 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;*/
+	/*border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 .section.level3 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;
+	border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 .section.level4 > pre {
 	padding-top: 0px !important;
 	margin-top: -22px !important;
-	border: none !important;
-	background-color: #f1f9f9 !important;
-	border-top: 1px solid var(--highlight-seafoam) !important;
-	border-bottom: 1px solid var(--highlight-seafoam) !important;
+	/*border: none !important;*/
+	background-color: #ced9e4 !important;
+	/*border-top: 1px solid var(--highlight-seafoam) !important;*/
+	/*border-bottom: 1px solid var(--highlight-seafoam) !important;*/
 }
 
 /* -----------div tips------------- */
-div.lightbulb, div.dictionary {
+div.lightbulb, div.dictionary, div.warning {
   padding: 1em;
   padding-top: 5px;
   margin: 0.5em 0;
@@ -249,6 +249,16 @@ div.lightbulb, div.dictionary {
   background-repeat: no-repeat;
   min-height: 120px;
   border: 3px solid var(--highlight-blue);
+  border-radius: 10px;  
+}
+div.warning {
+  padding: 1em;
+  padding-top: 5px;
+  margin: 0.5em 0;
+  padding-left: 12%;
+  background-repeat: no-repeat;
+  /*min-height: 120px;*/
+  border: 3px solid #e26260;
   border-radius: 10px;  
 }
 
@@ -273,6 +283,17 @@ div.dictionary {
 	
 }
 
+div.warning {
+	background: url(img/div_tip_icons/alert-circle.png), 
+	            -webkit-linear-gradient(0deg, 
+                                      #e26260 10%, 
+                                      var(--main-bg-color) 10%);
+	background-repeat: no-repeat;
+  background-position: left;
+  background-size: 10%, contain;
+	
+}
+
 .book .book-body .page-wrapper .page-inner section.normal .title p {
 	color: var(--highlight-gray);
 	font-family: var(--font-divtip-title);
@@ -280,13 +301,16 @@ div.dictionary {
 	font-size: 1.6em;
 }
 
-
-/*table style for definitions inside div tips*/
-div.definition-tbl table, tr {
-	table-layout: fixed;
-	background-color: var(--main-bg-color);
-	border: none;
+div.concept {
+  float: right;
+  margin-left: 0.5em;
+  padding: 1em;
+  max-width: 300px;
+  min-height: 50px;
+  background-color: #e5f3fa;
+  border-radius: 10px;
 }
+
 
 /*Tables*/
 table {
