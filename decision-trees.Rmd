@@ -198,19 +198,17 @@ ggplot(mpg, aes(displ, cty, fill = drv)) +
 This looks considerably better, and although we still have some misclassification, that's ultimately probably a good thing because we don't want to start to overfit to our training data. Decision trees, like all models, should balance the bias-variance tradeoff. They are flexible and make few assumptions about the data, but that can also quickly lead to overfitting and poor generalizations to new data.
 
 ## Fitting a decision tree
-As an applied example, let's fit a decision tree model to data from the [2019 Data Science Bowl](https://www.kaggle.com/c/data-science-bowl-2019) from Kaggle. These data come from PBS KIDS on data from an educational gaming app called [Measure Up!](http://about.lunchbox.pbs.org/blogs/news/new-pbs-kids-measure-up-app-encourages-kids-and-parents-to-play-and-learn-together/). You can actually still submit to this competition (as of the time of this writing) if you'd like to see how performant your model is. The objective is to fit a model to predict kiddo's (ages 3-5) scores on an in-game assessment.
+As an applied example, let's fit a decision tree model to data from the [2019 Data Science Bowl](https://www.kaggle.com/c/data-science-bowl-2019) from Kaggle. These data come from PBS KIDS and are related to an educational gaming app called [Measure Up!](http://about.lunchbox.pbs.org/blogs/news/new-pbs-kids-measure-up-app-encourages-kids-and-parents-to-play-and-learn-together/). The objective is to fit a model to predict kids' (ages 3-5) scores on an in-game assessment.
 
 The outcome is `accuracy_group`, which is an ordered categorical variable ranging from 0-4. See the [Kaggle description](https://www.kaggle.com/c/data-science-bowl-2019/data) of the data for more information.
 
-### Load the data
-
-First, we need to read in the **train.csv** and **train_labels.csv** data. Note that I've removed the `event_data` column, which includes JSON data on `event_count`, `event_code`, and `game_time`, which are already represented as columns in **train.csv**. I've also sampled only read in the first 10,000 rows of the data so that things will run more quickly.
+First, we need to read in the data.
 
 ```{r }
 k_train <- get_data("ds-bowl-2019")
 ```
 
-After joining the training data with the labels, our full training dataset look like this
+Our full training dataset look like this
 
 ```{r echo = FALSE}
 reactable::reactable(k_train, filterable = TRUE, highlight = TRUE)
@@ -231,7 +229,7 @@ Let's now create a basic recipe for this dataset. In this case, we won't spend m
 rec <- recipe(accuracy_group ~ ., data = train)
 ```
 
-And finally, we'll specify the type of model we want to fit. Because we're using [{tidymodels}](https://www.tidymodels.org) metapackage, and the [{parsnip}](https://parsnip.tidymodels.org) package in particular for specifying our model, the code setup is essentially equivalent to what we've seen in the past. Rather than specifying, say, `lineary_regression()`, however, we just use `decision_tree()`. We then specify the engine to estimate the model, which will be [{rpart}](https://cran.r-project.org/package=rpart), and set our mode (classification). 
+And finally, we'll specify the type of model we want to fit. Because we're using the [{tidymodels}](https://www.tidymodels.org) metapackage, and the [{parsnip}](https://parsnip.tidymodels.org) package in particular for specifying our model, the code setup is essentially equivalent to what we've seen in the past. Rather than specifying, say, `linear_reg()`, however, we just use `decision_tree()`. We then specify the engine to estimate the model, which will be [{rpart}](https://cran.r-project.org/package=rpart), and set our mode (classification). 
 
 ```{r message = FALSE}
 dt_mod <- decision_tree() %>% 
@@ -239,7 +237,7 @@ dt_mod <- decision_tree() %>%
   set_mode("classification")
 ```
 
-And finally, we can estimate the model! Let's use `fit_resamples()` so we can get an idea of how the model performs using the default settings. Notice I've added timings here so we have a sense of how long each takes (which is a while).
+And finally, we can estimate the model! Let's use `fit_resamples()` so we can get an idea of how the model performs using the default settings. Notice I've added timings here so we have a sense of how long each takes.
 
 ```{r }
 library(tictoc)
@@ -250,7 +248,7 @@ dt_default <- fit_resamples(dt_mod,
 toc()
 ```
 
-As we've seen before, the code above fits the decision tree model with the default parameters to each of the 10 folds, and evaluates the predictions from that model against the left out set.
+As we've seen before, the code above fits the decision tree model with the default parameters to each of the 10 folds and evaluates the predictions from that model against the left out set.
 
 Let's look at our model performance:
 
@@ -258,7 +256,7 @@ Let's look at our model performance:
 collect_metrics(dt_default)
 ```
 
-Not too bad, but given that we haven't tuned the model at all, it's likely we can improve on this. To learn more about these models and how much they differ across folds, we probably want to actually inspect the splits (e.g., how many) and (at least) the root nodes. Unfortunatley we can't do that with the `dt_default` object because, by default, the model object is not saved (which generally makes sense from an efficiency and storage perspective). Let's re-run this, but this time ask it to also save the model object.
+Not too bad, but given that we haven't tuned the model at all, it's likely we can improve on this. To learn more about these models and how much they differ across folds, we probably want to actually inspect the splits (e.g., how many) and (at least) the root nodes. Unfortunately we can't do that with the `dt_default` object because, by default, the model object is not saved (which generally makes sense from an efficiency and storage perspective). Let's re-run this, but this time ask it to also save the model object with `control_resamples()` and `extract_model()`.
 
 ```{r }
 tic()
@@ -271,7 +269,7 @@ dt_default2 <- fit_resamples(
 toc()
 ```
 
-We can visualize the model using the [{rpart.plot}](https://cran.r-project.org/package=rpart.plot) package. Actually pulling out the model is a bit difficult, because it's pretty deeply nested, but it's not horrible. Let's write a function to do so.
+We can visualize the model using the [{rpart.plot}](https://cran.r-project.org/package=rpart.plot) package. Actually pulling out the model is a bit difficult, because it's pretty deeply nested. Let's write a function to do so.
 
 ```{r }
 pull_model <- function(extract_fold) {
@@ -279,7 +277,7 @@ pull_model <- function(extract_fold) {
 }
 ```
 
-And now we'll loop through the full list of extract to get a list of just the models.
+And now we'll loop through the full list of extracts to get a list of just the models.
 
 ```{r }
 all_mods <- map(dt_default2$.extracts, pull_model)
@@ -299,6 +297,8 @@ By comparison, let's look at the tree for the third fold.
 ```{r }
 rpart.plot(all_mods[[3]], type = 4)
 ```
+
+<!-- BC: The trees for fold 1 and fold 3 actually look almost identical, so the statement below is confusing. Perhaps something changed since you first wrote this? -->
 
 Notice that the models are quite different. This show the potential for high variability with decision trees (while also potentially having low bias).
 
