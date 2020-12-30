@@ -55,15 +55,15 @@ For classification problems, like the above, the predicted class in the terminal
 
 | Term | Definition |
 |:---|:---|
-| **Root node** | The top feature in a decision tree. The column that has the first split|
+| **Root node** | The top feature in a decision tree. The column that has the first split.|
 | **Internal node** | A grouping within the tree between the root node and the terminal node, e.g., *all passengers coded female*. |
 | **Terminal node** or **Terminal leaf** | The final node/leaf of a decision tree. The prediction grouping.|
 | **Branch** | The prediction "flow" of the tree. One often "follows" a branch to a terminal node.|
-| **Split** | A threshold value for numeric features, or a classification separation rule for categorical features, that optimally separates the sample according to the outcome|
+| **Split** | A threshold value for numeric features, or a classification separation rule for categorical features, that optimally separates the sample according to the outcome.|
 
 
 ## Determining optimal splits
-Regression trees work by optimally splitting each node until some criterion is met. But how do we determine what's optimal? We use an objective function. For regression problems, this usually the sum of the squared errors, defined by
+Regression trees work by optimally splitting each node until some criterion is met. But how do we determine what's optimal? We use an objective function. For regression problems, this is usually the sum of the squared errors, defined by
 
 $$
 \Sigma_{R1}(y_i - c_1)^2 + \Sigma_{R2}(y_i - c_2)^2
@@ -71,7 +71,7 @@ $$
 
 where $c$ is the prediction (mean of cases in the region), which starts as a constant and is updated, and $R$ is the region. The algorithm searches through every possible split for every possible feature to identify the split that minimizes the sum of the squared errors. 
 
-For classification problems, the Gini impurity index is most common. Note that this is *not* the same index that is regularly used in spatial demography and similar fields to estimate inequality. Confusingly, both terms are referred to as the Gini index (with the latter also being referred to as the Gini coefficient or Gini ratio), but they are entirely separate.
+For classification problems, the Gini impurity index is the most common objective function. Note that this is *not* the same index that is regularly used in spatial demography and similar fields to estimate inequality. Confusingly, both terms are referred to as the Gini index (with the latter also being referred to as the Gini coefficient or Gini ratio), but they are entirely separate.
 
 For a two-class situation, the Gini impurity index, used in decision trees, is defined by   
 
@@ -96,7 +96,7 @@ D &= 0.375
 \end{aligned}
 $$
 
-As the proportion in one class goes up, the value of $D$ goes down. Similar to regression problems, the searches through all possible features to find the optimal split that minimizes $D$. 
+As the proportion in one class goes up, the value of $D$ goes down. Similar to regression problems, the model searches through all possible features to find the optimal split that minimizes $D$. 
 
 Regardless of whether the decision tree is built to solve a regression or classification problem, the algorithm is built recursively, with new optimal splits determined from previous splits. This "top down" approach is one example of a **greedy algorithm**, in which a series of *localized* optimal decisions are made. In other words, the optimal split is determined for each node. There is no going backwards to check if a different *combination* of features and splits would lead to better performance. 
 
