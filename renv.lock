@@ -788,15 +788,15 @@
     },
     "parttree": {
       "Package": "parttree",
-      "Version": "0.0.1",
+      "Version": "0.0.1.9000",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "parttree",
       "RemoteUsername": "grantmcdermott",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "f4f260eb4dfb403019f3e060a33101cb6fd95124",
-      "Hash": "63e4e717164b52ffeeb0a8d39b508bad"
+      "RemoteRepo": "parttree",
+      "RemoteRef": "master",
+      "RemoteSha": "9d25d2cf87bfde999ce1191f4cbe09e2013d0b11",
+      "Hash": "e309fbf05df8e5abe353eaa63303f383"
     },
     "partykit": {
       "Package": "partykit",
