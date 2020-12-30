@@ -306,7 +306,7 @@ Notice that the models are quite different. This show the potential for high var
 In the previous section, we fit a model with the default settings. Can we improve performance by changing these? Let's find out! But first, what might we change?
 
 ### Decision tree hyperparamters
-Decision trees have three hyperparamters as shown below. These are standard hyperparameters and are implemented in [{rpart}](https://cran.r-project.org/package=rpart), the engine we used for fitting decision tree models in the previous section. Alternative implementations may have slightly different hyperparameters (see [the documentation](https://parsnip.tidymodels.org/reference/decision_tree.html) for `parsnip::decision_tree()` details on other engines). 
+Decision trees have three hyperparameters as shown below. These are standard hyperparameters and are implemented in [{rpart}](https://cran.r-project.org/package=rpart), the engine we used for fitting a decision tree model in the previous section. Alternative implementations may have slightly different hyperparameters (see [the documentation](https://parsnip.tidymodels.org/reference/decision_tree.html) for `parsnip::decision_tree()` for details on other engines). 
 
 | Hyperparameter| Function | Description |
 |:---|:---|:----|
@@ -320,11 +320,9 @@ $$
 SSE + \alpha |T|
 $$
 
-where $T$ is the number of terminal nodes. Any value can be use for alpha, but typical values are less that 0.1. The cost complexity helps control model complexity through a process called **pruning**, in which a decision tree is first grown very deep, and then *pruned* back to a smaller subtree. The tree is initially grown just like any standard decision tree, but it is pruned to the subtree that optimizes the penalized objective function above. Different values of $\alpha$ will, of course, lead to different subtrees. The best values are typically determined via grid search via cross validation. Larger cost complexity values will result in smaller trees, while smaller values will result in more complex trees.
+where $T$ is the number of terminal nodes. Any value can be use for alpha, but typical values are less that 0.1. The cost complexity helps control model complexity through a process called **pruning**, in which a decision tree is first grown very deep, and then *pruned* back to a smaller subtree. The tree is initially grown just like any standard decision tree, but it is pruned to the subtree that optimizes the penalized objective function above. Different values of $\alpha$ will, of course, lead to different subtrees. The best values are typically determined via grid search using cross validation. Larger cost complexity values will result in smaller trees, while smaller values will result in more complex trees. Similar to penalized regression, if you are using cost complexity to prune a tree it is important that all features are placed on the same scale (normalized) so the scale of the feature doesn't influence the penalty.
 
-Note that, similar to penalized regression, if you are using cost complexity to prune a tree it is important that all features are placed on the same scale (normalized) so the scale of the feature doesn't influence the penalty.
-
-The tree depth and minimum $n$ are a more straightforward methods to control model complexity. The tree depth is just the maximum depth to which a tree can be grown (maximum number of splits). The minimum $n$ controls the splitting criteria. A node cannot be split further once the $n$ within that node is below the minimum specified.
+The tree depth and minimum $n$ are more straightforward methods to control model complexity. The tree depth is just the maximum depth to which a tree can be grown (maximum number of splits). The minimum $n$ controls the splitting criteria. A node cannot be split further once the $n$ within that node is below the minimum specified.
 
 ### Conducting the grid search
 Let's tune our model using `cost_complexity()` and `min_n()` and let the depth be controlled by these parameters. 
@@ -337,7 +335,7 @@ dt_tune <- dt_mod %>%
            min_n = tune())
 ```
 
-Next, we'll set up our grid. We can use helper functions from the [{dials}]() package (part of *tidymodels*) to help us come up with reasonable values. Let's use a regular grid with 10 possible values for cost complexity and 5 possible values for the minimum $n$. 
+Next, we'll set up our grid. We can use helper functions from the [{dials}]() package to help us come up with reasonable values. Let's use a regular grid with 10 possible values for cost complexity and 5 possible values for the minimum $n$. 
 
 ```{r warning = FALSE}
 dt_grid <- grid_regular(
@@ -347,7 +345,7 @@ dt_grid <- grid_regular(
 )
 ```
 
-Let's see what the space we'rd evaluating actually looks like for our hyperparamters.
+Let's see what the space we're evaluating actually looks like for our hyperparameters.
 
 ```{r}
 ggplot(dt_grid, aes(cost_complexity, min_n)) +
@@ -356,7 +354,7 @@ ggplot(dt_grid, aes(cost_complexity, min_n)) +
 
 As we can see, there's a big gap in cost complexity, so we'll want to be careful when we investigate the optimal values there.
 
-Now let's actually conduct the search. I have again included timing here so you can see how long it took for me to run on my local computer (which is a decent amount of time).
+Now let's actually conduct the search.
 
 :::warning
 The below took about 20 minutes to run on a local computer.
@@ -379,7 +377,7 @@ saveRDS(dt_tune_fit, here::here("models", "decision-tree", "dt_tune_fit.Rds"))
 dt_tune_fit <- readRDS(here::here("models", "decision-tree", "dt_tune_fit.Rds"))
 ```
 
-First let's look at our results by hyperparameter. We can use `collect_metrics` to get a summary (mean) of the metrics we set (which we didn't, so we'll get the defaults, which in this case are [roc_auc](https://yardstick.tidymodels.org/reference/roc_auc.html) and [accuracy](https://yardstick.tidymodels.org/reference/accuracy.html)) across folds. You can optionally get te results by fold (no summarizing) by specifying `summarize = FALSE`.
+First let's look at our results by hyperparameter. We can use `collect_metrics` to get a summary (mean) of the metrics across folds. You can optionally get the results by fold (no summarizing) by specifying `summarize = FALSE`. Because we didn't set specific metrics,  we'll get the defaults, which in this case are [roc_auc](https://yardstick.tidymodels.org/reference/roc_auc.html) and [accuracy](https://yardstick.tidymodels.org/reference/accuracy.html)). 
 
 ```{r }
 dt_tune_metrics <- collect_metrics(dt_tune_fit)
@@ -396,13 +394,13 @@ dt_tune_metrics %>%
   facet_wrap(~min_n)
 ```
 
-So generally it's looking like lower values of of cost complexity are leading to better performing models, and the minimum sample size for a terminal node is looking best at 21 or 30. Let's look at our best models in a more tabular form. This time we'll use `show_best` to show our best hyperparameter combinations.
+It looks like lower values of cost complexity are leading to better performing models, and the minimum sample size for a terminal node is looking best at 21 or 30. Let's look at our best models in a more tabular form. This time we'll use `show_best()` to show our best hyperparameter combinations.
 
 ```{r }
 show_best(dt_tune_fit, metric = "roc_auc")
 ```
 
-And we see a little bit different picture here. Our best model has a minimum $n$ of 11 with a relatively higher cost complexity. But the amount this model is "better" is trivial and could easily be due to sampling variability. All of the rest of the best models have the same minimum $n$, with the cost complexity playing essentially no role. This may lead us to consider *not* pruning by the cost complexity parameter at all. Let's use all the results again to look at the minimum $n$ a little closer. We'll filter for a very low cost complexity.
+We see a somewhat different picture here. Our best model has a minimum $n$ of 11 with a relatively higher cost complexity. But the amount this model is "better" is trivial and could easily be due to sampling variability. All of the rest of the best models have the same AUC performance, with the cost complexity playing essentially no role. This may lead us to consider *not* pruning by the cost complexity parameter at all. Let's use all the results again to look at the minimum $n$ a little closer. We'll filter for a very low cost complexity.
 
 ```{r }
 dt_tune_metrics %>% 
@@ -410,6 +408,8 @@ dt_tune_metrics %>%
            cost_complexity == 0.0000000001) %>% 
   arrange(desc(mean))
 ```
+
+<!-- BC: I'm seeing 40 as the best minimum n. -->
 
 Unsurprisingly, 30 is looking best for our minimum $n$. To be sure we've got this right though, let's set cost_complexity and tune *just* on the minimum $n$. We know that values of 21 and 40 are both worst than 30, but let's see if there's any more room for optimization around there. 
 
@@ -455,9 +455,9 @@ show_best(dt_tune_fit2, metric = "roc_auc")
 And look at that! It's a (very) marginal improvement, but we have optimized our model a bit more.
 
 ### Finalizing our model fit
-Generally before moving to the our final fit we'd probably want to do a bit more work with the model to make sure we were confident it was really the best model we could produce. I'd be particularly interested at looking at minimum $n$ around the 0.001 cost complexity parameter (given that the overall optimum in our original gridsearch had this value with a minimum $n$ of 11). But for illustration purposes, let's assume we're ready to go (and really, decision trees don't have a lot more tuning we can do with them, at least using the *rpart* engine).
+Generally before moving to the our final fit we'd probably want to do a bit more work with the model to make sure we were confident it was really the best model we could produce. I'd be particularly interested at looking at minimum $n$ around the 0.001 cost complexity parameter (given that the overall optimum in our original gridsearch had this value with a minimum $n$ of 11). But for illustration purposes, let's assume we're ready to go (and really, decision trees don't have a lot more tuning we can do with them, at least using the {rpart} engine).
 
-First, let's finalize our model using the best `min_n` we found from our grid search. We'll use `finalize_model` along with `select_best` (rather than `show_best`) to set the final model parameters.
+First, let's finalize our model using the best `min_n` we found from our grid search. We'll use `finalize_model()` along with `select_best()` (rather than `show_best()`) to set the final model parameters.
 
 ```{r }
 best_params <- select_best(dt_tune_fit2, metric = "roc_auc")
@@ -467,7 +467,7 @@ final_mod
 
 Note that the min_n is now set. If we had done any tuning with our recipe we could follow a similar process. 
 
-Next, we're going to use our original `initial_split()` object to, with a single function fit our model to our full training data (rather than by fold) and make predictions on the test set, and evalute the performance of the model. We do this all throught he `last_fit` function.
+Next, we're going to use our original `splt` object to fit our model to our full training data (rather than by fold), make predictions on the test set and evaluate the performance of the model. We do this all through the `last_fit()` function.
 
 ```{r }
 dt_finalized <- last_fit(final_mod,
@@ -476,7 +476,7 @@ dt_finalized <- last_fit(final_mod,
 dt_finalized
 ```
 
-What we get output doesn't look terrifically helpful, but it is. It's basically everything we need. For example, let's look at our metrics.
+What we get out doesn't look terrifically helpful, but it is. It's basically everything we need. For example, let's look at our metrics.
 
 ```{r }
 dt_finalized$.metrics[[1]]
@@ -489,7 +489,7 @@ predictions <- dt_finalized$.predictions[[1]]
 predictions
 ```
 
-This shows us the predicted probability that each case would be in each class, along with a "hard" prediction into a class, and their observed class (`accuracy_group`). We can use this for further visualizations and to better understand how our model makes predictions and where it is wrong. For example, let's look at a quick heat map of the predicted class versus the observed.
+This shows us the predicted probability that each case would be in each class, along with a "hard" prediction into a class and their observed class (`accuracy_group`). We can use this for further visualizations and to better understand how our model makes predictions and where it is wrong. For example, let's look at a quick heat map of the predicted class versus the observed.
 
 ```{r }
 counts <- predictions %>% 
@@ -509,6 +509,6 @@ ggplot(counts, aes(.pred_class, accuracy_group)) +
 
 Notice that I've omitted NA's here, which is less than ideal, because we have a lot of them. This is mostly because the original data themselves have so much missing data on the outcome, so it's hard to know how well we're actually doing with those cases. Instead, we're just evaluating our model with the cases for which we actually have an observed outcome. The plot above shows the proportion *by row*. In other words, each row sums to 1.0. 
 
-We can fairly quickly see that our model has some fairly significant issues. We are doing okay predicting classes for 0 and 3 (about 75% correct, in each case) but we're not a whole lot better than random chance leve (which would be 0.25-ish in each cell) when predicting Classes 1 and 2. It's fairly concerning that 32% of cases that were actually Class 2 were predicted to be Class 0. We would likely want to conduct a post-mortem with these cases to see if we could understand why our model was failing in this particular direction. 
+We can fairly quickly see that our model has some fairly significant issues. We are doing okay predicting classes for 0 and 3 (about 75% correct, in each case) but we're not a whole lot better than random chance level (which would be 0.25-ish in each cell) when predicting Classes 1 and 2. It's fairly concerning that 32% <!--BC: I think this number might be slightly off --> of cases that were actually Class 2 were predicted to be Class 0. We would likely want to conduct a post-mortem with these cases to see if we could understand why our model was failing in this particular direction. 
 
-Decision trees, generally, are easily interpretable and easy to communicate with stakeholders. They also make no assumptions about the data, and can be applied in a large number of situations. Unfortunately, they often suffer from rapid overfitting to the data leading to poor generalizations to unseen data. In the next chapter, we'll build on decision trees to talk about *ensemble* methods, where we use multiple trees to make a single prediction.
+Decision trees, generally, are easily interpretable and easy to communicate with stakeholders. They also make no assumptions about the data and can be applied in a large number of situations. Unfortunately, they often suffer from rapid overfitting to the data leading to poor generalizations to unseen data. In the next chapter, we'll build on decision trees to talk about *ensemble* methods, where we use multiple trees to make a single prediction.
