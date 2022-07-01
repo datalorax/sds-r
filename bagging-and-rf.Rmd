@@ -806,7 +806,7 @@ Our inferences here are similar, but this view helps us see more clearly that th
 
 With bagged trees and random forests, we can also look at variable importance in a slightly different way. Rather than summing the contributions for each tree, and taking the average across trees, we can compute the OOB error for a given tree, then shuffle the values for a given variable and re-compute the OOB error. If the variable is important, the OOB error will increase as we perturb the given variable, but otherwise the error will stay (approximately) the same ([see Wright, Ziegler, and König, 2016](https://bmcbioinformatics.biomedcentral.com/track/pdf/10.1186/s12859-016-0995-8.pdf)).
 
-To get this *purmutation*-based importance measure, we just change `importance` to `"purmutation"`. Let's do this and see if the resulting plot differs.
+To get this *permutation*-based importance measure, we just change `importance` to `"permutation"`. Let's do this and see if the resulting plot differs.
 
 ```{r }
 rf_mod_reg_final2 <- rand_forest() %>% 
@@ -815,7 +815,7 @@ rf_mod_reg_final2 <- rand_forest() %>%
     set_args(mtry = rf_reg_fits2$mtry[1],
              min_n = rf_reg_fits2$min_n[1],
              trees = 1000,
-             importance = "purmutation")
+             importance = "permutation")
 
 tic()
 rf_fit_reg_final2 <- fit(rf_mod_reg_final,
